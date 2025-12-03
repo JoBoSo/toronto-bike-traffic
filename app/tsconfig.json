@@ -18,11 +18,8 @@
         "name": "next"
       }
     ],
-    "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"],
-      "@/lib/*": ["./app/lib/*"],
-      "@/app/*": ["./app/app/*"],
+      "@/*": ["./app/*"],
     }
   },
   "include": [

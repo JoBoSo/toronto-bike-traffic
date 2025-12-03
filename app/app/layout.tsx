@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import styles from "./layout.module.scss"
-import { MapProvider } from "./components/Map/contexts/MapContext";
-import Header from "./components/Header/Header";
-import Sidebar from "./components/Sidebar/Sidebar";
-import "./globals.css";
+import styles from "@/layout.module.scss"
+import { MapProvider } from "@/components/Map/contexts/MapContext";
+import Header from "@/components/Header/Header";
+import Sidebar from "@/components/Sidebar/Sidebar";
+import "@/globals.css";
 
 export const metadata: Metadata = {
   title: "Create Next App",

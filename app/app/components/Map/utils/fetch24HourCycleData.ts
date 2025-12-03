@@ -1,8 +1,8 @@
-import { FlaskApi } from "../../../lib/api/flaskApi";
-import mergeCoordinates from "./mergeCoordinates";
+import { FlaskApi } from "@/lib/api/flaskApi";
+import mergeCoordinates from "@/components/Map/utils/mergeCoordinates";
 import React from "react";
 
-export async function fetch24HourCycleData(
+export async function fe2tch24HourCycleData(
   dateRange: [Date | null, Date | null], 
   counterLocationData: any,
   // set24HrCycleData: React.Dispatch<React.SetStateAction<any>>

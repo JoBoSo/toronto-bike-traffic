@@ -1,8 +1,8 @@
-import MapWrapper from './components/Map/MapWrapper/MapWrapper';
-import { CyclingNetworkPkgClient } from './lib/api/torontoOpenDataApi/clients/CyclingNetworkPkgClient';
+import MapWrapper from '@/components/Map/MapWrapper/MapWrapper';
+import { CyclingNetworkPkgClient } from '@/lib/api/torontoOpenDataApi/clients/CyclingNetworkPkgClient';
 import { 
     PermanentBicycleCountersPkgClient
-} from './lib/api/torontoOpenDataApi/clients/PermanentBicycleCountersPkgClient';
+} from '@/lib/api/torontoOpenDataApi/clients/PermanentBicycleCountersPkgClient';
 import React from 'react';
 
 export default async function HomePage() {
