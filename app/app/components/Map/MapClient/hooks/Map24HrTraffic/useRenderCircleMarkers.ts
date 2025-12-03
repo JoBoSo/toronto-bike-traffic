@@ -3,8 +3,6 @@
 import { useEffect } from "react";
 import L from "leaflet";
 
-
-
 export function useRenderCircleMarkers(
   mapInstance: L.Map | null, 
   currtwentyFourHrCycleData: any, 

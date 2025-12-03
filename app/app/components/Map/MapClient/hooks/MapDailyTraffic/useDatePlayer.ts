@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { fetchDataByDateRange } from "../../../utils/fetchDataByDateRange";
+import { fetchDataByDateRange } from "@/components/Map/utils/fetchDataByDateRange";
 
 export function useDatePlayer(
   isPlaying: boolean,

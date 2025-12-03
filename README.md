@@ -1,6 +1,6 @@
 ### Toronto's Bike Network and Traffic Visualized
 
-## Project Layout
+## App Layout
 toronto-bike-traffic
 |--api/   <- flask API (backend)
 |--app/   <- Next.js app (frontend)

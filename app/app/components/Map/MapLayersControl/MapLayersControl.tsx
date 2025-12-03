@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Layers } from "lucide-react";
-import styles from './MapLayersControl.module.scss'; 
+import styles from '@/components/Map/MapLayersControl/MapLayersControl.module.scss'; 
 
 export default function MapLayersControl({
   isSatellite,

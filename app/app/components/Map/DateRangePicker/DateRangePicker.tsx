@@ -3,7 +3,7 @@
 import React from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import styles from "./DateRangePicker.module.scss";
+import styles from "@/components/Map/DateRangePicker/DateRangePicker.module.scss";
 
 interface DateRangePickerProps {
   dateRange: [Date | null, Date | null];

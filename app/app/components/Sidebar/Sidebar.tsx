@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import styles from "@/components/Sidebar/Sidebar.module.scss/Sidebar.module.scss";
+import styles from "@/components/Sidebar/Sidebar.module.scss";
 import DateRangePicker from "@/components/Map/DateRangePicker/DateRangePicker";
 import PlaybackControl from "@/components/Map/PlaybackControl/PlaybackControl";
 import { useMapContext } from "@/components/Map/contexts/MapContext";
 import { fetchDataByDateRange } from "@/components/Map/utils/fetchDataByDateRange";
-import { fetch24HourCycleData } from "@/components/Map/utils/fetch24HourCycleData";
+// import { fetch24HourCycleData } from "@/components/Map/utils/fetch24HourCycleData";
 
 export default function Sidebar() {
   const { 

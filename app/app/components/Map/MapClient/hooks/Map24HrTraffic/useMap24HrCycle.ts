@@ -2,9 +2,9 @@
 
 import { useEffect, useState, useRef } from "react";
 import L from "leaflet";
-import { useUpdate24HrTrafficData } from "./useUpdate24HrTrafficData"
-import { useRenderCircleMarkers } from "./useRenderCircleMarkers"; 
-import { use24HrTrafficPlayer } from "./use24HrTrafficPlayer";
+import { useUpdate24HrTrafficData } from "@/components/Map/MapClient/hooks/Map24HrTraffic/useUpdate24HrTrafficData"
+import { useRenderCircleMarkers } from "@/components/Map/MapClient/hooks/Map24HrTraffic/useRenderCircleMarkers"; 
+import { use24HrTrafficPlayer } from "@/components/Map/MapClient/hooks/Map24HrTraffic/use24HrTrafficPlayer";
 
 export function useMap24HrCycle(
   dateRange: [Date | null, Date | null],

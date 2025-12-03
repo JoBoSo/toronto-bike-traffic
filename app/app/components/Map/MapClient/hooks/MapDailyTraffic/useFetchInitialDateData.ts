@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import L from "leaflet";
-import { fetchDataByDateRange } from "../../../utils/fetchDataByDateRange";
+import { fetchDataByDateRange } from "@/components/Map/utils/fetchDataByDateRange";
 
 export function useFetchInitialDateData(
   mapInstance: L.Map | null,

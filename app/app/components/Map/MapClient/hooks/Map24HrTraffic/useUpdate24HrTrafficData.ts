@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { fetch24HourCycleData } from "../../../utils/fetch24HourCycleData";
+import { fetch24HourCycleData } from "@/components/Map/utils/fetch24HourCycleData";
 
 // Fetch data when year/month changes
 export function useUpdate24HrTrafficData(

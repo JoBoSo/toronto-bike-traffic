@@ -1,31 +1,31 @@
 "use client";
 
-import styles from "./MapClient.module.scss";
+import styles from "@/components/Map/MapClient/MapClient.module.scss";
 import { useEffect, useRef, useState } from "react";
 import L, { Map as LeafletMap, LayerGroup, TileLayer } from "leaflet";
 import "react-datepicker/dist/react-datepicker.css";
 import "leaflet/dist/leaflet.css";
 
 // Contexts
-import { useMapContext } from "../contexts/MapContext";
+import { useMapContext } from "@/components/Map/contexts/MapContext";
 
 // Utils
-import { generateDateRange } from "../utils/generateDateRange";
+import { generateDateRange } from "@/components/Map/utils/generateDateRange";
 
 // Hooks
-import { useInitializeMap } from "./hooks/BaseLayers/useInitializeMap";
-import { useUpdateDateArray } from "./hooks/MapDailyTraffic/useUpdateDateArray";
-import { useRenderCyclingNetwork } from "./hooks/BaseLayers/useRenderCyclingNetwork";
+import { useInitializeMap } from "@/components/Map/MapClient/hooks/BaseLayers/useInitializeMap";
+import { useUpdateDateArray } from "@/components/Map/MapClient/hooks/MapDailyTraffic/useUpdateDateArray";
+import { useRenderCyclingNetwork } from "@/components/Map/MapClient/hooks/BaseLayers/useRenderCyclingNetwork";
 import { useDatePlayer } from "./hooks/MapDailyTraffic/useDatePlayer";
-import { useRenderCounterLocations } from "./hooks/BaseLayers/useRenderCounterLocations";
-import { useRenderDateRangeData } from "./hooks/MapDailyTraffic/useRenderDateRangeData";
-import { useFetchInitialDateData } from "./hooks/MapDailyTraffic/useFetchInitialDateData";
-import { useMap24HrCycle } from "./hooks/Map24HrTraffic/useMap24HrCycle";
-import useSetBaseMap from "../MapLayersControl/hooks/useSetBaseMap";
-import useToggleBaseMap from "../MapLayersControl/hooks/useToggleBaseMap";
+import { useRenderCounterLocations } from "@/components/Map/MapClient/hooks/BaseLayers/useRenderCounterLocations";
+import { useRenderDateRangeData } from "@/components/Map/MapClient/hooks/MapDailyTraffic/useRenderDateRangeData";
+import { useFetchInitialDateData } from "@/components/Map/MapClient/hooks/MapDailyTraffic/useFetchInitialDateData";
+import { useMap24HrCycle } from "@/components/Map/MapClient/hooks/Map24HrTraffic/useMap24HrCycle";
+import useSetBaseMap from "@/components/Map/MapLayersControl/hooks/useSetBaseMap";
+import useToggleBaseMap from "@/components/Map/MapLayersControl/hooks/useToggleBaseMap";
 
 // Components
-import MapLayersControl from "../MapLayersControl/MapLayersControl";
+import MapLayersControl from "@/components/Map/MapLayersControl/MapLayersControl";
 
 interface MapClientProps {
   data: any;
