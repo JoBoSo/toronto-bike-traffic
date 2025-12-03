@@ -1,0 +1,20 @@
+.appContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.mainContent {
+  display: flex;
+  flex: 1;
+  min-height: 0; // important for flex children to shrink properly
+}
+
+.contentArea {
+  flex: 1;
+  min-height: 0;
+  height: 100%; // <- ensures children can use 100%
+  display: flex; // <- allows MapClient to fill
+  flex-direction: column;
+}
+
