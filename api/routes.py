@@ -1,8 +1,15 @@
 from flask import Blueprint, jsonify, request
 import pandas as pd
-from .db import get_db, DATABASE
+from .db import get_db
 import sqlite3
 import os
+from dotenv import load_dotenv
+from pathlib import Path
+
+dotenv_path = Path(__file__).parent / ".env"
+load_dotenv(dotenv_path=dotenv_path)
+
+DB_PATH = os.path.join(os.path.dirname(__file__), os.getenv('DB_PATH'))
 
 # Create a Blueprint for API version 1
 api_bp = Blueprint('api', __name__, url_prefix='/api/v1')
@@ -60,8 +67,8 @@ def get_fifteen_min_counts_by_year_and_month():
         FROM fifteen_min_counts_by_year_and_month
         WHERE year = ? AND month = ?
     """
-    os.makedirs(os.path.dirname(DATABASE), exist_ok=True)
-    with sqlite3.connect(DATABASE) as conn:
+    os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
+    with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
         cursor.execute(query, (year, month))
         results = cursor.fetchall()
@@ -134,8 +141,8 @@ def get_avg_daily_vol_for_date_range():
         GROUP BY location_dir_id
     """
 
-    os.makedirs(os.path.dirname(DATABASE), exist_ok=True)
-    with sqlite3.connect(DATABASE) as conn:
+    os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
+    with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
         cursor.execute(query, (start_date, end_date))
         results = cursor.fetchall()
