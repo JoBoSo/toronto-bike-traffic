@@ -1,7 +1,10 @@
 import { get } from "./apiDataFetcher";
 
+const BASE_URL = process.env.NEXT_PUBLIC_FLASK_BASE_URL;
+
 export class FlaskApi {
-  private readonly baseUrl = "http://127.0.0.1:5000/api/v1";
+  // private readonly baseUrl = "http://127.0.0.1:5000/api/v1";
+  private readonly baseUrl = BASE_URL;
 
   async get15MinCountsForDateRange(
     startDate: string, 
@@ -11,6 +14,7 @@ export class FlaskApi {
     time: string; 
     avg_vol: number;
   }>> {
+    console.log(this.baseUrl)
     const url = this.baseUrl + `/fifteen-min-counts-for-date-range?start=${startDate}&end=${endDate}`;
     const data = await get<Array<{ 
       location_dir_id: string; 
