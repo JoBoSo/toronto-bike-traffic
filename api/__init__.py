@@ -14,8 +14,8 @@ def create_app():
         "https://localhost:3000", 
         "http://127.0.0.1:5000",
         "https://127.0.0.1:5000",
-        "http://toronto-bike-traffic.vercel.app"
-        "https://toronto-bike-traffic.vercel.app"
+        "https://toronto-bike-traffic.vercel.app",
+        "https://toronto-bike-traffic-backend.vercel.app",
     ])  # allow only your Next.js frontend
     # Or CORS(app) to allow all origins (less secure)
     
