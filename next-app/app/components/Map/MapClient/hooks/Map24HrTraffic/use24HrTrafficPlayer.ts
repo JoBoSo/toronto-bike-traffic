@@ -41,7 +41,7 @@ export function use24HrTrafficPlayer(
           }
           return next;
         });
-      }, 300);
+      }, 200); // milliseconds
     } else {
       if (playIntervalRef.current) clearInterval(playIntervalRef.current);
     }

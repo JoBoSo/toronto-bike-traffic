@@ -30,7 +30,7 @@ export function useDatePlayer(
           }
           return next;
         });
-      }, 300); // milliseconds
+      }, 200); // milliseconds
     } else {
       if (playIntervalRef.current) {
         clearInterval(playIntervalRef.current);
