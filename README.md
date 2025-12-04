@@ -6,7 +6,9 @@ toronto-bike-traffic
 |--app/   <- Next.js app (frontend)
 
 ## Running The App Locally
-1. Start Flask server from root: `python -m api.app_local`
+1. Start Flask server: 
+   1. `cd api`
+   2. `python -m app_local`
 2. Start Next.js dev server:
    1. `cd app`
    2. `npm run dev`
