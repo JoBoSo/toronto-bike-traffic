@@ -14,6 +14,10 @@ DB_PATH = os.path.join(os.path.dirname(__file__), os.getenv('DB_PATH'))
 # Create a Blueprint for API version 1
 api_bp = Blueprint('api', __name__, url_prefix='/api/v1')
 
+@api_bp.route('/hi', methods=['GET'])
+def hi():
+    return jsonify({"status": "ok", "message": "hello from toronto-bike-traffic API"}), 200
+
 def get_table(table_name):
     """Helper function to fetch all records from a specified table."""
     # Validate table name to prevent SQL injection
