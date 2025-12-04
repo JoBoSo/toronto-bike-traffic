@@ -1,4 +1,4 @@
-import { FlaskApi } from "@/src/api/flaskApi";
+import { FlaskApi } from "@/src/apis/flaskApi";
 import React from "react";
 
 // Fetch data by date range
