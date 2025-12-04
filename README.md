@@ -1,5 +1,9 @@
 ### Toronto's Bike Network and Traffic Visualized
 
+## Links
+Next.js App: https://toronto-bike-traffic.vercel.app
+Flask API: https://toronto-bike-traffic-backend.vercel.app/api/v1/hi
+
 ## App Layout
 toronto-bike-traffic
 |--api/   <- flask API (backend)
