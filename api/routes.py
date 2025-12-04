@@ -9,7 +9,11 @@ from pathlib import Path
 dotenv_path = Path(__file__).parent / ".env"
 load_dotenv(dotenv_path=dotenv_path)
 
+BASE_DIR = Path(__file__).resolve().parent
+DATA_DIR = Path(os.getenv("DATA_DIR", str(BASE_DIR / "data"))).resolve()
+COUNTS_15M_FILE = DATA_DIR / "counts_15m.parquet"
 DB_PATH = os.path.join(os.path.dirname(__file__), os.getenv('DB_PATH'))
+
 
 # Create a Blueprint for API version 1
 api_bp = Blueprint('api', __name__, url_prefix='/api/v1')
@@ -104,7 +108,7 @@ def get_fifteen_min_counts_for_date_range():
     except Exception:
         return jsonify({"error": "Invalid date format. Use YYYY-MM-DD."}), 400
     
-    df = pd.read_parquet('./api/data/counts_15m.parquet')
+    df = pd.read_parquet(COUNTS_15M_FILE)
 
     df["datetime_bin"] = pd.to_datetime(df["datetime_bin"])
     df["record_id"] = df["record_id"].astype(int)
