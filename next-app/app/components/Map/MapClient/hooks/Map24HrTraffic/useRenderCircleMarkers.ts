@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import L from "leaflet";
-import getMarkerColorRYG from '@/components/Map/utils/getMarkerColorRYG';
+import { MarkerScaler, ScalingMethod } from '@/components/Map/utils/MarkerScaler';
 
 export function useRenderCircleMarkers(
   mapInstance: L.Map | null, 
@@ -13,10 +13,6 @@ export function useRenderCircleMarkers(
   useEffect(() => {
     if (mapInstance && currtwentyFourHrCycleData) {
       console.log("Rendering circle marker 24 hour cycle data");
-
-      // Determine min and max values for color scaling
-      const minV = Math.min(...currtwentyFourHrCycleData.map((d: any) => d.avg_bin_volume));
-      const maxV = Math.max(...currtwentyFourHrCycleData.map((d: any) => d.avg_bin_volume));
 
       // Remove previous data layer if exists
       if (dataLayerRef.current) {
@@ -30,18 +26,21 @@ export function useRenderCircleMarkers(
       const newLayer = L.layerGroup();
 
       const currData = currtwentyFourHrCycleData;
-      // console.log(currentTime)
-      // console.log(currData)
-      // console.log(currtwentyFourHrCycleData[12])
+
+      // Create scaler for marker radius and color
+      const vals = currtwentyFourHrCycleData.map((item: any[any]) => item['avg_bin_volume'] as number);
+      const SCALING_METHOD: ScalingMethod = 'none';
+      const LOG_BASE = 1.07;
+      const MIN_RAD_PX = 5;
+      const MAX_RAD_PX = 35;
+      const scaler = new MarkerScaler(vals, SCALING_METHOD, LOG_BASE, MIN_RAD_PX, MAX_RAD_PX);
 
       // Render date range data circles
       currData.forEach((element: any) => {
         const latLon: [number, number] | L.LatLngExpression = element.coordinates;;
-        
         const value = element.avg_bin_volume;
-        // const radius = Math.max(Math.pow(value, 0.7), 4);
-        const radius = Math.max(3 * value, 4);
-        const color = getMarkerColorRYG(value, minV, maxV);
+        const radius = scaler.getRadius(value);
+        const color = scaler.getColorRYG(value);
 
         const circle = L.circleMarker(latLon, {
           pane: "24HrMarkerPane",
@@ -50,8 +49,6 @@ export function useRenderCircleMarkers(
           fillColor: color,
           fillOpacity: 0.5
         }).addTo(newLayer);
-
-        // circle.bringToBack();
       });
 
       newLayer.addTo(mapInstance);

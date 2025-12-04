@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import L from 'leaflet';
-import getMarkerColorRYG from '@/components/Map/utils/getMarkerColorRYG';
+import { MarkerScaler, ScalingMethod } from '@/components/Map/utils/MarkerScaler';
 
 export function useRenderDateRangeData(
   mapInstance: L.Map | null, 
@@ -23,9 +23,13 @@ export function useRenderDateRangeData(
       // Create new layer group for date range data
       const newLayer = L.layerGroup();
 
-      // Determine min and max values for color scaling
-      const minV = Math.min(...dateRangeData.map((d: any) => d.avg_daily_volume));
-      const maxV = Math.max(...dateRangeData.map((d: any) => d.avg_daily_volume));
+      // Create scaler for marker radius and color
+      const vals = dateRangeData.map((item: any[any]) => item['avg_daily_volume'] as number);
+      const SCALING_METHOD: ScalingMethod = 'linear';
+      const LOG_BASE = 1.07;
+      const MIN_RAD_PX = 5;
+      const MAX_RAD_PX = 35;
+      const scaler = new MarkerScaler(vals, SCALING_METHOD, LOG_BASE, MIN_RAD_PX, MAX_RAD_PX);
 
       // Render date range data circles
       dateRangeData.forEach((element: any) => {
@@ -36,10 +40,9 @@ export function useRenderDateRangeData(
         if (lonLat) {
           const [lon, lat] = lonLat;
           const latLon: [number, number] | L.LatLngExpression = [lat, lon];
-
           const value = element.avg_daily_volume;
-          const radius = Math.max(Math.pow(value, 0.5) / 1.5, 4);
-          const color = getMarkerColorRYG(value, minV, maxV);
+          const radius = scaler.getRadius(value); // div by 60 if using none scaling
+          const color = scaler.getColorRYG(value);
           
           const circle = L.circleMarker(latLon, {
             pane: "volumeMarkerPane",
@@ -48,15 +51,10 @@ export function useRenderDateRangeData(
             fillColor: color,
             fillOpacity: 0.5
           }).addTo(newLayer);
-
-          // circle.bringToBack();
         }
       });
-
       newLayer.addTo(mapInstance);
-
       newLayer.eachLayer((layer: any) => layer.bringToBack());
-
       // Store reference
       dataLayerRef.current = newLayer;
     }
