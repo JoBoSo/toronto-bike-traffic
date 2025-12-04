@@ -25,7 +25,7 @@ export function useRenderDateRangeData(
 
       // Create scaler for marker radius and color
       const vals = dateRangeData.map((item: any[any]) => item['avg_daily_volume'] as number);
-      const SCALING_METHOD: ScalingMethod = 'linear';
+      const SCALING_METHOD: ScalingMethod = 'none';
       const LOG_BASE = 1.07;
       const MIN_RAD_PX = 5;
       const MAX_RAD_PX = 35;
@@ -41,7 +41,7 @@ export function useRenderDateRangeData(
           const [lon, lat] = lonLat;
           const latLon: [number, number] | L.LatLngExpression = [lat, lon];
           const value = element.avg_daily_volume;
-          const radius = scaler.getRadius(value); // div by 60 if using none scaling
+          const radius = scaler.getRadius(value)/60; // div by 60 if using none scaling
           const color = scaler.getColorRYG(value);
           
           const circle = L.circleMarker(latLon, {
