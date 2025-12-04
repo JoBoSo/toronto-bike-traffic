@@ -1,11 +1,13 @@
 from etl_pipelines.bicycle_counters.client import BicycleCountersClient
 from modules.parquet_loader import ParquetLoader
+from modules.data_modeller import DataModeller
+from etl_pipelines.bicycle_counters.models import (DailyCount)
 import os
 import sqlite3
 import json
 import pandas as pd
 
-class BicycleCountersLoader(BicycleCountersClient, ParquetLoader):
+class BicycleCountersLoader(BicycleCountersClient, ParquetLoader, DataModeller):
 
     async def load_counter_locations_into_sqlite(self):
         # Ensure database directory exists
@@ -157,6 +159,12 @@ class BicycleCountersLoader(BicycleCountersClient, ParquetLoader):
             print(f"Inserted/Updated {len(rows)} daily bicycle count records.")
 
         return len(rows)
+    
+    async def counts_daily_to_parquet(self) -> None:        
+        results = await self.get_daily_counts()
+        raw_df = pd.DataFrame([r.__dict__ for r in results])
+        df = self.model_df(raw_df, DailyCount)
+        self.df_to_parquet(df, "./api/data/counts_daily.parquet", overwrite=True)
     
     async def load_15m_counts_into_sqlite(self) -> int:
         # 1. Ensure database directory exists

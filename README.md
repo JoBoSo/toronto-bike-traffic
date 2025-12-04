@@ -4,6 +4,11 @@
 Next.js App: https://toronto-bike-traffic.vercel.app
 Flask API: https://toronto-bike-traffic-backend.vercel.app/api/v1/hi
 
+## Data Sources
+City of Toronto Open Data API: 
+- https://open.toronto.ca/dataset/permanent-bicycle-counters/
+- https://open.toronto.ca/dataset/cycling-network/
+
 ## App Layout
 toronto-bike-traffic
 |--api/   <- flask API (backend)

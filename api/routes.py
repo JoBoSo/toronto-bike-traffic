@@ -12,6 +12,7 @@ load_dotenv(dotenv_path=dotenv_path)
 BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = Path(os.getenv("DATA_DIR", str(BASE_DIR / "data"))).resolve()
 COUNTS_15M_FILE = DATA_DIR / "counts_15m.parquet"
+COUNTS_DAILY_FILE = DATA_DIR / "counts_daily.parquet"
 DB_PATH = os.path.join(os.path.dirname(__file__), os.getenv('DB_PATH'))
 
 
@@ -62,38 +63,6 @@ def get_yearly_counts():
     """Endpoint to return data from the yearly count records."""
     return get_table('annual_bicycle_counts')
 
-@api_bp.route('/fifteen-min-counts-by-year-and-month')
-def get_fifteen_min_counts_by_year_and_month():
-    year = request.args.get('year')
-    month = request.args.get('month')
-
-    if not year or not month:
-        return jsonify({"error": "Missing year or month"}), 400
-    
-    query = """
-        SELECT * 
-        FROM fifteen_min_counts_by_year_and_month
-        WHERE year = ? AND month = ?
-    """
-    os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
-    with sqlite3.connect(DB_PATH) as conn:
-        cursor = conn.cursor()
-        cursor.execute(query, (year, month))
-        results = cursor.fetchall()
-
-    data = [
-        {
-            "location_dir_id": row[0],
-            "year": row[1],
-            "month": row[2],
-            "time": row[3],
-            "avg_vol": row[4]
-        }
-        for row in results
-    ]
-    
-    return jsonify(data)
-
 @api_bp.route('/fifteen-min-counts-for-date-range')
 def get_fifteen_min_counts_for_date_range():
     start_date = request.args.get('start')  # Format: YYYY-MM-DD
@@ -129,8 +98,6 @@ def get_fifteen_min_counts_for_date_range():
         .agg(avg_bin_volume=("bin_volume", "mean"))
     )
 
-    print(agg_df.head())
-
     return jsonify(agg_df.to_dict(orient="records")), 200
 
 @api_bp.route('/avg-daily-vol-for-date-range', methods=['GET'])
@@ -141,27 +108,29 @@ def get_avg_daily_vol_for_date_range():
     if not start_date or not end_date:
         return jsonify({"error": "Missing start or end date"}), 400
     
-    # Query your database
-    query = """
-        SELECT location_dir_id, SUM(daily_volume)/count(distinct dt) as avg_daily_volume
-        FROM daily_bicycle_counts
-        WHERE dt BETWEEN ? AND ?
-        GROUP BY location_dir_id
-    """
+    try:
+        start_dt = pd.to_datetime(start_date)
+        end_dt = pd.to_datetime(end_date)
+    except Exception:
+        return jsonify({"error": "Invalid date format. Use YYYY-MM-DD."}), 400
+    
+    df = pd.read_parquet(COUNTS_DAILY_FILE)
+    
+    mask = (df["dt"] >= start_dt) & (df["dt"] <= end_dt)
+    filtered_df = df.loc[mask]
 
-    os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
-    with sqlite3.connect(DB_PATH) as conn:
-        cursor = conn.cursor()
-        cursor.execute(query, (start_date, end_date))
-        results = cursor.fetchall()
+    if filtered_df.empty:
+        return jsonify([]), 200
     
-    # Convert to list of dicts
-    data = [
-        {
-            "location_dir_id": row[0],
-            "avg_daily_volume": row[1]
-        }
-        for row in results
-    ]
-    
-    return jsonify(data)
+    if start_dt < end_dt:
+        agg_df = (
+            filtered_df
+            .groupby(["location_dir_id"], as_index=False)
+            .agg(avg_daily_volume=("daily_volume", "mean"))
+        )
+        result_df = agg_df[["location_dir_id", "avg_daily_volume"]]
+    else:
+        result_df = filtered_df[["location_dir_id", "daily_volume"]].copy()
+        result_df.rename(columns={"daily_volume": "avg_daily_volume"}, inplace=True)
+
+    return jsonify(result_df.to_dict(orient="records")), 200
