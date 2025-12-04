@@ -1,4 +1,4 @@
-import { FlaskApi } from "@/lib/api/flaskApi";
+import { FlaskApi } from "@/src/api/flaskApi";
 import mergeCoordinates from "@/components/Map/utils/mergeCoordinates";
 import React from "react";
 
