@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import L from "leaflet";
 import { MarkerScaler, ScalingMethod } from '@/components/Map/utils/MarkerScaler';
 
-export function useRenderCircleMarkers(
+export function useMark24HrTraffic(
   mapInstance: L.Map | null, 
   currtwentyFourHrCycleData: any, 
   dataLayerRef: React.MutableRefObject<L.LayerGroup | null>,

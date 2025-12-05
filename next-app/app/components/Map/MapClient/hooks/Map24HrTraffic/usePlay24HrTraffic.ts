@@ -2,11 +2,11 @@
 
 import { useEffect, useState, useRef } from "react";
 import L from "leaflet";
-import { useUpdate24HrTrafficData } from "@/components/Map/MapClient/hooks/Map24HrTraffic/useUpdate24HrTrafficData"
-import { useRenderCircleMarkers } from "@/components/Map/MapClient/hooks/Map24HrTraffic/useRenderCircleMarkers"; 
-import { use24HrTrafficPlayer } from "@/components/Map/MapClient/hooks/Map24HrTraffic/use24HrTrafficPlayer";
+import { useGet24HrTraffic } from "@/components/Map/MapClient/hooks/Map24HrTraffic/useGet24HrTraffic"
+import { useMark24HrTraffic } from "@/components/Map/MapClient/hooks/Map24HrTraffic/useMark24HrTraffic"; 
+import { useControl24HrTrafficPlayer } from "@/components/Map/MapClient/hooks/Map24HrTraffic/useControl24HrTrafficPlayer";
 
-export function useMap24HrCycle(
+export function usePlay24HrTraffic(
   dateRange: [Date | null, Date | null],
   timeArray: string[],
   setTimeArray: React.Dispatch<React.SetStateAction<string[]>>,
@@ -22,10 +22,10 @@ export function useMap24HrCycle(
   setCurrentTime: React.Dispatch<React.SetStateAction<string>>,
 ) {
   // Fetch data when year/month changes; coordinates also get attached
-  const twentyFourHrCycleData = useUpdate24HrTrafficData(dateRange, counterLocationData);
+  const twentyFourHrCycleData = useGet24HrTraffic(dateRange, counterLocationData);
 
   // Play 24 hour traffic cycle
-  const currtwentyFourHrCycleData = use24HrTrafficPlayer(
+  const currtwentyFourHrCycleData = useControl24HrTrafficPlayer(
     timeIsPlaying,
     timeArray,
     setTimeArray,
@@ -39,6 +39,6 @@ export function useMap24HrCycle(
   )
 
   // Draw markers when data changes
-  useRenderCircleMarkers(mapInstance, currtwentyFourHrCycleData, dataLayerRef, currentTime);
+  useMark24HrTraffic(mapInstance, currtwentyFourHrCycleData, dataLayerRef, currentTime);
 
 }

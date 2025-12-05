@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export function use24HrTrafficPlayer(
+export function useControl24HrTrafficPlayer(
   timeIsPlaying: boolean,
   timeArray: string[],
   setTimeArray: React.Dispatch<React.SetStateAction<string[]>>,
@@ -11,7 +11,6 @@ export function use24HrTrafficPlayer(
   playIntervalRef: React.MutableRefObject<NodeJS.Timeout | null>,
   currentTime: string,
   setCurrentTime: React.Dispatch<React.SetStateAction<string>>,
-  // setCurr24HrCycleData: React.Dispatch<React.SetStateAction<null>>,
 ) { 
   const [currtwentyFourHrCycleData, setCurr24HrCycleData] = useState<any>(null);
 

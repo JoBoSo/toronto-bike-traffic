@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import { fetch24HourCycleData } from "@/components/Map/utils/fetch24HourCycleData";
 
 // Fetch data when year/month changes
-export function useUpdate24HrTrafficData(
+export function useGet24HrTraffic(
   dateRange: [Date | null, Date | null], 
   counterLocationData: any,
 ) {
