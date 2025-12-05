@@ -21,7 +21,7 @@ import { useDatePlayer } from "./hooks/MapDailyTraffic/useDatePlayer";
 import { useRenderCounterLocations } from "@/components/Map/MapClient/hooks/BaseLayers/useRenderCounterLocations";
 import { useRenderDateRangeData } from "@/components/Map/MapClient/hooks/MapDailyTraffic/useRenderDateRangeData";
 import { useFetchInitialDateData } from "@/components/Map/MapClient/hooks/MapDailyTraffic/useFetchInitialDateData";
-import { usePlay24HrTraffic } from "@/components/Map/MapClient/hooks/Map24HrTraffic/usePlay24HrTraffic";
+import { usePlay24HrTraffic } from "@/components/Map/MapClient/hooks/Play24HrTraffic/usePlay24HrTraffic";
 import useSetBaseMap from "@/components/Map/MapLayersControl/hooks/useSetBaseMap";
 import useToggleBaseMap from "@/components/Map/MapLayersControl/hooks/useToggleBaseMap";
 

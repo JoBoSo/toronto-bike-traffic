@@ -2,9 +2,9 @@
 
 import { useEffect, useState, useRef } from "react";
 import L from "leaflet";
-import { useGet24HrTraffic } from "@/components/Map/MapClient/hooks/Map24HrTraffic/useGet24HrTraffic"
-import { useMark24HrTraffic } from "@/components/Map/MapClient/hooks/Map24HrTraffic/useMark24HrTraffic"; 
-import { useControl24HrTrafficPlayer } from "@/components/Map/MapClient/hooks/Map24HrTraffic/useControl24HrTrafficPlayer";
+import { useGet24HrTraffic } from "@/components/Map/MapClient/hooks/Play24HrTraffic/useGet24HrTraffic"
+import { useMark24HrTraffic } from "@/components/Map/MapClient/hooks/Play24HrTraffic/useMark24HrTraffic"; 
+import { useControl24HrTrafficPlayer } from "@/components/Map/MapClient/hooks/Play24HrTraffic/useControl24HrTrafficPlayer";
 
 export function usePlay24HrTraffic(
   dateRange: [Date | null, Date | null],
