@@ -63,6 +63,39 @@ def get_yearly_counts():
     """Endpoint to return data from the yearly count records."""
     return get_table('annual_bicycle_counts')
 
+@api_bp.route('/daily-counts-in-date-range')
+def get_daily_counts_in_date_range():
+    start_date = request.args.get('start')  # Format: YYYY-MM-DD
+    end_date = request.args.get('end')      # Format: YYYY-MM-DD
+
+    if not start_date or not end_date:
+        return jsonify({"error": "Missing start or end date"}), 400
+    
+    try:
+        start_dt = pd.to_datetime(start_date)
+        end_dt = pd.to_datetime(end_date)
+    except Exception:
+        return jsonify({"error": "Invalid date format. Use YYYY-MM-DD."}), 400
+    
+    df = pd.read_parquet(COUNTS_DAILY_FILE)
+    df = df.set_index('dt')
+    df = df.sort_index()
+    
+    # mask = (df["dt"] >= start_dt) & (df["dt"] <= end_dt)
+    filtered_df = df.loc[start_dt:end_dt]
+    filtered_df = filtered_df.reset_index(names=['dt'])
+
+    if filtered_df.empty:
+        return jsonify([]), 200
+    
+    result_df = filtered_df[["dt", "location_dir_id", "daily_volume"]].copy()
+    result_df['dt'] = result_df['dt'].dt.strftime('%a, %d %b %Y %H:%M:%S GMT')
+    grouped_data = result_df.groupby('dt').apply(
+        lambda x: x[['daily_volume', 'location_dir_id']].to_dict(orient='records')
+    ).to_dict()
+
+    return jsonify(grouped_data), 200
+
 @api_bp.route('/fifteen-min-counts-for-date-range')
 def get_fifteen_min_counts_for_date_range():
     start_date = request.args.get('start')  # Format: YYYY-MM-DD
