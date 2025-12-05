@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-export function useUpdateDateArray(
+export function useGetDateArray(
   dateRange: [Date | null, Date | null], 
   setDateArray: React.Dispatch<React.SetStateAction<Date[]>>, 
   setCurrentDateIndex: React.Dispatch<React.SetStateAction<number>>,

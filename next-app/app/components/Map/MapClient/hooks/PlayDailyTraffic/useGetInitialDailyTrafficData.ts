@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import L from "leaflet";
 import { fetchDataByDateRange } from "@/components/Map/utils/fetchDataByDateRange";
 
-export function useFetchInitialDateData(
+export function useGetInitialDailyTrafficData(
   mapInstance: L.Map | null,
   dateRange: [Date | null, Date | null],
   setDateRangeData: React.Dispatch<React.SetStateAction<any>>

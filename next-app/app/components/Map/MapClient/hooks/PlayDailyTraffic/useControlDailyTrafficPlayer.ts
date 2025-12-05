@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { fetchDataByDateRange } from "@/components/Map/utils/fetchDataByDateRange";
 
-export function useDatePlayer(
+export function useControlDailyTrafficPlayer(
   isPlaying: boolean,
   currentDateIndex: number,
   dateArray: Date[],

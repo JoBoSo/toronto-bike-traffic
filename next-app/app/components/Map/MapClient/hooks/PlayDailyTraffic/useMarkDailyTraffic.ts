@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import L from 'leaflet';
 import { MarkerScaler, ScalingMethod } from '@/components/Map/utils/MarkerScaler';
 
-export function useRenderDateRangeData(
+export function useMarkDailyTraffic(
   mapInstance: L.Map | null, 
   dateRangeData: any, 
   data: any, 
