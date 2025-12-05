@@ -2,6 +2,7 @@
 
 ## Links
 Next.js App: https://toronto-bike-traffic.vercel.app
+
 Flask API: https://toronto-bike-traffic-backend.vercel.app/api/v1/hi
 
 ## Data Sources
@@ -10,12 +11,12 @@ City of Toronto Open Data API:
 - https://open.toronto.ca/dataset/cycling-network/
 
 ## App Layout
-toronto-bike-traffic
-|--api/   <- flask API (backend)
-|--app/   <- Next.js app (frontend)
+toronto-bike-traffic \
+|-- api/   <- flask API (backend) \
+|-- next-app/   <- Next.js app (frontend) 
 
 ## Running The App Locally
-1. Start Flask server: 
+1. Start Flask dev server: 
    1. `cd api`
    2. `python -m app_local`
 2. Start Next.js dev server:
