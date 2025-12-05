@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useMapContext } from "@/components/Map/contexts/MapContext";
 import { usePageContentContext } from "@/src/contexts/PageContentContext";
-import { fetchDataByDateRange } from "@/components/Map/utils/fetchDataByDateRange";
+import { fetchDailyCountsInDateRange } from "@/components/Map/utils/fetchDailyCountsInDateRange";
 import styles from "@/components/Sidebar/Sidebar.module.scss";
 import DateRangePicker from "@/components/Map/DateRangePicker/DateRangePicker";
 import PlaybackControl from "@/components/Map/PlaybackControl/PlaybackControl";
@@ -69,7 +69,7 @@ export default function Sidebar() {
             setDateRange(update);
             setIsPlaying(false);
             setTimeIsPlaying(false);
-            if (update[0] && update[1]) fetchDataByDateRange(update[0], update[1], setDateRangeData);
+            if (update[0] && update[1]) fetchDailyCountsInDateRange(update[0], update[1], setDateRangeData);
           }}
         />
 
@@ -96,7 +96,7 @@ export default function Sidebar() {
           onRefresh={() => {
             setCurrentDateIndex(0);
             setIsPlaying(false);
-            if (dateRange[0] && dateRange[1]) fetchDataByDateRange(dateRange[0], dateRange[1], setDateRangeData);
+            if (dateRange[0] && dateRange[1]) fetchDailyCountsInDateRange(dateRange[0], dateRange[1], setDateRangeData);
           }}
           infoLines={[
             `Day ${currentDateIndex + 1} of ${dateArray.length}`,

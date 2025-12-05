@@ -10,17 +10,15 @@ import "leaflet/dist/leaflet.css";
 import { usePageContentContext } from "@/src/contexts/PageContentContext";
 import { useMapContext } from "@/components/Map/contexts/MapContext";
 
-// Utils
-import { generateDateRange } from "@/components/Map/utils/generateDateRange";
-
 // Hooks
 import { useInitializeMap } from "@/components/Map/MapClient/hooks/BaseLayers/useInitializeMap";
-import { useGetDateArray } from "@/components/Map/MapClient/hooks/PlayDailyTraffic/useGetDateArray";
+import { useInitDateArray } from "@/components/Map/MapClient/hooks/PlayDailyTraffic/useInitDateArray";
 import { useRenderCyclingNetwork } from "@/components/Map/MapClient/hooks/BaseLayers/useRenderCyclingNetwork";
 import { useControlDailyTrafficPlayer } from "./hooks/PlayDailyTraffic/useControlDailyTrafficPlayer";
+import { useSetCurrDayData } from "./hooks/PlayDailyTraffic/useSetCurrDayData";
 import { useRenderCounterLocations } from "@/components/Map/MapClient/hooks/BaseLayers/useRenderCounterLocations";
 import { useMarkDailyTraffic } from "@/components/Map/MapClient/hooks/PlayDailyTraffic/useMarkDailyTraffic";
-import { useGetInitialDailyTrafficData } from "@/components/Map/MapClient/hooks/PlayDailyTraffic/useGetInitialDailyTrafficData";
+import { useGetDailyTrafficData } from "@/components/Map/MapClient/hooks/PlayDailyTraffic/useGetDailyTrafficData";
 import { usePlay24HrTraffic } from "@/components/Map/MapClient/hooks/Play24HrTraffic/usePlay24HrTraffic";
 import useSetBaseMap from "@/components/Map/MapLayersControl/hooks/useSetBaseMap";
 import useToggleBaseMap from "@/components/Map/MapLayersControl/hooks/useToggleBaseMap";
@@ -80,12 +78,13 @@ export default function MapClient() {
 
   //// Daily Traffic Player
   useControlDailyTrafficPlayer(
-    isPlaying, currentDateIndex, dateArray, setDateRangeData,
+    isPlaying, currentDateIndex, dateArray,
     setCurrentDateIndex, setIsPlaying, playIntervalRef
   );
-  useGetInitialDailyTrafficData(mapInstance, dateRange, setDateRangeData);
-  useMarkDailyTraffic(mapInstance, dateRangeData, counterLocations, dataLayerRef);
-  useGetDateArray(dateRange, setDateArray, setCurrentDateIndex, generateDateRange);
+  useGetDailyTrafficData(mapInstance, dateRange, setDateRangeData);
+  const currDateData = useSetCurrDayData(dateRangeData, currentDateIndex);
+  useMarkDailyTraffic(mapInstance, currDateData, counterLocations, dataLayerRef);
+  useInitDateArray(dateRange, setDateArray, setCurrentDateIndex);
 
   //// Base Map Toggle
   useSetBaseMap(mapInstance, digitalLayerRef, satelliteLayerRef);

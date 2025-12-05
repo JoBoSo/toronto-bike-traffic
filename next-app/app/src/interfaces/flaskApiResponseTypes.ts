@@ -6,3 +6,12 @@ export interface LocationAverage {
 export interface FifteenMinCountsResponse {
   [timeBin: string]: LocationAverage[];
 }
+
+export interface DailyLocationVolume {
+    daily_volume: number; 
+    location_dir_id: string;
+}
+
+export interface DailyCountsResponse {
+    [dateString: string]: DailyLocationVolume[];
+}

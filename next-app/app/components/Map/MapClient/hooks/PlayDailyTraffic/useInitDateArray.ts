@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
+import { generateDateRange } from "@/components/Map/utils/generateDateRange";
 
-export function useGetDateArray(
+export function useInitDateArray(
   dateRange: [Date | null, Date | null], 
   setDateArray: React.Dispatch<React.SetStateAction<Date[]>>, 
   setCurrentDateIndex: React.Dispatch<React.SetStateAction<number>>,
-  generateDateRange: (start: Date, end: Date) => Date[]
 ) {
   // Update date array when date range changes
   useEffect(() => {
