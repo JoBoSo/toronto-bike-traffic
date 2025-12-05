@@ -81,7 +81,6 @@ def get_daily_counts_in_date_range():
     df = df.set_index('dt')
     df = df.sort_index()
     
-    # mask = (df["dt"] >= start_dt) & (df["dt"] <= end_dt)
     filtered_df = df.loc[start_dt:end_dt]
     filtered_df = filtered_df.reset_index(names=['dt'])
 
@@ -96,8 +95,8 @@ def get_daily_counts_in_date_range():
 
     return jsonify(grouped_data), 200
 
-@api_bp.route('/fifteen-min-counts-for-date-range')
-def get_fifteen_min_counts_for_date_range():
+@api_bp.route('/fifteen-min-counts-in-date-range')
+def get_fifteen_min_counts_in_date_range():
     start_date = request.args.get('start')  # Format: YYYY-MM-DD
     end_date = request.args.get('end')      # Format: YYYY-MM-DD
 
@@ -111,14 +110,11 @@ def get_fifteen_min_counts_for_date_range():
         return jsonify({"error": "Invalid date format. Use YYYY-MM-DD."}), 400
     
     df = pd.read_parquet(COUNTS_15M_FILE)
-
-    df["datetime_bin"] = pd.to_datetime(df["datetime_bin"])
-    df["record_id"] = df["record_id"].astype(int)
-    df["location_dir_id"] = df["location_dir_id"].astype(str)
-    df["bin_volume"] = df["bin_volume"].astype(int)
+    df = df.set_index('datetime_bin')
+    df = df.sort_index()
     
-    mask = (df["datetime_bin"] >= start_dt) & (df["datetime_bin"] <= end_dt)
-    filtered_df = df.loc[mask]
+    filtered_df = df.loc[start_dt:end_dt]
+    filtered_df = filtered_df.reset_index(names=['datetime_bin'])
 
     if filtered_df.empty:
         return jsonify([]), 200
@@ -131,7 +127,11 @@ def get_fifteen_min_counts_for_date_range():
         .agg(avg_bin_volume=("bin_volume", "mean"))
     )
 
-    return jsonify(agg_df.to_dict(orient="records")), 200
+    grouped_data = agg_df.groupby('time_bin').apply(
+        lambda x: x[['location_dir_id', 'avg_bin_volume']].to_dict(orient='records')
+    ).to_dict()
+
+    return jsonify(grouped_data), 200
 
 @api_bp.route('/avg-daily-vol-for-date-range', methods=['GET'])
 def get_avg_daily_vol_for_date_range():

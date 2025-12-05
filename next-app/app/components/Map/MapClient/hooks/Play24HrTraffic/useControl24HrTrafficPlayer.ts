@@ -23,9 +23,7 @@ export function useControl24HrTrafficPlayer(
 
     if (timeIsPlaying && timeArray.length > 0 && twentyFourHrCycleData) {
       const time = timeArray[currentTimeIndex];
-      const currData = twentyFourHrCycleData.filter(
-        (item: any) => item.time_bin === time
-      );
+      const currData = twentyFourHrCycleData[time] || [];
 
       setCurr24HrCycleData(currData);
       setCurrentTime(time);

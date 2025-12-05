@@ -12,7 +12,7 @@ export async function fetch24HourCycleData(
     const start = dateRange[0].toISOString().split('T')[0];
     const end = dateRange[1].toISOString().split('T')[0];
     const flaskApi = new FlaskApi();
-    const data = await flaskApi.get15MinCountsForDateRange(start, end);
+    const data = await flaskApi.get15MinCountsInDateRange(start, end);
     const dataWithCoords = mergeCoordinates(counterLocationData, data);
     console.log("fetching 24 hour data")
     // console.log(dataWithCoords);
