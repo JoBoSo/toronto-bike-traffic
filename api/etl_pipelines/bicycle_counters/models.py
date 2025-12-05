@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 from typing import List, Optional
 from datetime import date, datetime
+import pandas as pd
 
 @dataclass
 class Geometry:
@@ -37,7 +38,7 @@ class DailyCount:
     direction: str
     linear_name_full: str
     side_street: str
-    dt: date
+    dt: pd.Timestamp
     daily_volume: int
 
 @dataclass

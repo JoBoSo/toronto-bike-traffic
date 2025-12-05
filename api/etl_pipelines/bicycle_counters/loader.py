@@ -164,7 +164,7 @@ class BicycleCountersLoader(BicycleCountersClient, ParquetLoader, DataModeller):
         results = await self.get_daily_counts()
         raw_df = pd.DataFrame([r.__dict__ for r in results])
         df = self.model_df(raw_df, DailyCount)
-        self.df_to_parquet(df, "./api/data/counts_daily.parquet", overwrite=True)
+        self.df_to_parquet(df, "./data/counts_daily.parquet", overwrite=True)
     
     async def load_15m_counts_into_sqlite(self) -> int:
         # 1. Ensure database directory exists
