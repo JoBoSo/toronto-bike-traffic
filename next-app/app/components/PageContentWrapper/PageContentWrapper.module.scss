@@ -1,0 +1,19 @@
+.mainContainer {
+    display: flex;
+    height: 100vh; 
+    width: 100%;
+    overflow: hidden;
+}
+
+.contentColumn {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Takes up the remaining horizontal space */
+}
+
+.mapArea {
+    /* Takes up the remaining vertical space below the header */
+    flex-grow: 1; 
+    height: 100%;
+    width: 100%;
+}

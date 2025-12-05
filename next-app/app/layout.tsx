@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import styles from "@/layout.module.scss"
 import { MapProvider } from "@/components/Map/contexts/MapContext";
-import Header from "@/components/Header/Header";
-import Sidebar from "@/components/Sidebar/Sidebar";
 import "@/globals.css";
 
 export const metadata: Metadata = {
@@ -15,14 +13,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <div className={styles.appContainer}>
-          
           <div className={styles.mainContent}>
             <MapProvider>
-            <Sidebar />
-            <div className={styles.contentArea}>
-              <Header />
-              {children}
-            </div>
+              <div className={styles.contentArea}>
+                {children}
+              </div>
             </MapProvider>
           </div>
         </div>

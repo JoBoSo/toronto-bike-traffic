@@ -7,6 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "leaflet/dist/leaflet.css";
 
 // Contexts
+import { usePageContentContext } from "@/src/contexts/PageContentContext";
 import { useMapContext } from "@/components/Map/contexts/MapContext";
 
 // Utils
@@ -27,17 +28,9 @@ import useToggleBaseMap from "@/components/Map/MapLayersControl/hooks/useToggleB
 // Components
 import MapLayersControl from "@/components/Map/MapLayersControl/MapLayersControl";
 
-interface MapClientProps {
-  data: any;
-}
-
-export default function MapClient({ data }: MapClientProps) {
-
-  // Preloaded data
-  const counterLocationData = data[0];
-  const cyclingNetworkData = data[1];
-
+export default function MapClient() {
   // Contexts
+  const { counterLocations, cyclingNetwork, isLoading } = usePageContentContext();
   const {
     dateRange,
     dateRangeData,
@@ -75,12 +68,12 @@ export default function MapClient({ data }: MapClientProps) {
 
   //// Base Layers
   useInitializeMap(mapRef, mapInstance, setMapInstance);
-  useRenderCyclingNetwork(mapInstance, cyclingNetworkData);
-  useRenderCounterLocations(mapInstance, counterLocationData);
+  useRenderCyclingNetwork(mapInstance, cyclingNetwork);
+  useRenderCounterLocations(mapInstance, counterLocations);
 
   //// 24 Hour Traffic Player
   useMap24HrCycle(
-    dateRange, timeArray, setTimeArray, counterLocationData, mapInstance, dataLayerRef, 
+    dateRange, timeArray, setTimeArray, counterLocations, mapInstance, dataLayerRef, 
     timeIsPlaying, currentTimeIndex, setCurrentTimeIndex, setTimeIsPlaying,
     playIntervalRef, currentTime, setCurrentTime
   );
@@ -91,7 +84,7 @@ export default function MapClient({ data }: MapClientProps) {
     setCurrentDateIndex, setIsPlaying, playIntervalRef
   );
   useFetchInitialDateData(mapInstance, dateRange, setDateRangeData);
-  useRenderDateRangeData(mapInstance, dateRangeData, counterLocationData, dataLayerRef);
+  useRenderDateRangeData(mapInstance, dateRangeData, counterLocations, dataLayerRef);
   useUpdateDateArray(dateRange, setDateArray, setCurrentDateIndex, generateDateRange);
 
   //// Base Map Toggle
@@ -99,12 +92,12 @@ export default function MapClient({ data }: MapClientProps) {
   useToggleBaseMap(mapInstance, digitalLayerRef, satelliteLayerRef, isSatellite);
 
   return (
-    <div className={styles["map-client-container"]}>
-      {/* Map Layers Control */}
-      <MapLayersControl isSatellite={isSatellite} setIsSatellite={setIsSatellite} />
+      <div className={styles["map-client-container"]}>
+        {/* Map Layers Control */}
+        <MapLayersControl isSatellite={isSatellite} setIsSatellite={setIsSatellite} />
 
-      {/* Map Container */}
-      <div id="map" ref={mapRef} style={{ width: "100%", height: "100%" }} />
-    </div>
+        {/* Map Container */}
+        <div id="map" ref={mapRef} style={{ width: "100%", height: "100%" }} />
+      </div>
   );
 }

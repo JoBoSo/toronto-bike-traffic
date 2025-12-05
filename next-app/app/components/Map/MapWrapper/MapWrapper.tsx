@@ -12,10 +12,10 @@ const MapClient = dynamic(() => import("../MapClient/MapClient"), {
   )
 });
 
-export default function MapWrapper({ data }: { data: any }) {
+export default function MapWrapper() {
   return (
     <div className={styles.mapWrapper}>
-      <MapClient data={data} />
+      <MapClient />
     </div>
   );
 }
