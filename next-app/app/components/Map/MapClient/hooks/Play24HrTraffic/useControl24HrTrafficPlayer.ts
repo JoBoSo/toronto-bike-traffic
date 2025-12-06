@@ -13,10 +13,6 @@ export function useControl24HrTrafficPlayer(
 ) { 
   // Playback logic
   useEffect(() => {
-    if (!timeArray.length) {
-      const intervals = generate15MinIntervals();
-      setTimeArray(intervals);
-    }
 
     if (timeIsPlaying && timeArray.length > 0 && hr24TrafficData) {
 
@@ -37,5 +33,5 @@ export function useControl24HrTrafficPlayer(
     return () => {
       if (playIntervalRef.current) clearInterval(playIntervalRef.current);
     };
-  }, [timeIsPlaying, currentTimeIndex, hr24TrafficData, timeArray]);
+  }, [timeIsPlaying, hr24TrafficData, timeArray, setTimeIsPlaying, setCurrentTimeIndex]);
 }

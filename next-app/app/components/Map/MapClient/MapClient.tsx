@@ -15,6 +15,7 @@ import { useInitializeMap } from "@/components/Map/MapClient/hooks/BaseLayers/us
 import { useRenderCounterLocations } from "@/components/Map/MapClient/hooks/BaseLayers/useRenderCounterLocations";
 import { useRenderCyclingNetwork } from "@/components/Map/MapClient/hooks/BaseLayers/useRenderCyclingNetwork";
 import { useControl24HrTrafficPlayer } from "@/components/Map/MapClient/hooks/Play24HrTraffic/useControl24HrTrafficPlayer";
+import { useInitTimeArray } from "@/components/Map/MapClient/hooks/Play24HrTraffic/useInitTimeArray"
 import { useGet24HrTraffic } from "@/components/Map/MapClient/hooks/Play24HrTraffic/useGet24HrTraffic"
 import { useMark24HrTraffic } from "@/components/Map/MapClient/hooks/Play24HrTraffic/useMark24HrTraffic"; 
 import { useSetCurr24HrTrafficData } from "@/components/Map/MapClient/hooks/Play24HrTraffic/useSetCurr24HrTrafficData"; 
@@ -25,9 +26,6 @@ import useSetBaseMap from "@/components/Map/MapLayersControl/hooks/useSetBaseMap
 import useToggleBaseMap from "@/components/Map/MapLayersControl/hooks/useToggleBaseMap";
 import { useControlDailyTrafficPlayer } from "./hooks/PlayDailyTraffic/useControlDailyTrafficPlayer";
 import { useSetCurrDayData } from "./hooks/PlayDailyTraffic/useSetCurrDayData";
-
-// utils
-import generate15MinIntervals from "@/components/Map/utils/generate15MinIntervals"
 
 // Components
 import MapLayersControl from "@/components/Map/MapLayersControl/MapLayersControl";
@@ -79,6 +77,7 @@ export default function MapClient() {
 
   //// 24 Hour Traffic Player
   useGet24HrTraffic(dateRange, counterLocations, setHr24TrafficData);
+  useInitTimeArray(timeArray, setTimeArray);
   const currHr24CycleData = useSetCurr24HrTrafficData(
     timeArray, currentTimeIndex, hr24TrafficData, setCurrentTime
   );
