@@ -18,7 +18,8 @@ toronto-bike-traffic \
 ## Running The App Locally
 1. Start Flask dev server: 
    1. `cd api`
-   2. `python -m app_local`
+   2. `.venv\Scripts\activate`
+   3. `python -m app_local`
 2. Start Next.js dev server:
    1. `cd app`
    2. `npm run dev`
