@@ -17,6 +17,7 @@ import { useRenderCyclingNetwork } from "@/components/Map/MapClient/hooks/BaseLa
 import { useControl24HrTrafficPlayer } from "@/components/Map/MapClient/hooks/Play24HrTraffic/useControl24HrTrafficPlayer";
 import { useGet24HrTraffic } from "@/components/Map/MapClient/hooks/Play24HrTraffic/useGet24HrTraffic"
 import { useMark24HrTraffic } from "@/components/Map/MapClient/hooks/Play24HrTraffic/useMark24HrTraffic"; 
+import { useSetCurr24HrTrafficData } from "@/components/Map/MapClient/hooks/Play24HrTraffic/useSetCurr24HrTrafficData"; 
 import { useGetDailyTrafficData } from "@/components/Map/MapClient/hooks/PlayDailyTraffic/useGetDailyTrafficData";
 import { useInitDateArray } from "@/components/Map/MapClient/hooks/PlayDailyTraffic/useInitDateArray";
 import { useMarkDailyTraffic } from "@/components/Map/MapClient/hooks/PlayDailyTraffic/useMarkDailyTraffic";
@@ -24,6 +25,9 @@ import useSetBaseMap from "@/components/Map/MapLayersControl/hooks/useSetBaseMap
 import useToggleBaseMap from "@/components/Map/MapLayersControl/hooks/useToggleBaseMap";
 import { useControlDailyTrafficPlayer } from "./hooks/PlayDailyTraffic/useControlDailyTrafficPlayer";
 import { useSetCurrDayData } from "./hooks/PlayDailyTraffic/useSetCurrDayData";
+
+// utils
+import generate15MinIntervals from "@/components/Map/utils/generate15MinIntervals"
 
 // Components
 import MapLayersControl from "@/components/Map/MapLayersControl/MapLayersControl";
@@ -75,7 +79,10 @@ export default function MapClient() {
 
   //// 24 Hour Traffic Player
   useGet24HrTraffic(dateRange, counterLocations, setHr24TrafficData);
-  const currtwentyFourHrCycleData = useControl24HrTrafficPlayer(
+  const currHr24CycleData = useSetCurr24HrTrafficData(
+    timeArray, currentTimeIndex, hr24TrafficData, setCurrentTime
+  );
+  useControl24HrTrafficPlayer(
     timeIsPlaying,
     setTimeIsPlaying,
     timeArray,
@@ -83,11 +90,9 @@ export default function MapClient() {
     currentTimeIndex,
     setCurrentTimeIndex,
     hr24TrafficData,
-    playIntervalRef,
-    currentTime,
-    setCurrentTime,
+    playIntervalRef
   )
-  useMark24HrTraffic(mapInstance, currtwentyFourHrCycleData, dataLayerRef, currentTime);
+  useMark24HrTraffic(mapInstance, currHr24CycleData, dataLayerRef, currentTime);
 
   //// Daily Traffic Player
   useControlDailyTrafficPlayer(

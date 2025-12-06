@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import generate15MinIntervals from "@/components/Map/utils/generate15MinIntervals"
 
 export function useControl24HrTrafficPlayer(
   timeIsPlaying: boolean,
@@ -7,13 +8,9 @@ export function useControl24HrTrafficPlayer(
   setTimeArray: React.Dispatch<React.SetStateAction<string[]>>,
   currentTimeIndex: number,
   setCurrentTimeIndex: React.Dispatch<React.SetStateAction<number>>,
-  twentyFourHrCycleData: any,
+  hr24TrafficData: any,
   playIntervalRef: React.MutableRefObject<NodeJS.Timeout | null>,
-  currentTime: string,
-  setCurrentTime: React.Dispatch<React.SetStateAction<string>>,
 ) { 
-  const [currtwentyFourHrCycleData, setCurr24HrCycleData] = useState<any>(null);
-
   // Playback logic
   useEffect(() => {
     if (!timeArray.length) {
@@ -21,13 +18,7 @@ export function useControl24HrTrafficPlayer(
       setTimeArray(intervals);
     }
 
-    if (timeIsPlaying && timeArray.length > 0 && twentyFourHrCycleData) {
-      const time = timeArray[currentTimeIndex];
-      const currData = twentyFourHrCycleData[time] || [];
-
-      setCurr24HrCycleData(currData);
-      setCurrentTime(time);
-      console.log(time, currData[0]);
+    if (timeIsPlaying && timeArray.length > 0 && hr24TrafficData) {
 
       playIntervalRef.current = setInterval(() => {
         setCurrentTimeIndex((prev) => {
@@ -46,23 +37,5 @@ export function useControl24HrTrafficPlayer(
     return () => {
       if (playIntervalRef.current) clearInterval(playIntervalRef.current);
     };
-  }, [timeIsPlaying, currentTimeIndex, twentyFourHrCycleData, timeArray]);
-
-
-  return currtwentyFourHrCycleData;
-}
-
-
-function generate15MinIntervals(): string[] {
-  const intervals: string[] = [];
-
-  for (let h = 0; h < 24; h++) {
-    for (let m = 0; m < 60; m += 15) {
-      const hour = h.toString().padStart(2, "0");
-      const minute = m.toString().padStart(2, "0");
-      intervals.push(`${hour}:${minute}:00`);
-    }
-  }
-
-  return intervals;
+  }, [timeIsPlaying, currentTimeIndex, hr24TrafficData, timeArray]);
 }
