@@ -1,11 +1,11 @@
 .map-layers-button {
   position: absolute;
-  bottom: 20px;
-  right: 20px;
+  bottom: 10px;
+  right: 10px;
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: white;
+  background: rgb(40, 40, 40);
   border: none;
   cursor: pointer;
   display: flex;
@@ -26,8 +26,8 @@
 
 .map-layers-panel {
   position: absolute;
-  bottom: 80px;
-  right: 20px;
+  bottom: 70px;
+  right: 10px;
   width: 180px;
   background: white;
   border-radius: 10px;

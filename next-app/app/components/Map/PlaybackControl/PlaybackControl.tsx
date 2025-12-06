@@ -19,14 +19,18 @@ const PlaybackControl: React.FC<PlaybackControlProps> = ({
   return (
     <div className={styles.wrapper}>
       <div className={styles.buttonRow}>
-        <button onClick={onTogglePlay} className={styles.button}>
-          {isPlaying ? "⏸ Pause" : "▶ Play"}
-        </button>
+        <div className={styles.button}>
+          <button onClick={onTogglePlay} className={`${styles.playPauseButton}`}>
+            {isPlaying ? "⏸" : "▶"}
+          </button>
+        </div>
 
         {onRefresh && (
-          <button onClick={onRefresh} className={styles.button}>
-            ⟲
-          </button>
+          <div className={styles.button}>
+            <button onClick={onRefresh} className={styles.refreshButton}>
+              ⟲
+            </button>
+          </div>
         )}
       </div>
 

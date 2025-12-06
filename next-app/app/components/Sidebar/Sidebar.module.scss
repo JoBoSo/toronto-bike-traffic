@@ -1,6 +1,6 @@
 .sidebar {
-  width: 250px;
-  background-color: #1e1e1e;
+  width: 230px;
+  background-color: rgb(40, 40, 40);
   // transition: width 0.3s ease;
   position: relative;
   display: flex;
@@ -22,10 +22,17 @@
   color: white;
   display: flex;
   flex-direction: column;
-}
 
-.content > div {
-  margin-bottom: 20px; /* space between sections (period, daily player, hourly player) */
+  .section {
+    background-color: rgb(65, 65, 65);
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  .sectionHeader {
+    margin-bottom: 5px;
+  }
 }
 
 .toggle {

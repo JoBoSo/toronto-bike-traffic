@@ -68,47 +68,53 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
       <div className={styles.content}>
 
         {/* Date range selector */}
-        <div><p>Period</p></div>
-        <DateRangePicker
-          dateRange={dateRange}
-          onChange={(update) => {
-            setDateRange(update);
-            setIsPlaying(false);
-            setTimeIsPlaying(false);
-            if (update[0] && update[1]) fetchDailyCountsInDateRange(update[0], update[1], setDateRangeData);
-          }}
-        />
+        <div className={styles.section}>
+          <p className={styles.sectionHeader}>Period</p>
+          <DateRangePicker
+            dateRange={dateRange}
+            onChange={(update) => {
+              setDateRange(update);
+              setIsPlaying(false);
+              setTimeIsPlaying(false);
+              if (update[0] && update[1]) fetchDailyCountsInDateRange(update[0], update[1], setDateRangeData);
+            }}
+          />
+        </div>
 
         {/* Play avg traffic in 15 min increments across 24 hours */}
-        <div><p>Play 24hr traffic</p></div>
-        <PlaybackControl
-          isPlaying={timeIsPlaying}
-          onTogglePlay={toggleHourlyPlayer}
-          onRefresh={() => {
-            setTimeIsPlaying(false);
-            setCurrentTimeIndex(0);
-            if (dateRange[0] && dateRange[1]) fetch24HourCycleData(dateRange, counterLocations, setHr24TrafficData);
-          }}
-          infoLines={[
-            `Time of day ${timeArray[currentTimeIndex]??currentTime}`,
-          ]}
-        />
+        <div className={styles.section}>
+          <p className={styles.sectionHeader}>Play 24hr traffic</p>
+          <PlaybackControl
+            isPlaying={timeIsPlaying}
+            onTogglePlay={toggleHourlyPlayer}
+            onRefresh={() => {
+              setTimeIsPlaying(false);
+              setCurrentTimeIndex(0);
+              if (dateRange[0] && dateRange[1]) fetch24HourCycleData(dateRange, counterLocations, setHr24TrafficData);
+            }}
+            infoLines={[
+              `Time of day ${timeArray[currentTimeIndex]??currentTime}`,
+            ]}
+          />
+        </div>
 
         {/* Date Range Play/Pause */}
-        <div><p>Play daily traffic</p></div>
-        <PlaybackControl
-          isPlaying={isPlaying}
-          onTogglePlay={toggleDailyPlayer}
-          onRefresh={() => {
-            setCurrentDateIndex(0);
-            setIsPlaying(false);
-            if (dateRange[0] && dateRange[1]) fetchDailyCountsInDateRange(dateRange[0], dateRange[1], setDateRangeData);
-          }}
-          infoLines={[
-            `Day ${currentDateIndex + 1} of ${dateArray.length}`,
-            dateArray[currentDateIndex]?.toISOString().split("T")[0] ?? "",
-          ]}
-        />
+        <div className={styles.section}>
+          <p className={styles.sectionHeader}>Play daily traffic</p>
+          <PlaybackControl
+            isPlaying={isPlaying}
+            onTogglePlay={toggleDailyPlayer}
+            onRefresh={() => {
+              setCurrentDateIndex(0);
+              setIsPlaying(false);
+              if (dateRange[0] && dateRange[1]) fetchDailyCountsInDateRange(dateRange[0], dateRange[1], setDateRangeData);
+            }}
+            infoLines={[
+              `Day ${currentDateIndex + 1} of ${dateArray.length}`,
+              dateArray[currentDateIndex]?.toISOString().split("T")[0] ?? "",
+            ]}
+          />
+        </div>
         
       </div>
     </div>

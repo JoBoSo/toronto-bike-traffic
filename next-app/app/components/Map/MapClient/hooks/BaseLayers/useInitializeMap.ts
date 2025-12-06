@@ -14,7 +14,8 @@ export function useInitializeMap(
         center: [43.664, -79.38], // [vert dec up/inc down, horiz dec ]
         zoom: 12.3,
         zoomSnap: 0,
-        wheelPxPerZoomLevel: 5
+        wheelPxPerZoomLevel: 5,
+        attributionControl: false,
       });
 
       map.createPane("labelsPane");
