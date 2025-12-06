@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useMapContext } from "@/components/Map/contexts/MapContext";
+import { useMapContext } from "@/src/contexts/MapContext";
 import { usePageContentContext } from "@/src/contexts/PageContentContext";
 import { fetchDailyCountsInDateRange } from "@/components/Map/utils/fetchDailyCountsInDateRange";
 import styles from "@/components/Sidebar/Sidebar.module.scss";
@@ -19,6 +19,7 @@ export default function Sidebar() {
     setDateRangeData, 
     isPlaying,
     setIsPlaying,
+    setHr24TrafficData,
     timeIsPlaying,
     timeArray,
     setTimeIsPlaying,
@@ -81,7 +82,7 @@ export default function Sidebar() {
           onRefresh={() => {
             setTimeIsPlaying(false);
             setCurrentTimeIndex(0);
-            if (dateRange[0] && dateRange[1]) fetch24HourCycleData(dateRange, counterLocations);
+            if (dateRange[0] && dateRange[1]) fetch24HourCycleData(dateRange, counterLocations, setHr24TrafficData);
           }}
           infoLines={[
             `Time of day ${timeArray[currentTimeIndex]??currentTime}`,

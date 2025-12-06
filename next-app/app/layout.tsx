@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import styles from "@/layout.module.scss"
-import { MapProvider } from "@/components/Map/contexts/MapContext";
+import { MapProvider } from "@/src/contexts/MapContext";
 import "@/globals.css";
 
 export const metadata: Metadata = {

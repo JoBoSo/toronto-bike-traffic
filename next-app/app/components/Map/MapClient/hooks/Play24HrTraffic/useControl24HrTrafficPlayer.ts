@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 
 export function useControl24HrTrafficPlayer(
   timeIsPlaying: boolean,
+  setTimeIsPlaying: React.Dispatch<React.SetStateAction<boolean>>,
   timeArray: string[],
   setTimeArray: React.Dispatch<React.SetStateAction<string[]>>,
   currentTimeIndex: number,
-  twentyFourHrCycleData: any,
   setCurrentTimeIndex: React.Dispatch<React.SetStateAction<number>>,
-  setTimeIsPlaying: React.Dispatch<React.SetStateAction<boolean>>,
+  twentyFourHrCycleData: any,
   playIntervalRef: React.MutableRefObject<NodeJS.Timeout | null>,
   currentTime: string,
   setCurrentTime: React.Dispatch<React.SetStateAction<string>>,

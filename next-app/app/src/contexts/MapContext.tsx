@@ -8,6 +8,8 @@ type MapContextType = {
   setDateRangeData: React.Dispatch<React.SetStateAction<any>>;
   isPlaying: boolean;
   setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
+  hr24TrafficData: any;
+  setHr24TrafficData: React.Dispatch<React.SetStateAction<any>>;
   timeIsPlaying: boolean;
   setTimeIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
   timeArray: string[];
@@ -30,14 +32,15 @@ export function MapProvider({ children }: { children: ReactNode }) {
     new Date("2025-06-01"),
     new Date("2025-08-31"),
   ]);
-  const [dateRangeData, setDateRangeData] = useState<any>(null);
 
   // Playback state for traffic across date range
+  const [dateRangeData, setDateRangeData] = useState<any>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [dateArray, setDateArray] = useState<Date[]>([]);
   const [currentDateIndex, setCurrentDateIndex] = useState(0);
   
   // Playback state for traffic across 24 hours
+  const [hr24TrafficData, setHr24TrafficData] = useState<any>(null);
   const [timeIsPlaying, setTimeIsPlaying] = useState(false);
   const [timeArray, setTimeArray] = useState<string[]>([]);
   const [currentTime, setCurrentTime] = useState<string>("00:00:00");
@@ -51,6 +54,8 @@ export function MapProvider({ children }: { children: ReactNode }) {
       setDateRangeData,
       isPlaying,
       setIsPlaying,
+      hr24TrafficData,
+      setHr24TrafficData,
       timeIsPlaying,
       setTimeIsPlaying,
       timeArray,

@@ -8,20 +8,22 @@ import "leaflet/dist/leaflet.css";
 
 // Contexts
 import { usePageContentContext } from "@/src/contexts/PageContentContext";
-import { useMapContext } from "@/components/Map/contexts/MapContext";
+import { useMapContext } from "@/src/contexts/MapContext";
 
 // Hooks
 import { useInitializeMap } from "@/components/Map/MapClient/hooks/BaseLayers/useInitializeMap";
-import { useInitDateArray } from "@/components/Map/MapClient/hooks/PlayDailyTraffic/useInitDateArray";
-import { useRenderCyclingNetwork } from "@/components/Map/MapClient/hooks/BaseLayers/useRenderCyclingNetwork";
-import { useControlDailyTrafficPlayer } from "./hooks/PlayDailyTraffic/useControlDailyTrafficPlayer";
-import { useSetCurrDayData } from "./hooks/PlayDailyTraffic/useSetCurrDayData";
 import { useRenderCounterLocations } from "@/components/Map/MapClient/hooks/BaseLayers/useRenderCounterLocations";
-import { useMarkDailyTraffic } from "@/components/Map/MapClient/hooks/PlayDailyTraffic/useMarkDailyTraffic";
+import { useRenderCyclingNetwork } from "@/components/Map/MapClient/hooks/BaseLayers/useRenderCyclingNetwork";
+import { useControl24HrTrafficPlayer } from "@/components/Map/MapClient/hooks/Play24HrTraffic/useControl24HrTrafficPlayer";
+import { useGet24HrTraffic } from "@/components/Map/MapClient/hooks/Play24HrTraffic/useGet24HrTraffic"
+import { useMark24HrTraffic } from "@/components/Map/MapClient/hooks/Play24HrTraffic/useMark24HrTraffic"; 
 import { useGetDailyTrafficData } from "@/components/Map/MapClient/hooks/PlayDailyTraffic/useGetDailyTrafficData";
-import { usePlay24HrTraffic } from "@/components/Map/MapClient/hooks/Play24HrTraffic/usePlay24HrTraffic";
+import { useInitDateArray } from "@/components/Map/MapClient/hooks/PlayDailyTraffic/useInitDateArray";
+import { useMarkDailyTraffic } from "@/components/Map/MapClient/hooks/PlayDailyTraffic/useMarkDailyTraffic";
 import useSetBaseMap from "@/components/Map/MapLayersControl/hooks/useSetBaseMap";
 import useToggleBaseMap from "@/components/Map/MapLayersControl/hooks/useToggleBaseMap";
+import { useControlDailyTrafficPlayer } from "./hooks/PlayDailyTraffic/useControlDailyTrafficPlayer";
+import { useSetCurrDayData } from "./hooks/PlayDailyTraffic/useSetCurrDayData";
 
 // Components
 import MapLayersControl from "@/components/Map/MapLayersControl/MapLayersControl";
@@ -35,6 +37,8 @@ export default function MapClient() {
     setDateRangeData,
     isPlaying,
     setIsPlaying,
+    hr24TrafficData,
+    setHr24TrafficData,
     timeIsPlaying, 
     setTimeIsPlaying,
     timeArray,
@@ -70,16 +74,24 @@ export default function MapClient() {
   useRenderCounterLocations(mapInstance, counterLocations);
 
   //// 24 Hour Traffic Player
-  usePlay24HrTraffic(
-    dateRange, timeArray, setTimeArray, counterLocations, mapInstance, dataLayerRef, 
-    timeIsPlaying, currentTimeIndex, setCurrentTimeIndex, setTimeIsPlaying,
-    playIntervalRef, currentTime, setCurrentTime
-  );
+  useGet24HrTraffic(dateRange, counterLocations, setHr24TrafficData);
+  const currtwentyFourHrCycleData = useControl24HrTrafficPlayer(
+    timeIsPlaying,
+    setTimeIsPlaying,
+    timeArray,
+    setTimeArray,
+    currentTimeIndex,
+    setCurrentTimeIndex,
+    hr24TrafficData,
+    playIntervalRef,
+    currentTime,
+    setCurrentTime,
+  )
+  useMark24HrTraffic(mapInstance, currtwentyFourHrCycleData, dataLayerRef, currentTime);
 
   //// Daily Traffic Player
   useControlDailyTrafficPlayer(
-    isPlaying, currentDateIndex, dateArray,
-    setCurrentDateIndex, setIsPlaying, playIntervalRef
+    isPlaying, currentDateIndex, dateArray, setCurrentDateIndex, setIsPlaying, playIntervalRef
   );
   useGetDailyTrafficData(mapInstance, dateRange, setDateRangeData);
   const currDayData = useSetCurrDayData(dateRangeData, currentDateIndex);
