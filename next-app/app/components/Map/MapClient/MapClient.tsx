@@ -30,7 +30,11 @@ import { useSetCurrDayData } from "./hooks/PlayDailyTraffic/useSetCurrDayData";
 // Components
 import MapLayersControl from "@/components/Map/MapLayersControl/MapLayersControl";
 
-export default function MapClient() {
+interface MapClientProps {
+  isSidebarCollapsed: boolean; 
+}
+
+export default function MapClient({ isSidebarCollapsed }: MapClientProps) {
   // Contexts
   const { counterLocations, cyclingNetwork, isLoading } = usePageContentContext();
   const {
@@ -69,6 +73,20 @@ export default function MapClient() {
   const playIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Hooks
+
+  //// Invalidate Map size when container changes
+  useEffect(() => {
+    if (mapInstance) {
+      // Use setTimeout to wait for the CSS transition (0.3s) to finish 
+      // before Leaflet measures the new container size.
+      const timer = setTimeout(() => {
+        mapInstance.invalidateSize();
+        console.log("Leaflet map size invalidated due to sidebar toggle.");
+      }, 0); // milliseconds to wait before reseting container size must match sidebar transition css
+
+      return () => clearTimeout(timer);
+    }
+  }, [mapInstance, isSidebarCollapsed]); // Re-run when map loads or sidebar state changes
 
   //// Base Layers
   useInitializeMap(mapRef, mapInstance, setMapInstance);

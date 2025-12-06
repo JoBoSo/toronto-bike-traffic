@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { PageContentProvider } from '@/src/contexts/PageContentContext';
 import { CounterLocationFeature } from '@/src/interfaces/counterLocationTypes';
 import { CyclingNetworkFeature } from '@/src/interfaces/cyclingNetworkTypes';
@@ -26,14 +26,21 @@ interface PageContentWrapperProps {
 export default function PageContentWrapper(
   { counterLocations, cyclingNetwork }: PageContentWrapperProps
 ) {
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+
   return (
     <PageContentProvider locations={counterLocations} network={cyclingNetwork}>
       <div className={styles.mainContainer}> 
-        <Sidebar />
+        <Sidebar 
+          isCollapsed={isSidebarCollapsed} 
+          setIsCollapsed={setIsSidebarCollapsed} 
+        />
         <div className={styles.contentColumn}>
           <Header /> 
           <div className={styles.mapArea}>
-            <MapWrapper /> 
+            <MapWrapper 
+              isSidebarCollapsed={isSidebarCollapsed}
+            /> 
           </div>
         </div>
       </div>

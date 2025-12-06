@@ -9,7 +9,12 @@ import DateRangePicker from "@/components/Map/DateRangePicker/DateRangePicker";
 import PlaybackControl from "@/components/Map/PlaybackControl/PlaybackControl";
 import { fetch24HourCycleData } from "../Map/utils/fetch24HourCycleData";
 
-export default function Sidebar() {
+interface SidebarProps {
+    isCollapsed: boolean;
+    setIsCollapsed: (collapsed: boolean) => void;
+}
+
+export default function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
   // Context
   const { counterLocations } = usePageContentContext();
   const { 
@@ -30,7 +35,7 @@ export default function Sidebar() {
     currentTime,
   } = useMapContext();
 
-  const [collapsed, setCollapsed] = useState(false);
+  const collapsed = isCollapsed;
 
   const toggleDailyPlayer = () => {
     // Reset only if player reached the end
@@ -53,7 +58,7 @@ export default function Sidebar() {
       {/* Toggle handle */}
       <div
         className={styles.toggle}
-        onClick={() => setCollapsed(!collapsed)}
+        onClick={() => setIsCollapsed(!collapsed)}
         title={collapsed ? "Open sidebar" : "Close sidebar"}
       >
         {collapsed ? "➤" : "⬅"}
