@@ -82,8 +82,8 @@ export default function MapClient() {
     setCurrentDateIndex, setIsPlaying, playIntervalRef
   );
   useGetDailyTrafficData(mapInstance, dateRange, setDateRangeData);
-  const currDateData = useSetCurrDayData(dateRangeData, currentDateIndex);
-  useMarkDailyTraffic(mapInstance, currDateData, counterLocations, dataLayerRef);
+  const currDayData = useSetCurrDayData(dateRangeData, currentDateIndex);
+  useMarkDailyTraffic(mapInstance, currDayData, counterLocations, dataLayerRef);
   useInitDateArray(dateRange, setDateArray, setCurrentDateIndex);
 
   //// Base Map Toggle

@@ -79,12 +79,12 @@ export default function Sidebar() {
           isPlaying={timeIsPlaying}
           onTogglePlay={toggleHourlyPlayer}
           onRefresh={() => {
-            setCurrentTimeIndex(0);
             setTimeIsPlaying(false);
+            setCurrentTimeIndex(0);
             if (dateRange[0] && dateRange[1]) fetch24HourCycleData(dateRange, counterLocations);
           }}
           infoLines={[
-            `Time of day ${currentTime}`,
+            `Time of day ${timeArray[currentTimeIndex]??currentTime}`,
           ]}
         />
 

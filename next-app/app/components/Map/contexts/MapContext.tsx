@@ -40,7 +40,7 @@ export function MapProvider({ children }: { children: ReactNode }) {
   // Playback state for traffic across 24 hours
   const [timeIsPlaying, setTimeIsPlaying] = useState(false);
   const [timeArray, setTimeArray] = useState<string[]>([]);
-  const [currentTime, setCurrentTime] = useState<string>("17:00:00");
+  const [currentTime, setCurrentTime] = useState<string>("00:00:00");
   const [currentTimeIndex, setCurrentTimeIndex] = useState(0);
 
   return (
