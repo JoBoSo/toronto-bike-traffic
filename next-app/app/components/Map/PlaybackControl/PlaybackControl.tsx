@@ -18,29 +18,30 @@ const PlaybackControl: React.FC<PlaybackControlProps> = ({
 }) => {
   return (
     <div className={styles.wrapper}>
-      <div className={styles.buttonRow}>
-        <div className={styles.button}>
+      <div className={styles.row}>
+        <div className={styles.rowItem}>
           <button onClick={onTogglePlay} className={`${styles.playPauseButton}`}>
             {isPlaying ? "⏸" : "▶"}
           </button>
         </div>
 
+        {infoLines.length > 0 && (
+          <div className={styles.rowItem}>
+            {/* The infoText variable holds the single, combined string */}
+            <div className={styles.infoBox}>
+              {infoLines.join(' ')}
+            </div>
+          </div>
+        )}
+
         {onRefresh && (
-          <div className={styles.button}>
+          <div className={styles.rowItem}>
             <button onClick={onRefresh} className={styles.refreshButton}>
               ⟲
             </button>
           </div>
         )}
       </div>
-
-      {infoLines.length > 0 && (
-        <div className={styles.infoBox}>
-          {infoLines.map((line, idx) => (
-            <div key={idx}>{line}</div>
-          ))}
-        </div>
-      )}
     </div>
   );
 };

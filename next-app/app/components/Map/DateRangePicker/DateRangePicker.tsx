@@ -22,7 +22,7 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
         endDate={dateRange[1]}
         onChange={onChange}
         placeholderText="Select date range"
-        dateFormat="yyyy-MM-dd"
+        dateFormat="MMM d, yyyy"
         showMonthDropdown
         showYearDropdown
         dropdownMode="select"

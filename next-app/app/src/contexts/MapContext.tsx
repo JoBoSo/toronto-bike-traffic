@@ -29,8 +29,8 @@ const MapContext = createContext<MapContextType | undefined>(undefined);
 export function MapProvider({ children }: { children: ReactNode }) {
   // Date range state
   const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
-    new Date("2025-06-01"),
-    new Date("2025-08-31"),
+    new Date("2025-06-02"),
+    new Date("2025-09-01"),
   ]);
 
   // Playback state for traffic across date range

@@ -1,13 +1,12 @@
 .datePickerWrapper {
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px; /* spacing from other sidebar elements */
 }
 
 .datePickerInput {
   width: 100%;
-  max-width: 220px;
-  padding: 6px 10px;
+  max-width: 230px;
+  padding: 3px 6px;
   border-radius: 6px;
   border: 1px solid #ccc;
   font-size: 14px;

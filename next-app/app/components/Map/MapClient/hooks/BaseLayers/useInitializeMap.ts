@@ -32,18 +32,6 @@ export function useInitializeMap(
         }
       ).addTo(map);
 
-      // World boundaries overlay
-      // L.tileLayer(
-      //   "https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}",
-      //   { maxZoom: 19, opacity: 0.7 }
-      // ).addTo(map);
-
-      // Streets overlay
-      // L.tileLayer(
-      //   "https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}",
-      //   { maxZoom: 19, opacity: 0.7 }
-      // ).addTo(map);
-
       setMapInstance(map);
 
       return () => {

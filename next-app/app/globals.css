@@ -3,8 +3,8 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --font-poppins: "Century Gothic", Arial, Helvetica, sans-serif;
-  --font-display: "Century Gothic", Arial, Helvetica, sans-serif;
+  --font-poppins: sans-serif;
+  --font-display: sans-serif;
 }
 
 @theme inline {
