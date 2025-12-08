@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import styles from "@/components/Map/PlaybackControl/PlaybackControl.module.scss";
+import styles from "@/components/Sidebar/PlaybackControl/PlaybackControl.module.scss";
 
 interface PlaybackControlProps {
   isPlaying: boolean;

@@ -5,8 +5,8 @@ import { useMapContext } from "@/src/contexts/MapContext";
 import { usePageContentContext } from "@/src/contexts/PageContentContext";
 import { fetchDailyCountsInDateRange } from "@/components/Map/utils/fetchDailyCountsInDateRange";
 import styles from "@/components/Sidebar/Sidebar.module.scss";
-import DateRangePicker from "@/components/Map/DateRangePicker/DateRangePicker";
-import PlaybackControl from "@/components/Map/PlaybackControl/PlaybackControl";
+import DateRangePicker from "@/components/Sidebar/DateRangePicker/DateRangePicker";
+import PlaybackControl from "@/components/Sidebar/PlaybackControl/PlaybackControl";
 import { fetch24HourCycleData } from "../Map/utils/fetch24HourCycleData";
 
 interface SidebarProps {
