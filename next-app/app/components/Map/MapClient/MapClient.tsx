@@ -29,6 +29,7 @@ import { useSetCurrDayData } from "./hooks/PlayDailyTraffic/useSetCurrDayData";
 
 // Components
 import MapLayersControl from "@/components/Map/MapLayersControl/MapLayersControl";
+import TrafficClockOverlay from "@/components/Map/TrafficClockOverlay/TrafficClockOverlay";
 
 interface MapClientProps {
   isSidebarCollapsed: boolean; 
@@ -100,12 +101,9 @@ export default function MapClient({ isSidebarCollapsed }: MapClientProps) {
     timeArray, currentTimeIndex, hr24TrafficData, setCurrentTime
   );
   useControl24HrTrafficPlayer(
-    timeIsPlaying,
-    setTimeIsPlaying,
-    timeArray,
-    setTimeArray,
-    currentTimeIndex,
-    setCurrentTimeIndex,
+    timeIsPlaying, setTimeIsPlaying,
+    timeArray, setTimeArray,
+    currentTimeIndex, setCurrentTimeIndex,
     hr24TrafficData,
     playIntervalRef
   )
@@ -126,9 +124,8 @@ export default function MapClient({ isSidebarCollapsed }: MapClientProps) {
 
   return (
       <div className={styles["map-client-container"]}>
-        {/* Map Layers Control */}
         <MapLayersControl isSatellite={isSatellite} setIsSatellite={setIsSatellite} />
-
+        {timeIsPlaying && <TrafficClockOverlay currentTime={currentTime} />}
         {/* Map Container */}
         <div id="map" ref={mapRef} style={{ width: "100%", height: "100%" }} />
       </div>

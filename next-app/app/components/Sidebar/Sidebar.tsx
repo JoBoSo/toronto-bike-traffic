@@ -8,6 +8,7 @@ import styles from "@/components/Sidebar/Sidebar.module.scss";
 import DateRangePicker from "@/components/Sidebar/DateRangePicker/DateRangePicker";
 import PlaybackControl from "@/components/Sidebar/PlaybackControl/PlaybackControl";
 import { fetch24HourCycleData } from "../Map/utils/fetch24HourCycleData";
+import { convertTo12HourTime } from "@/src/utils/convertTo12HourTime"
 
 interface SidebarProps {
     isCollapsed: boolean;
@@ -93,7 +94,7 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
               if (dateRange[0] && dateRange[1]) fetch24HourCycleData(dateRange, counterLocations, setHr24TrafficData);
             }}
             infoLines={[
-              `Time of day ${timeArray[currentTimeIndex]??currentTime}`,
+              `Time of day ${convertTo12HourTime(timeArray[currentTimeIndex]??currentTime)}`,
             ]}
           />
         </div>

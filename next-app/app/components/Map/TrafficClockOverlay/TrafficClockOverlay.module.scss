@@ -1,0 +1,41 @@
+/* SCSS Styles for the Traffic Clock Overlay */
+
+// Variables for easy color management
+$color-accent: #2dd4bf; // Teal
+$bg-color: rgba(0, 0, 0, 0.75);
+$border-radius: 0.75rem;
+
+:root {
+  --color-accent: #2dd4bf;
+}
+
+.clockOverlay {
+  /* Positioned absolutely within the map client container */
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  // Use Sass function for cleaner positioning
+  transform: translateX(-50%);
+  z-index: 999;
+  padding: 5px 8px;
+  background-color: #151B23;
+  border: 2px solid #3D444D;
+  border-radius: $border-radius;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  transition: all 0.3s ease;
+
+  .clockTime {
+    font-size: 18pt;
+    line-height: 1;
+    font-family: 'Inter', monospace;
+    letter-spacing: 0.05em; /* tracking-wider */
+    color: #ffffff;
+    user-select: none;
+    
+    // Media query nested inside the element it affects
+    @media (min-width: 640px) {
+      font-size: 18pt; /* 5xl */
+    }
+  }
+}
