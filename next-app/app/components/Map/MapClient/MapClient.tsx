@@ -29,7 +29,11 @@ import { useSetCurrDayData } from "./hooks/PlayDailyTraffic/useSetCurrDayData";
 
 // Components
 import MapLayersControl from "@/components/Map/MapLayersControl/MapLayersControl";
-import TrafficClockOverlay from "@/components/Map/TrafficClockOverlay/TrafficClockOverlay";
+import PlaybackInfoOverlay from "@/components/Map/PlaybackInfoOverlay/PlaybackInfoOverlay";
+import formatShortDate from "@/src/utils/formatShortDate"
+
+// utils
+import { convertTo12HourTime } from "@/src/utils/convertTo12HourTime"
 
 interface MapClientProps {
   isSidebarCollapsed: boolean; 
@@ -125,7 +129,8 @@ export default function MapClient({ isSidebarCollapsed }: MapClientProps) {
   return (
       <div className={styles["map-client-container"]}>
         <MapLayersControl isSatellite={isSatellite} setIsSatellite={setIsSatellite} />
-        {timeIsPlaying && <TrafficClockOverlay currentTime={currentTime} />}
+        {timeIsPlaying && <PlaybackInfoOverlay info={convertTo12HourTime(currentTime)} />}
+        {isPlaying && dateArray[currentDateIndex] && <PlaybackInfoOverlay info={formatShortDate(dateArray[currentDateIndex])} />}
         {/* Map Container */}
         <div id="map" ref={mapRef} style={{ width: "100%", height: "100%" }} />
       </div>

@@ -1,15 +1,7 @@
-/* SCSS Styles for the Traffic Clock Overlay */
 
-// Variables for easy color management
-$color-accent: #2dd4bf; // Teal
-$bg-color: rgba(0, 0, 0, 0.75);
 $border-radius: 0.75rem;
 
-:root {
-  --color-accent: #2dd4bf;
-}
-
-.clockOverlay {
+.infoOverlay {
   /* Positioned absolutely within the map client container */
   position: absolute;
   top: 5px;
@@ -25,7 +17,7 @@ $border-radius: 0.75rem;
   backdrop-filter: blur(4px);
   transition: all 0.3s ease;
 
-  .clockTime {
+  .infoTime {
     font-size: 18pt;
     line-height: 1;
     font-family: 'Inter', monospace;
