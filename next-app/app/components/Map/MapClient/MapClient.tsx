@@ -24,8 +24,9 @@ import { useInitDateArray } from "@/components/Map/MapClient/hooks/PlayDailyTraf
 import { useMarkDailyTraffic } from "@/components/Map/MapClient/hooks/PlayDailyTraffic/useMarkDailyTraffic";
 import useSetBaseMap from "@/components/Map/MapLayersControl/hooks/useSetBaseMap";
 import useToggleBaseMap from "@/components/Map/MapLayersControl/hooks/useToggleBaseMap";
-import { useControlDailyTrafficPlayer } from "./hooks/PlayDailyTraffic/useControlDailyTrafficPlayer";
-import { useSetCurrDayData } from "./hooks/PlayDailyTraffic/useSetCurrDayData";
+import { useControlDailyTrafficPlayer } from "@/components/Map/MapClient/hooks/PlayDailyTraffic/useControlDailyTrafficPlayer";
+import { useSetCurrDayData } from "@/components/Map/MapClient/hooks/PlayDailyTraffic/useSetCurrDayData";
+import { useTimeColorOverlay } from "@/components/Map/MapClient/hooks/Play24HrTraffic/useTimeColorOverlay";
 
 // Components
 import MapLayersControl from "@/components/Map/MapLayersControl/MapLayersControl";
@@ -112,6 +113,7 @@ export default function MapClient({ isSidebarCollapsed }: MapClientProps) {
     playIntervalRef
   )
   useMark24HrTraffic(mapInstance, currHr24CycleData, dataLayerRef, currentTime);
+  useTimeColorOverlay(mapInstance, currentTime, timeIsPlaying, isPlaying);
 
   //// Daily Traffic Player
   useControlDailyTrafficPlayer(
