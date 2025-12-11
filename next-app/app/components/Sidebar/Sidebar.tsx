@@ -9,6 +9,7 @@ import DateRangePicker from "@/components/Sidebar/DateRangePicker/DateRangePicke
 import PlaybackControl from "@/components/Sidebar/PlaybackControl/PlaybackControl";
 import { fetch24HourCycleData } from "../Map/utils/fetch24HourCycleData";
 import { convertTo12HourTime } from "@/src/utils/convertTo12HourTime"
+import { PanelRightClose, PanelRightOpen } from 'lucide-react';
 
 interface SidebarProps {
     isCollapsed: boolean;
@@ -96,7 +97,7 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
         onClick={() => setIsCollapsed(!collapsed)}
         title={collapsed ? "Open sidebar" : "Close sidebar"}
       >
-        {collapsed ? "➤" : "⬅"}
+        {collapsed ? <PanelRightClose /> : <PanelRightOpen />}
       </div>
 
       {/* Sidebar content */}
