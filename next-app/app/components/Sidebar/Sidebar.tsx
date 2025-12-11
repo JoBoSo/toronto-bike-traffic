@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { SetStateAction, useState, Dispatch } from "react";
 import { useMapContext } from "@/src/contexts/MapContext";
 import { usePageContentContext } from "@/src/contexts/PageContentContext";
 import { fetchDailyCountsInDateRange } from "@/components/Map/utils/fetchDailyCountsInDateRange";
@@ -38,21 +38,51 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
 
   const collapsed = isCollapsed;
 
-  const toggleDailyPlayer = () => {
-    // Reset only if player reached the end
-    if (!isPlaying && currentDateIndex >= dateArray.length - 1) {
-      setCurrentDateIndex(0);
-    }
-    setIsPlaying(!isPlaying);
+  /**
+   * Creates a generic toggle function for any playback mechanism.
+   * * This factory is designed to be called once per player instance (e.g., daily or hourly)
+   * to "bake in" the specific state variables and setters needed.
+   *
+   * @param {boolean} isPlaying The current playback state (e.g., isPlaying, timeIsPlaying).
+   * @param {any[]} playArray The data array (e.g., dateArray, timeArray).
+   * @param {number} currentIndex The current index in the array (e.g., currentDateIndex, currentTimeIndex).
+   * @param {React.Dispatch<React.SetStateAction<number>>} setCurrentIndex The setter for the index.
+   * @param {React.Dispatch<React.SetStateAction<boolean>>} setIsPlaying The setter for the playback state.
+   * @returns {function(): void} A function that, when called, executes the toggle logic.
+   */
+  const createTogglePlayer = <T extends any>(
+    isPlaying: boolean,
+    playArray: T[],
+    currentIndex: number,
+    setCurrentIndex: Dispatch<SetStateAction<number>>,
+    setIsPlaying: Dispatch<SetStateAction<boolean>>
+  ): (() => void) => {
+    // The returned function will be used as the actual event handler
+    return () => {
+      // Reset index only if currently stopped AND at the very last element
+      if (!isPlaying && currentIndex >= playArray.length - 1) {
+        setCurrentIndex(0);
+      }
+      // Toggle the playing state
+      setIsPlaying(!isPlaying);
+    };
   };
 
-  const toggleHourlyPlayer = () => {
-    // Reset only if player reached the end
-    if (!timeIsPlaying && currentTimeIndex >= timeArray.length - 1) {
-      setCurrentTimeIndex(0);
-    }
-    setTimeIsPlaying(!timeIsPlaying);
-  };
+  const toggleDailyPlayer = createTogglePlayer(
+    isPlaying,
+    dateArray,
+    currentDateIndex,
+    setCurrentDateIndex,
+    setIsPlaying
+  );
+
+  const toggleHourlyPlayer = createTogglePlayer(
+    timeIsPlaying,
+    timeArray,
+    currentTimeIndex,
+    setCurrentTimeIndex,
+    setTimeIsPlaying
+  );
 
   return (
     <div className={`${styles.sidebar} ${collapsed ? styles.collapsed : ""}`}>
