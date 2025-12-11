@@ -23,9 +23,13 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
     dateArray,
     setDateRange, 
     setDateRangeData, 
+    loadingDailyTrafficData,
+    setLoadingDailyTrafficData,
     isPlaying,
     setIsPlaying,
     setHr24TrafficData,
+    loadingHr24TrafficData,
+    setLoadingHr24TrafficData,
     timeIsPlaying,
     timeArray,
     setTimeIsPlaying,
@@ -107,7 +111,7 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
               setDateRange(update);
               setIsPlaying(false);
               setTimeIsPlaying(false);
-              if (update[0] && update[1]) fetchDailyCountsInDateRange(update[0], update[1], setDateRangeData);
+              if (update[0] && update[1]) fetchDailyCountsInDateRange(update[0], update[1], setDateRangeData, setLoadingDailyTrafficData);
             }}
           />
         </div>
@@ -116,12 +120,13 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
         <div className={styles.section}>
           <p className={styles.sectionHeader}>Play 24hr traffic</p>
           <PlaybackControl
+            dataIsLoaded={loadingHr24TrafficData}
             isPlaying={timeIsPlaying}
             onTogglePlay={toggleHourlyPlayer}
             onRefresh={() => {
               setTimeIsPlaying(false);
               setCurrentTimeIndex(0);
-              if (dateRange[0] && dateRange[1]) fetch24HourCycleData(dateRange, counterLocations, setHr24TrafficData);
+              if (dateRange[0] && dateRange[1]) fetch24HourCycleData(dateRange, counterLocations, setHr24TrafficData, setLoadingHr24TrafficData);
             }}
             infoLines={[
               `Time of day ${convertTo12HourTime(timeArray[currentTimeIndex]??currentTime)}`,
@@ -133,12 +138,13 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
         <div className={styles.section}>
           <p className={styles.sectionHeader}>Play daily traffic</p>
           <PlaybackControl
+            dataIsLoaded={loadingDailyTrafficData}
             isPlaying={isPlaying}
             onTogglePlay={toggleDailyPlayer}
             onRefresh={() => {
               setCurrentDateIndex(0);
               setIsPlaying(false);
-              if (dateRange[0] && dateRange[1]) fetchDailyCountsInDateRange(dateRange[0], dateRange[1], setDateRangeData);
+              if (dateRange[0] && dateRange[1]) fetchDailyCountsInDateRange(dateRange[0], dateRange[1], setDateRangeData, setLoadingDailyTrafficData);
             }}
             infoLines={[
               `Day ${currentDateIndex + 1} of ${dateArray.length}`,

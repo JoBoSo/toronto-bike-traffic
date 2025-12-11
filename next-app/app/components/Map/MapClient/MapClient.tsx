@@ -46,11 +46,9 @@ export default function MapClient({ isSidebarCollapsed }: MapClientProps) {
   const {
     dateRange,
     dateRangeData,
-    setDateRangeData,
     isPlaying,
     setIsPlaying,
     hr24TrafficData,
-    setHr24TrafficData,
     timeIsPlaying, 
     setTimeIsPlaying,
     timeArray,
@@ -100,7 +98,7 @@ export default function MapClient({ isSidebarCollapsed }: MapClientProps) {
   useRenderCounterLocations(mapInstance, counterLocations);
 
   //// 24 Hour Traffic Player
-  useGet24HrTraffic(dateRange, counterLocations, setHr24TrafficData);
+  useGet24HrTraffic(counterLocations);
   useInitTimeArray(timeArray, setTimeArray);
   const currHr24CycleData = useSetCurr24HrTrafficData(
     timeArray, currentTimeIndex, hr24TrafficData, setCurrentTime
@@ -119,7 +117,7 @@ export default function MapClient({ isSidebarCollapsed }: MapClientProps) {
   useControlDailyTrafficPlayer(
     isPlaying, currentDateIndex, dateArray, setCurrentDateIndex, setIsPlaying, playIntervalRef
   );
-  useGetDailyTrafficData(mapInstance, dateRange, setDateRangeData);
+  useGetDailyTrafficData(mapInstance);
   const currDayData = useSetCurrDayData(dateRangeData, currentDateIndex);
   useMarkDailyTraffic(mapInstance, currDayData, counterLocations, dataLayerRef);
   useInitDateArray(dateRange, setDateArray, setCurrentDateIndex);

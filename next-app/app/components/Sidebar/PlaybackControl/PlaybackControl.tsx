@@ -2,8 +2,10 @@
 
 import React from "react";
 import styles from "@/components/Sidebar/PlaybackControl/PlaybackControl.module.scss";
+import { Loader2 } from 'lucide-react';
 
 interface PlaybackControlProps {
+  dataIsLoaded: boolean;
   isPlaying: boolean;
   onTogglePlay: () => void;
   onRefresh?: () => void;       // new optional prop
@@ -11,6 +13,7 @@ interface PlaybackControlProps {
 }
 
 const PlaybackControl: React.FC<PlaybackControlProps> = ({
+  dataIsLoaded,
   isPlaying,
   onTogglePlay,
   onRefresh,
@@ -20,8 +23,15 @@ const PlaybackControl: React.FC<PlaybackControlProps> = ({
     <div className={styles.wrapper}>
       <div className={styles.row}>
         <div className={styles.rowItem}>
-          <button onClick={onTogglePlay} className={`${styles.playPauseButton}`}>
-            {isPlaying ? "⏸" : "▶"}
+          <button 
+            onClick={onTogglePlay} 
+            disabled={dataIsLoaded}
+            className={`${dataIsLoaded ? styles.loadPlayPauseButton : styles.playPauseButton}`}
+          >
+            {dataIsLoaded ? 
+              <Loader2 className="size-full align-middle animate-spin" /> 
+              : (isPlaying ? "⏸" : "▶")
+            }
           </button>
         </div>
 
@@ -36,8 +46,15 @@ const PlaybackControl: React.FC<PlaybackControlProps> = ({
 
         {onRefresh && (
           <div className={styles.rowItem}>
-            <button onClick={onRefresh} className={styles.refreshButton}>
-              ⟲
+            <button 
+              onClick={onRefresh} 
+              disabled={dataIsLoaded}
+              className={dataIsLoaded ? styles.loadRefreshButton : styles.refreshButton}
+            >
+              {dataIsLoaded ? 
+                <Loader2 className="size-full align-middle animate-spin" /> 
+                : '⟲'
+              }
             </button>
           </div>
         )}

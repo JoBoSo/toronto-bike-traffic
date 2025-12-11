@@ -24,6 +24,15 @@
       background-color: #ffffff;
     }
 
+    .loadPlayPauseButton {
+      cursor: not-allowed;
+      width: 25px;
+      height: 100%;
+      padding: 3px 6px;
+      border-radius: 6px 0px 0px 6px;
+      background-color: #ffffff;
+    }
+
     .infoBox {
       width: 180px;
       padding: 3px 6px;
@@ -35,6 +44,16 @@
     .refreshButton {
       cursor: pointer;
       width: 25px;
+      padding: 3px 6px;
+      font-weight: bold;
+      border-radius: 0px 6px 6px 0px;
+      background-color: #ffffff;
+    }
+
+    .loadRefreshButton {
+      cursor: not-allowed;
+      width: 25px;
+      height: 100%;
       padding: 3px 6px;
       font-weight: bold;
       border-radius: 0px 6px 6px 0px;
