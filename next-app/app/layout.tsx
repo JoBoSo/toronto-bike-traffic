@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import styles from "@/layout.module.scss"
 import { MapProvider } from "@/src/contexts/MapContext";
 import "@/globals.css";
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 import { GoogleAnalytics } from '@next/third-parties/google';
 
 export const metadata: Metadata = {
@@ -24,6 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </div>
         </div>
         <SpeedInsights />
+        <Analytics />
       </body>
       <GoogleAnalytics gaId="G-892ZBPGY7Q" /> 
     </html>
