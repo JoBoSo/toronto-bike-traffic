@@ -32,9 +32,15 @@ export function useRenderCyclingNetwork(
         const infra = feature?.properties?.INFRA_LOWORDER?.trim()
           ? feature.properties.INFRA_LOWORDER
           : feature?.properties?.INFRA_HIGHORDER;
-        if (feature.properties?.INFRA_HIGHORDER) {
-          layer.bindPopup(`<strong>${infra}</strong>`);
-        }
+        const street_name = feature.properties?.STREET_NAME;
+        const from_street = feature.properties?.FROM_STREET;
+        const to_street = feature.properties?.TO_STREET;
+        layer.bindPopup(`
+          <strong>${infra}</strong><br/>
+          <b style="margin: 2px 0;">${street_name}</b>
+          <p style="margin: 2px 0;"><i>From</i> ${from_street}</p>
+          <p style="margin: 2px 0;"><i>To</i> ${to_street}</p>
+        `);
       },
     }).addTo(mapInstance);
 
