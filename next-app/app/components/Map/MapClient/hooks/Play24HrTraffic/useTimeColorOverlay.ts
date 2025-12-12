@@ -39,7 +39,6 @@ export function useTimeColorOverlay(
     if (!mapInstance.getPane(PANE_NAME)) {
       mapInstance.createPane(PANE_NAME);
       mapInstance.getPane(PANE_NAME)!.style.zIndex = Z_INDEX;
-      console.log(`[Time Overlay] Pane '${PANE_NAME}' created (Z=${Z_INDEX}).`);
     }
 
     if (!overlayRef.current) {
@@ -54,7 +53,6 @@ export function useTimeColorOverlay(
       }).addTo(mapInstance);
 
       overlayRef.current = newOverlay;
-      console.log("[Time Overlay] L.rectangle initialized.");
     }
 
     // 3. Determine target color and update the rectangle layer style
@@ -78,7 +76,6 @@ export function useTimeColorOverlay(
         fillColor: hexColor,
         fillOpacity: alpha,
       });
-      // console.log(`[Time Overlay] Color updated. RGBA: ${targetColorRgba}. Opacity: ${alpha}`);
     } else {
       console.error("[Time Overlay] Failed to parse RGBA color string.");
     }
@@ -91,7 +88,6 @@ export function useTimeColorOverlay(
       if (mapInstance && overlayRef.current) {
         mapInstance.removeLayer(overlayRef.current);
         overlayRef.current = null;
-        console.log("[Time Overlay] L.rectangle layer removed.");
       }
     };
 

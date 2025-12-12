@@ -85,7 +85,6 @@ export default function MapClient({ isSidebarCollapsed }: MapClientProps) {
       // before Leaflet measures the new container size.
       const timer = setTimeout(() => {
         mapInstance.invalidateSize();
-        console.log("Leaflet map size invalidated due to sidebar toggle.");
       }, 0); // milliseconds to wait before reseting container size must match sidebar transition css
 
       return () => clearTimeout(timer);
