@@ -19,6 +19,7 @@
     .playPauseButton {
       cursor: pointer;
       width: 25px;
+      height: 100%;
       padding: 3px 6px;
       border-radius: 6px 0px 0px 6px;
       background-color: #ffffff;
@@ -44,6 +45,7 @@
     .refreshButton {
       cursor: pointer;
       width: 25px;
+      height: 100%;
       padding: 3px 6px;
       font-weight: bold;
       border-radius: 0px 6px 6px 0px;

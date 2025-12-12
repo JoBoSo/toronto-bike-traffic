@@ -130,7 +130,7 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
               if (dateRange[0] && dateRange[1]) fetch24HourCycleData(dateRange, counterLocations, setHr24TrafficData, setLoadingHr24TrafficData);
             }}
             infoLines={[
-              `Time of day ${convertTo12HourTime(timeArray[currentTimeIndex]??currentTime)}`,
+              `${convertTo12HourTime(timeArray[currentTimeIndex]??currentTime)}`,
             ]}
           />
         </div>
