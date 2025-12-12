@@ -16,6 +16,15 @@
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
     transition: background-color 0.2s ease, transform 0.1s ease;
 
+    @keyframes shimmer {
+      0% {
+        background-position: 200% 0; 
+      }
+      100% {
+        background-position: -200% 0; 
+      }
+    }
+
     .playPauseButton {
       cursor: pointer;
       width: 25px;
@@ -23,6 +32,14 @@
       padding: 3px 6px;
       border-radius: 6px 0px 0px 6px;
       background-color: #ffffff;
+      background: linear-gradient(
+        90deg,
+        #ffffff 0%,
+        #c9d0d3 30%,
+        #ffffff 60% 
+      );
+      background-size: 200% 100%;
+      animation: shimmer 5s infinite linear; 
     }
 
     .loadPlayPauseButton {
