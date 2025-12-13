@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import L, { Map as LeafletMap } from "leaflet";
+import styles from "@/components/Map/MapClient/hooks/BaseLayers/useRanderCounterLocations.module.scss";
 
 export function useRenderCounterLocations(
   mapInstance: LeafletMap | null,
@@ -30,11 +31,12 @@ export function useRenderCounterLocations(
         pointToLayer: (feature, latlng) => {
           const circle = L.circleMarker(latlng, {
             pane: "counterLocationsPane",
-            radius: 4,
-            color: "rgba(48, 48, 48, 1)",
-            fillColor: "rgba(48, 48, 48, 1)",
-            fillOpacity: 1,
+            radius: 5,
+            color: "#1e2674ff",
             weight: 1,
+            fillColor: "#1e2674ff",
+            fillOpacity: 0.4,
+            className: styles['radar-pulse-circle-color'],
           });
           return circle;
         },

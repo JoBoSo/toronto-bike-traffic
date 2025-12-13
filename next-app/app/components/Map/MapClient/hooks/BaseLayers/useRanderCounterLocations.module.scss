@@ -1,0 +1,20 @@
+/* Keyframes for a simple, stationary color/opacity pulse */
+@keyframes radar-pulse-color {
+  0%, 100% {
+    /* Lower opacity for the fade-out state */
+    fill-opacity: 0.0; 
+    stroke-opacity: 0.6;
+  }
+  50% {
+    /* Higher opacity for the peak glow state */
+    fill-opacity: 0.6; 
+    stroke-opacity: 0.6;
+  }
+}
+
+/* Style for the stationary pulsing circle */
+.radar-pulse-circle-color {
+  /* Apply the animation, 2s duration, repeats infinitely */
+  /* Using !important to ensure it overrides Leaflet's inline styles */
+  animation: radar-pulse-color 2s ease-in-out infinite !important;
+}
