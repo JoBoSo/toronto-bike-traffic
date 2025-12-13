@@ -33,7 +33,7 @@ export function useRenderCounterLocations(
             pane: "counterLocationsPane",
             radius: 5,
             color: "#1e2674ff",
-            weight: 1,
+            weight: 0,
             fillColor: "#1e2674ff",
             fillOpacity: 0.4,
             className: styles['radar-pulse-circle-color'],

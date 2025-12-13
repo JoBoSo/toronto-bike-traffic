@@ -2,13 +2,13 @@
 @keyframes radar-pulse-color {
   0%, 100% {
     /* Lower opacity for the fade-out state */
-    fill-opacity: 0.0; 
-    stroke-opacity: 0.6;
+    fill-opacity: 0.1; 
+    stroke-opacity: 0.1;
   }
   50% {
     /* Higher opacity for the peak glow state */
-    fill-opacity: 0.6; 
-    stroke-opacity: 0.6;
+    fill-opacity: 1; 
+    stroke-opacity: 1;
   }
 }
 
