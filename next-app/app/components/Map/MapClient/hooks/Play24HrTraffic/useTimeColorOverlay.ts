@@ -29,7 +29,7 @@ export function useTimeColorOverlay(
       return;
     }
 
-    const isInitialState = !timeIsPlaying && currentTime === "00:00:00";
+    const isInitialState = (!timeIsPlaying && currentTime === "00:00:00") || isPlaying;
 
     if (isInitialState) {
         // Remove the overlay by setting opacity to 0 (fully transparent)
