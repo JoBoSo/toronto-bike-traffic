@@ -29,6 +29,18 @@ export function useTimeColorOverlay(
       return;
     }
 
+    const isInitialState = !timeIsPlaying && currentTime === "00:00:00";
+
+    if (isInitialState) {
+        // Remove the overlay by setting opacity to 0 (fully transparent)
+        if (overlayRef.current) {
+            overlayRef.current.setStyle({
+                fillOpacity: 0,
+            });
+        }
+        return; // Exit the effect early
+    }
+
     // 1. Define bounds for the world (or a slightly oversized area)
     // This ensures the rectangle covers the map regardless of zoom level.
     const bounds: LatLngBounds = L.latLngBounds([[-90, -180], [90, 180]]);
