@@ -8,10 +8,12 @@ export function useMarkDailyTraffic(
   mapInstance: L.Map | null, 
   currDateData: DailyLocationVolume[] | null, 
   counterLocations: CounterLocationFeature[], 
-  dataLayerRef: React.MutableRefObject<L.LayerGroup | null>
+  dataLayerRef: React.MutableRefObject<L.LayerGroup | null>,
+  isPlaying: boolean,
+  currentDateIndex: number,
 ) {
   useEffect(() => {
-    if (!mapInstance || !currDateData || currDateData.length === 0) {
+    if (!mapInstance || !currDateData || currDateData.length === 0 || (isPlaying === false && currentDateIndex === 0)) {
       console.log("Waiting for map instance or daily traffic data...");
       // Optionally, clear the layer if data becomes unavailable
       if (mapInstance && dataLayerRef.current) {

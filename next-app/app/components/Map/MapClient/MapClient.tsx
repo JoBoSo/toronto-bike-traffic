@@ -118,7 +118,7 @@ export default function MapClient({ isSidebarCollapsed }: MapClientProps) {
   );
   useGetDailyTrafficData(mapInstance);
   const currDayData = useSetCurrDayData(dateRangeData, currentDateIndex);
-  useMarkDailyTraffic(mapInstance, currDayData, counterLocations, dataLayerRef);
+  useMarkDailyTraffic(mapInstance, currDayData, counterLocations, dataLayerRef, isPlaying, currentDateIndex);
   useInitDateArray(dateRange, setDateArray, setCurrentDateIndex);
 
   //// Base Map Toggle
