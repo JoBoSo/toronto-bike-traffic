@@ -32,13 +32,13 @@ export function useTimeColorOverlay(
     const isInitialState = (!timeIsPlaying && currentTime === "00:00:00") || isPlaying;
 
     if (isInitialState) {
-        // Remove the overlay by setting opacity to 0 (fully transparent)
-        if (overlayRef.current) {
-            overlayRef.current.setStyle({
-                fillOpacity: 0,
-            });
-        }
-        return; // Exit the effect early
+      // Remove the overlay by setting opacity to 0 (fully transparent)
+      if (overlayRef.current) {
+        overlayRef.current.setStyle({
+          fillOpacity: 0,
+        });
+      }
+      return; // Exit the effect early
     }
 
     // 1. Define bounds for the world (or a slightly oversized area)
