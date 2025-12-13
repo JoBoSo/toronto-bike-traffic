@@ -9,8 +9,20 @@ export function useMark24HrTraffic(
   currtwentyFourHrCycleData: any, 
   dataLayerRef: React.MutableRefObject<L.LayerGroup | null>,
   currentTime: string,
+  timeIsPlaying: boolean, 
+  currentTimeIndex: number,
 ) {
   useEffect(() => {
+    if (!mapInstance || !currtwentyFourHrCycleData || (timeIsPlaying === false && currentTimeIndex === 0)) {
+      // console.log("Waiting for map instance or daily traffic data...");
+      // Optionally, clear the layer if data becomes unavailable
+      if (mapInstance && dataLayerRef.current) {
+        mapInstance.removeLayer(dataLayerRef.current);
+        dataLayerRef.current = null;
+      }
+      return;
+    }
+
     if (mapInstance && currtwentyFourHrCycleData) {
       console.log("Rendering circle marker 24 hour cycle data");
 

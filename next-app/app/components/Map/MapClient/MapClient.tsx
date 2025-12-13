@@ -109,7 +109,7 @@ export default function MapClient({ isSidebarCollapsed }: MapClientProps) {
     hr24TrafficData,
     playIntervalRef
   )
-  useMark24HrTraffic(mapInstance, currHr24CycleData, dataLayerRef, currentTime);
+  useMark24HrTraffic(mapInstance, currHr24CycleData, dataLayerRef, currentTime, timeIsPlaying, currentTimeIndex);
   useTimeColorOverlay(mapInstance, currentTime, timeIsPlaying, isPlaying);
 
   //// Daily Traffic Player
