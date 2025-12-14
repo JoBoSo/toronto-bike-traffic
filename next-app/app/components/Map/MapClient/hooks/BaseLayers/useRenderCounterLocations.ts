@@ -23,6 +23,7 @@ export function useRenderCounterLocations(
           const first_active = feature.properties.first_active.toString()
           const last_active = feature.properties.last_active.toString()
           layer.bindPopup(`
+            <b>Cyclist Counting Device</b><br/>
             <b>${location_name} (#${location_dir_id})</b>
             <p style="margin: 2px 0;">${direction}</p>
             <p style="margin: 2px 0;">Active from ${first_active} to ${last_active}</p>
