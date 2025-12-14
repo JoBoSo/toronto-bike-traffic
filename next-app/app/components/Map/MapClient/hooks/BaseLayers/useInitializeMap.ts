@@ -18,6 +18,12 @@ export function useInitializeMap(
         attributionControl: false,
       });
 
+      L.control.scale({
+        position: 'bottomleft',
+        metric: true,
+        imperial: false
+      }).addTo(map);
+
       map.createPane("labelsPane");
       map.getPane("labelsPane")!.style.zIndex = "615";
 
