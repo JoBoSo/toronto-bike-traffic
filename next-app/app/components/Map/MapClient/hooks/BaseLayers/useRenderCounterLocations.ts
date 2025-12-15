@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import L, { Map as LeafletMap } from "leaflet";
-import styles from "@/components/Map/MapClient/hooks/BaseLayers/useRanderCounterLocations.module.scss";
+import styles from "@/components/Map/MapClient/hooks/BaseLayers/useRenderCounterLocations.module.scss";
 
 export function useRenderCounterLocations(
   mapInstance: LeafletMap | null,
