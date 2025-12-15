@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import L, { Map as LeafletMap } from "leaflet";
-import { useAnimatedDashFlow } from "@/components/Map/MapClient/hooks/useAnimatedDashFlow";
 
 export function useRenderCyclingNetwork(
   mapInstance: LeafletMap | null,
