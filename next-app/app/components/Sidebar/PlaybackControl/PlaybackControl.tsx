@@ -2,7 +2,7 @@
 
 import React from "react";
 import styles from "@/components/Sidebar/PlaybackControl/PlaybackControl.module.scss";
-import { Loader2 } from 'lucide-react';
+import { Loader2, Play, Pause, RotateCcw } from 'lucide-react';
 
 interface PlaybackControlProps {
   dataIsLoaded: boolean;
@@ -30,7 +30,7 @@ const PlaybackControl: React.FC<PlaybackControlProps> = ({
           >
             {dataIsLoaded ? 
               <Loader2 className="size-full align-middle animate-spin" /> 
-              : (isPlaying ? "⏸" : "▶")
+              : (isPlaying ? <Pause className={styles.lucidIcon} /> : <Play className={styles.lucidIcon} />)
             }
           </button>
         </div>
@@ -53,7 +53,7 @@ const PlaybackControl: React.FC<PlaybackControlProps> = ({
             >
               {dataIsLoaded ? 
                 <Loader2 className="size-full align-middle animate-spin" /> 
-                : '⟲'
+                : <RotateCcw className={styles.lucidIcon} />
               }
             </button>
           </div>
