@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlaskApi } from "@/src/apis/flaskApi/flaskApi";
+import { FlaskApi } from "@/src/apis/flaskApi";
 import { CyclingNetworkPkgClient } from '@/src/apis/torontoOpenDataApi/clients/CyclingNetworkPkgClient';
 import { 
     PermanentBicycleCountersPkgClient
