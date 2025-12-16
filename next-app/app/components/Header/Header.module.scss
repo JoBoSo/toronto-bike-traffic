@@ -1,3 +1,5 @@
+$breakpoint-mobile: 680px;
+
 .header {
   height: 50px;
   width: 100%;
@@ -16,5 +18,10 @@
     color: white;
     font-size: 16pt;
     font-weight: bold;
+    white-space: nowrap;
+
+    @media (max-width: $breakpoint-mobile) {
+      font-size: 12pt;
+    }
   }
 }
