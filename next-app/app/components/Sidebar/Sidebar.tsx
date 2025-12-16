@@ -103,9 +103,15 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
       {/* Sidebar content */}
       <div className={styles.content}>
 
+        <div className={styles.section}>
+          {/* <b className={styles.sectionHeader}>Toronto Bike Traffic Visualizer</b> */}
+          <p className={styles.sectionDescription}>Explore data collected by the City of Toronto's bicycle counting devices.</p>
+        </div>
+
         {/* Date range selector */}
         <div className={styles.section}>
-          <p className={styles.sectionHeader}>Period</p>
+          <b className={styles.sectionHeader}>Period</b>
+          <p className={styles.sectionDescription}>The bike traffic data visualizations will cover this period.</p>
           <DateRangePicker
             dateRange={dateRange}
             onChange={(update) => {
@@ -119,7 +125,8 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
 
         {/* Play avg traffic in 15 min increments across 24 hours */}
         <div className={styles.section}>
-          <p className={styles.sectionHeader}>Play 24hr traffic</p>
+          <b className={styles.sectionHeader}>24 Hour Traffic</b>
+          <p className={styles.sectionDescription}>See bike traffic in 15 minute intervals over an entire day, averaged across the period.</p>
           <PlaybackControl
             dataIsLoaded={loadingHr24TrafficData}
             isPlaying={timeIsPlaying}
@@ -137,7 +144,8 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
 
         {/* Date Range Play/Pause */}
         <div className={styles.section}>
-          <p className={styles.sectionHeader}>Play daily traffic</p>
+          <b className={styles.sectionHeader}>Daily Traffic</b>
+          <p className={styles.sectionDescription}>See total daily traffic for each day in the period.</p>
           <PlaybackControl
             dataIsLoaded={loadingDailyTrafficData}
             isPlaying={isPlaying}
