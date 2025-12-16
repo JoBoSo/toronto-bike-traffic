@@ -1,4 +1,4 @@
-import { get } from "../apiDataFetcher";
+import { get } from "@/src/apis/apiDataFetcher";
 import { 
   FifteenMinCountsResponse,
   DailyCountsResponse,
