@@ -6,8 +6,45 @@ import os
 import sqlite3
 import json
 import pandas as pd
+from typing import Any
+
+# Define a utility function for serialization
+def serialize_complex_object(obj: Any) -> str:
+    """
+    Serializes a complex Python object (like a custom class instance or dict) 
+    into a JSON string for Parquet compatibility.
+    """
+    if obj is None:
+        return ""
+    
+    # 1. Handle common serialization types first (dicts, lists)
+    if isinstance(obj, (dict, list)):
+        try:
+            return json.dumps(obj)
+        except TypeError:
+            # Fall through if dict/list contains un-serializable objects (e.g., datetime objects)
+            pass
+
+    # 2. Handle custom objects (like your Geometry class)
+    # Check for common serialization methods
+    if hasattr(obj, 'to_dict'):
+        return json.dumps(obj.to_dict())
+    
+    if hasattr(obj, '__dict__'):
+        # Handles simple classes/dataclasses by serializing their attributes
+        return json.dumps(obj.__dict__)
+
+    # 3. Final fallback: simple string representation
+    return str(obj)
 
 class BicycleCountersLoader(BicycleCountersClient, ParquetLoader, DataModeller):
+
+    async def counter_locations_to_parquet(self) -> None:        
+        results = await self.get_counter_locations()
+        df = pd.DataFrame([r.__dict__ for r in results])
+        df['geometry'] = df['geometry'].apply(serialize_complex_object)
+        df['properties'] = df['properties'].apply(serialize_complex_object)
+        self.df_to_parquet(df, "./data/counter_locations.parquet", overwrite=True)
 
     async def load_counter_locations_into_sqlite(self):
         # Ensure database directory exists
