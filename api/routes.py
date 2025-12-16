@@ -11,6 +11,7 @@ load_dotenv(dotenv_path=dotenv_path)
 
 BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = Path(os.getenv("DATA_DIR", str(BASE_DIR / "data"))).resolve()
+COUNTS_LOCATIONS_FILE = DATA_DIR / "counter_locations.parquet"
 COUNTS_15M_FILE = DATA_DIR / "counts_15m.parquet"
 COUNTS_DAILY_FILE = DATA_DIR / "counts_daily.parquet"
 DB_PATH = os.path.join(os.path.dirname(__file__), os.getenv('DB_PATH'))
@@ -62,6 +63,24 @@ def get_monthly_counts():
 def get_yearly_counts():
     """Endpoint to return data from the yearly count records."""
     return get_table('annual_bicycle_counts')
+
+@api_bp.route('/counter-locations', methods=['GET'])
+def get_counter_locations():
+    location_dir_id = request.args.get('location_dir_id')
+    
+    df = pd.read_parquet(COUNTS_LOCATIONS_FILE)
+    
+    if location_dir_id:
+        mask = df["id"] == int(location_dir_id)
+        print(mask)
+        filtered_df = df.loc[mask]
+    else:
+        filtered_df = df.copy()
+
+    if filtered_df.empty:
+        return jsonify([]), 200
+    
+    return jsonify(filtered_df.to_dict(orient="records")), 200
 
 @api_bp.route('/daily-counts-in-date-range')
 def get_daily_counts_in_date_range():
