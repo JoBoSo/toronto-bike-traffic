@@ -1,0 +1,335 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "id": 1,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -79.3681194,
+                    43.6738047
+                ]
+            },
+            "properties": {
+                "name": "Bloor St E, west of Castle Frank Rd",
+                "location_dir_ids": [
+                    1,
+                    2
+                ],
+                "last_active": "2019-06-13T00:00:00.000"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 12,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -79.494202,
+                    43.6491724
+                ]
+            },
+            "properties": {
+                "name": "Bloor St W, east of Old Mill Trl",
+                "location_dir_ids": [
+                    12,
+                    13
+                ],
+                "last_active": "2025-11-04T00:00:00.000"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 8,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -79.413093,
+                    43.6647258
+                ]
+            },
+            "properties": {
+                "name": "Bloor St W, east of Palmerston Blvd",
+                "location_dir_ids": [
+                    8,
+                    9,
+                    10,
+                    11
+                ],
+                "last_active": "2025-11-04T00:00:00.000"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 5,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -79.4022396,
+                    43.6670654
+                ]
+            },
+            "properties": {
+                "name": "Bloor St W, west of Huron St",
+                "location_dir_ids": [
+                    5,
+                    6,
+                    7
+                ],
+                "last_active": "2023-07-22T00:00:00.000"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 3,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -79.4625696,
+                    43.6541459
+                ]
+            },
+            "properties": {
+                "name": "Bloor St W, west of Oakmount Rd",
+                "location_dir_ids": [
+                    3,
+                    4
+                ],
+                "last_active": "2025-11-04T00:00:00.000"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 36,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -79.49192,
+                    43.766102
+                ]
+            },
+            "properties": {
+                "name": "Keele St, north of Four Winds Dr (multi-use path)",
+                "location_dir_ids": [
+                    36,
+                    37
+                ],
+                "last_active": "2025-11-04T00:00:00.000"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 14,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -79.4861368,
+                    43.7444884
+                ]
+            },
+            "properties": {
+                "name": "Keele St, south of Sheppard Ave W (multi-use path)",
+                "location_dir_ids": [
+                    14,
+                    15
+                ],
+                "last_active": "2025-11-04T00:00:00.000"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 603,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -79.348918,
+                    43.697263
+                ]
+            },
+            "properties": {
+                "name": "Millwood Rd, north of Pape Ave/Donlands Ave",
+                "location_dir_ids": [
+                    603,
+                    604
+                ],
+                "last_active": "2025-07-09T00:00:00.000"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 38,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -79.5145151,
+                    43.773275
+                ]
+            },
+            "properties": {
+                "name": "Murray Ross Pkwy, north of Shoreham Dr (multi-use path)",
+                "location_dir_ids": [
+                    38,
+                    39
+                ],
+                "last_active": "2025-08-10T00:00:00.000"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 16,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -79.4921287,
+                    43.743467
+                ]
+            },
+            "properties": {
+                "name": "Sheppard Ave W, west of Sentinel Rd (multi-use path)",
+                "location_dir_ids": [
+                    16,
+                    17
+                ],
+                "last_active": "2025-09-03T00:00:00.000"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 18,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -79.3725671,
+                    43.662038
+                ]
+            },
+            "properties": {
+                "name": "Sherbourne St, north of Gerrard St",
+                "location_dir_ids": [
+                    18,
+                    19,
+                    20,
+                    21
+                ],
+                "last_active": "2025-11-04T00:00:00.000"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 22,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -79.375044,
+                    43.6679708
+                ]
+            },
+            "properties": {
+                "name": "Sherbourne St, north of Wellesley St E",
+                "location_dir_ids": [
+                    22,
+                    23,
+                    24,
+                    25
+                ],
+                "last_active": "2025-11-04T00:00:00.000"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 26,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -79.3868925,
+                    43.6705587
+                ]
+            },
+            "properties": {
+                "name": "Yonge St, north of Bloor St",
+                "location_dir_ids": [
+                    26,
+                    27
+                ],
+                "last_active": "2025-11-04T00:00:00.000"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 28,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -79.3880628,
+                    43.6734429
+                ]
+            },
+            "properties": {
+                "name": "Yonge St, north of Davenport Rd",
+                "location_dir_ids": [
+                    28,
+                    29
+                ],
+                "last_active": "2025-11-04T00:00:00.000"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 30,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -79.3905663,
+                    43.6795414
+                ]
+            },
+            "properties": {
+                "name": "Yonge St, north of Macpherson Ave",
+                "location_dir_ids": [
+                    30,
+                    31
+                ],
+                "last_active": "2025-07-24T00:00:00.000"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 32,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -79.3944265,
+                    43.6888532
+                ]
+            },
+            "properties": {
+                "name": "Yonge St, north of St Clair Ave",
+                "location_dir_ids": [
+                    32,
+                    33
+                ],
+                "last_active": "2025-11-04T00:00:00.000"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 34,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -79.3965356,
+                    43.697978
+                ]
+            },
+            "properties": {
+                "name": "Yonge St, south of Davisville Ave",
+                "location_dir_ids": [
+                    34,
+                    35
+                ],
+                "last_active": "2025-11-04T00:00:00.000"
+            }
+        }
+    ]
+}

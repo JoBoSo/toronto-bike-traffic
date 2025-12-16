@@ -9,7 +9,7 @@ async def main():
 
     async def data_files_use_in_app():
         print("Perparing data files used in app")
-        await bcl.counter_groups_to_json()
+        await bcl.counter_groups_to_geojson()
         await bcl.counter_locations_to_geojson()
         await bcl.counts_daily_to_parquet()
         await bcl.counts_15m_to_parquet()
