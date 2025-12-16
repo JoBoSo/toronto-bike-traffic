@@ -2,12 +2,12 @@ from etl_pipelines.bicycle_counters.client import BicycleCountersClient
 from modules.parquet_loader import ParquetLoader
 from modules.json_loader import JsonLoader
 from modules.data_modeller import DataModeller
-from etl_pipelines.bicycle_counters.models import (DailyCount)
+from etl_pipelines.bicycle_counters.models import (DailyCount, CounterLocation)
 import os
 import sqlite3
 import json
 import pandas as pd
-from typing import Any
+from dataclasses import asdict
 
 class BicycleCountersLoader(BicycleCountersClient, ParquetLoader, JsonLoader, DataModeller):
 
@@ -15,6 +15,78 @@ class BicycleCountersLoader(BicycleCountersClient, ParquetLoader, JsonLoader, Da
         results = await self.get_counter_locations_raw()
         file_path = "./data/counter_locations.geojson"
         self.save_to_json(results, file_path, overwrite=True)
+
+    async def counter_groups_to_json(self) -> None:
+        # --- Part 1: Data Preparation and Cleaning ---
+        results = await self.get_counter_locations()
+        data_dicts = [asdict(r) for r in results]
+        df = pd.json_normalize(data_dicts)
+        
+        # 1. Rename and Select Columns
+        # Note: 'properties.last_active' is added to the rename dictionary
+        df = df.rename(
+            columns={
+                'properties.location_name': 'location_name',
+                'properties.location_dir_id': 'location_dir_id',
+                'properties.last_active': 'last_active',
+                'geometry.coordinates': 'coordinates',
+            }
+        )
+        df = df[['location_name', 'location_dir_id', 'last_active', 'coordinates']]
+        
+        # 2. Data Cleaning for Grouping
+        df['location_name'] = df['location_name'].str.replace(' (retired)', '', regex=False)
+        # Convert 'last_active' to datetime objects for accurate comparison (crucial for max())
+        df['last_active'] = pd.to_datetime(df['last_active'], errors='coerce') 
+        # Convert lists of coordinates to tuples for hashability (required for any grouping/merging)
+        df['coordinates'] = df['coordinates'].apply(tuple)
+        
+        # --- Part 2: Grouping and Aggregation ---
+        
+        GROUP_KEY = 'location_name'
+        
+        # 1. Get the list of IDs (using sum to flatten if IDs are already lists)
+        #    AND find the maximum 'last_active' date for each group.
+        #    We use 'list' for the IDs first, then flatten the result later.
+        id_date_agg = df.groupby(GROUP_KEY).agg(
+            location_dir_ids=('location_dir_id', list), # Collect all IDs into a list
+            max_active_date=('last_active', 'max')      # Find the latest date
+        ).reset_index()
+
+        # 2. Find the coordinates associated with the maximum date.
+        #    a. Find the index (row number in the original df) corresponding to the max date for each group.
+        latest_index = df.groupby(GROUP_KEY)['last_active'].idxmax()
+        
+        #    b. Use .loc to pull the full rows (which contain the coordinates) corresponding to those indices.
+        latest_rows = df.loc[latest_index]
+        
+        # 3. Prepare the Coordinate and Max Date columns for merging
+        coords_for_merge = latest_rows[[GROUP_KEY, 'coordinates', 'last_active']].rename(
+            columns={'coordinates': 'max_date_coordinates'}
+        )
+        
+        # 4. Merge the ID/MaxDate aggregation with the Coordinates extracted from the latest row.
+        final_df = pd.merge(
+            id_date_agg,
+            coords_for_merge[[GROUP_KEY, 'max_date_coordinates']],
+            on=GROUP_KEY,
+            how='left'
+        )
+        
+        # 5. Final output format cleanup (reorder columns and rename max_active_date)
+        final_df = final_df.rename(columns={'max_active_date': 'last_active'})
+        
+        final_df = final_df[[
+            GROUP_KEY, 
+            'max_date_coordinates', 
+            'last_active', 
+            'location_dir_ids'
+        ]]
+        
+        # 6. Save or Print Result
+        # print(final_df)
+        # If you needed to save to JSON/GeoJSON, you'd add:
+        self.df_to_json(final_df, './data/counter_groups.json', overwrite=True, orient='records')
 
     async def load_counter_locations_into_sqlite(self):
         # Ensure database directory exists

@@ -13,6 +13,7 @@ load_dotenv(dotenv_path=dotenv_path)
 BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = Path(os.getenv("DATA_DIR", str(BASE_DIR / "data"))).resolve()
 COUNTER_LOCATIONS_FILE = DATA_DIR / "counter_locations.geojson"
+COUNTER_GROUPS_FILE = DATA_DIR / "counter_groups.json"
 COUNTS_15M_FILE = DATA_DIR / "counts_15m.parquet"
 COUNTS_DAILY_FILE = DATA_DIR / "counts_daily.parquet"
 DB_PATH = os.path.join(os.path.dirname(__file__), os.getenv('DB_PATH'))
@@ -65,57 +66,140 @@ def get_yearly_counts():
     """Endpoint to return data from the yearly count records."""
     return get_table('annual_bicycle_counts')
 
-def load_geojson_data():
-    """Loads the GeoJSON data from file, potentially using an application cache."""
-    # Check if data is already cached in the Flask app context
-    if not hasattr(current_app, 'location_geojson_cache'):
-        try:
-            with open(current_app.config['COUNTER_LOCATIONS_FILE'], 'r', encoding='utf-8') as f:
-                data = json.load(f)
-            current_app.location_geojson_cache = data
-        except FileNotFoundError:
-            raise FileNotFoundError(f"GeoJSON file not found at {current_app.config['COUNTER_LOCATIONS_FILE']}")
-        except json.JSONDecodeError:
-            raise ValueError(f"Error decoding GeoJSON from {current_app.config['COUNTER_LOCATIONS_FILE']}")
+def load_data_from_cache(
+    file_path_config_key: str, 
+    cache_attribute_name: str, 
+    is_required: bool = True
+) -> dict:
+    """
+    Loads data from a file path specified in Flask config, caches it in 
+    the current_app instance, and returns a copy of the cached data.
+
+    :param file_path_config_key: The key in current_app.config that holds the file path.
+    :param cache_attribute_name: The attribute name to use for caching on current_app 
+                                 (e.g., 'location_geojson_cache').
+    :param is_required: If True, raises FileNotFoundError if the file is missing.
+    :return: A copy of the loaded data (dictionary or list).
+    """
     
-    return current_app.location_geojson_cache.copy()
+    # Check if the data is already cached
+    if not hasattr(current_app, cache_attribute_name):
+        
+        file_path = current_app.config.get(file_path_config_key)
+        
+        if not file_path:
+            raise RuntimeError(f"Configuration key '{file_path_config_key}' is not set in Flask config.")
+
+        try:
+            # 1. Attempt to open and load the file
+            with open(file_path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                
+            # 2. Cache the data on the current_app instance
+            setattr(current_app, cache_attribute_name, data)
+            print(f"✅ Data loaded and cached successfully from: {file_path}")
+
+        except FileNotFoundError:
+            if is_required:
+                raise FileNotFoundError(f"Data file not found at {file_path}")
+            else:
+                # If not required, set cache to empty and return
+                empty_data = {"type": "FeatureCollection", "features": []}
+                setattr(current_app, cache_attribute_name, empty_data)
+                return empty_data.copy()
+            
+        except json.JSONDecodeError:
+            raise ValueError(f"Error decoding JSON data from {file_path}. File might be corrupted.")
+    
+    # Return a copy of the cached data to prevent accidental modification
+    return getattr(current_app, cache_attribute_name).copy()
 
 @api_bp.route('/counter-locations', methods=['GET'])
 def get_counter_locations():
+    
+    # Set the file path configuration key before calling the loader
     current_app.config['COUNTER_LOCATIONS_FILE'] = COUNTER_LOCATIONS_FILE
 
+    # Load the data using the robust generalized cache function
     try:
-        full_geojson = load_geojson_data()
+        full_geojson = load_data_from_cache(
+            file_path_config_key='COUNTER_LOCATIONS_FILE',
+            cache_attribute_name='location_geojson_cache'
+        )
     except Exception as e:
+        # Catches exceptions raised by load_data_from_cache (FileNotFound, JSONDecodeError, etc.)
         return jsonify({"error": str(e)}), 500
 
+    # Get the optional filter parameter
     location_dir_id = request.args.get('location_dir_id')
 
+    # Filtering Logic
     if location_dir_id:
         try:
+            # Convert the request argument to a string ID for comparison
             target_id_str = str(int(location_dir_id))
         except ValueError:
             return jsonify({"error": "Invalid location_dir_id format. Must be an integer-like string."}), 400
 
+        # Perform the filter using native Python list comprehension
         filtered_features = [
             feature
             for feature in full_geojson.get('features', [])
+            # Filtering based on the GeoJSON 'id' key
             if str(feature.get('id')) == target_id_str
-            # OR, if ID is stored in properties:
-            # if str(feature.get('properties', {}).get('location_dir_id')) == target_id_str 
         ]
 
+        # Wrap filtered results in a GeoJSON FeatureCollection
         result_geojson = {
             "type": "FeatureCollection",
             "features": filtered_features
         }
     else:
+        # If no filter, return the entire cached GeoJSON object
         result_geojson = full_geojson
     
+    # Ensure 'features' key exists and is a list (handles the empty case)
     if not result_geojson.get('features'):
         result_geojson['features'] = []
         
+    # Return the final GeoJSON result
     return jsonify(result_geojson), 200
+
+@api_bp.route('/counter-groups', methods=['GET'])
+def get_counter_groups():
+    """
+    Reads the pre-aggregated counter group data from the JSON file, 
+    using application-level caching to prevent file I/O on subsequent requests.
+    Returns the data as a JSON response.
+    """
+    
+    # 1. Set the file path configuration key
+    current_app.config['COUNTER_GROUPS_FILE'] = COUNTER_GROUPS_FILE
+    
+    # 2. Load the data using the generalized cache function
+    try:
+        # Use a new, unique cache attribute name for this dataset
+        counter_groups_data = load_data_from_cache(
+            file_path_config_key='COUNTER_GROUPS_FILE',
+            cache_attribute_name='counter_groups_cache' 
+        )
+        #  
+        # The caching function handles the file reading and memory storage.
+        
+    except FileNotFoundError:
+        # If the file is missing, the aggregation job hasn't run yet.
+        return jsonify({
+            "error": f"Aggregated data file not found at {COUNTER_GROUPS_FILE}. Please run the counter aggregation job first."
+        }), 404
+    
+    except Exception as e:
+        # Catches JSONDecodeError, RuntimeError, and other errors from the loader
+        return jsonify({"error": f"Failed to load counter groups data: {e}"}), 500
+
+    # 3. Return the cached data
+    # Since the data is already aggregated and cleaned (list of dictionaries), 
+    # we just jsonify it directly.
+    return jsonify(counter_groups_data), 200
 
 @api_bp.route('/daily-counts-in-date-range')
 def get_daily_counts_in_date_range():
