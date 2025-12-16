@@ -5,7 +5,7 @@ import asyncio
 async def main():
     print("Starting ETL process")
     bcl = BicycleCountersLoader()
-    await bcl.counter_locations_to_parquet()
+    await bcl.counter_locations_to_geojson()
     await bcl.counts_daily_to_parquet()
     await bcl.counts_15m_to_parquet()
     # await bcl.load_counter_locations_into_sqlite()

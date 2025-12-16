@@ -1,4 +1,5 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, current_app
+import json
 import pandas as pd
 from .db import get_db
 import sqlite3
@@ -11,7 +12,7 @@ load_dotenv(dotenv_path=dotenv_path)
 
 BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = Path(os.getenv("DATA_DIR", str(BASE_DIR / "data"))).resolve()
-COUNTS_LOCATIONS_FILE = DATA_DIR / "counter_locations.parquet"
+COUNTER_LOCATIONS_FILE = DATA_DIR / "counter_locations.geojson"
 COUNTS_15M_FILE = DATA_DIR / "counts_15m.parquet"
 COUNTS_DAILY_FILE = DATA_DIR / "counts_daily.parquet"
 DB_PATH = os.path.join(os.path.dirname(__file__), os.getenv('DB_PATH'))
@@ -64,23 +65,57 @@ def get_yearly_counts():
     """Endpoint to return data from the yearly count records."""
     return get_table('annual_bicycle_counts')
 
+def load_geojson_data():
+    """Loads the GeoJSON data from file, potentially using an application cache."""
+    # Check if data is already cached in the Flask app context
+    if not hasattr(current_app, 'location_geojson_cache'):
+        try:
+            with open(current_app.config['COUNTER_LOCATIONS_FILE'], 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            current_app.location_geojson_cache = data
+        except FileNotFoundError:
+            raise FileNotFoundError(f"GeoJSON file not found at {current_app.config['COUNTER_LOCATIONS_FILE']}")
+        except json.JSONDecodeError:
+            raise ValueError(f"Error decoding GeoJSON from {current_app.config['COUNTER_LOCATIONS_FILE']}")
+    
+    return current_app.location_geojson_cache.copy()
+
 @api_bp.route('/counter-locations', methods=['GET'])
 def get_counter_locations():
-    location_dir_id = request.args.get('location_dir_id')
-    
-    df = pd.read_parquet(COUNTS_LOCATIONS_FILE)
-    
-    if location_dir_id:
-        mask = df["id"] == int(location_dir_id)
-        print(mask)
-        filtered_df = df.loc[mask]
-    else:
-        filtered_df = df.copy()
+    current_app.config['COUNTER_LOCATIONS_FILE'] = COUNTER_LOCATIONS_FILE
 
-    if filtered_df.empty:
-        return jsonify([]), 200
+    try:
+        full_geojson = load_geojson_data()
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+    location_dir_id = request.args.get('location_dir_id')
+
+    if location_dir_id:
+        try:
+            target_id_str = str(int(location_dir_id))
+        except ValueError:
+            return jsonify({"error": "Invalid location_dir_id format. Must be an integer-like string."}), 400
+
+        filtered_features = [
+            feature
+            for feature in full_geojson.get('features', [])
+            if str(feature.get('id')) == target_id_str
+            # OR, if ID is stored in properties:
+            # if str(feature.get('properties', {}).get('location_dir_id')) == target_id_str 
+        ]
+
+        result_geojson = {
+            "type": "FeatureCollection",
+            "features": filtered_features
+        }
+    else:
+        result_geojson = full_geojson
     
-    return jsonify(filtered_df.to_dict(orient="records")), 200
+    if not result_geojson.get('features'):
+        result_geojson['features'] = []
+        
+    return jsonify(result_geojson), 200
 
 @api_bp.route('/daily-counts-in-date-range')
 def get_daily_counts_in_date_range():

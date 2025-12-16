@@ -10,6 +10,11 @@ load_dotenv()
 class BicycleCountersClient(CityOfTorontoClient):
     PACKAGE_ID = "ff7e7369-cbba-4545-9e26-e5a5ef6a123c"
     DB_PATH=os.getenv('DB_PATH')
+
+    async def get_counter_locations_raw(self) -> List[CounterLocation]:
+        resource_name = "cycling_permanent_counts_locations_geojson"
+        data = await self.get_resource_data(self.PACKAGE_ID, resource_name)
+        return data
     
     async def get_counter_locations(self) -> List[CounterLocation]:
         resource_name = "cycling_permanent_counts_locations_geojson"
