@@ -1,4 +1,5 @@
 import React from 'react';
+import { FlaskApi } from "@/src/apis/flaskApi/flaskApi";
 import { CyclingNetworkPkgClient } from '@/src/apis/torontoOpenDataApi/clients/CyclingNetworkPkgClient';
 import { 
     PermanentBicycleCountersPkgClient
@@ -13,8 +14,8 @@ export default async function HomePage() {
   // --- Server-Side Fetching ---
   try {
     // This runs once on the server, fetching the data before the map component loads
-    const pbClient = new PermanentBicycleCountersPkgClient();
-    counterLocations = await pbClient.getCounterLocations();
+    const flaskClient = new FlaskApi();
+    counterLocations = (await flaskClient.getCounterLocations()).features;
 
     const cnClient = new CyclingNetworkPkgClient();
     cyclingNetwork = await cnClient.getGeoJson();
