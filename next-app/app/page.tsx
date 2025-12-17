@@ -8,6 +8,7 @@ import PageContentWrapper from "@/components/PageContentWrapper/PageContentWrapp
 
 export default async function HomePage() {
   let counterLocations: any = null; 
+  let counterGroups: any = null; 
   let cyclingNetwork: any = null; 
   let error: string | null = null;
 
@@ -16,6 +17,7 @@ export default async function HomePage() {
     // This runs once on the server, fetching the data before the map component loads
     const flaskClient = new FlaskApi();
     counterLocations = (await flaskClient.getCounterLocations()).features;
+    counterGroups = (await flaskClient.getCounterGroups()).features;
 
     const cnClient = new CyclingNetworkPkgClient();
     cyclingNetwork = await cnClient.getGeoJson();
@@ -40,6 +42,7 @@ export default async function HomePage() {
   return (
       <PageContentWrapper 
         counterLocations={counterLocations} 
+        counterGroups={counterGroups} 
         cyclingNetwork={cyclingNetwork} 
       />
   );
