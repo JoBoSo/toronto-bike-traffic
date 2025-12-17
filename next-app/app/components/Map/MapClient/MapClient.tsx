@@ -13,6 +13,7 @@ import { useMapContext } from "@/src/contexts/MapContext";
 // Hooks
 import { useInitializeMap } from "@/components/Map/MapClient/hooks/BaseLayers/useInitializeMap";
 import { useRenderCounterLocations } from "@/components/Map/MapClient/hooks/BaseLayers/useRenderCounterLocations";
+import { useRenderConsolidatedCounterLocations } from "@/components/Map/MapClient/hooks/BaseLayers/useRenderConsolidatedCounterLocations";
 import { useRenderCyclingNetwork } from "@/components/Map/MapClient/hooks/BaseLayers/useRenderCyclingNetwork";
 import { useControl24HrTrafficPlayer } from "@/components/Map/MapClient/hooks/Play24HrTraffic/useControl24HrTrafficPlayer";
 import { useInitTimeArray } from "@/components/Map/MapClient/hooks/Play24HrTraffic/useInitTimeArray"
@@ -94,7 +95,8 @@ export default function MapClient({ isSidebarCollapsed }: MapClientProps) {
   //// Base Layers
   useInitializeMap(mapRef, mapInstance, setMapInstance);
   useRenderCyclingNetwork(mapInstance, cyclingNetwork);
-  useRenderCounterLocations(mapInstance, counterLocations);
+  // useRenderCounterLocations(mapInstance, counterLocations);
+  useRenderConsolidatedCounterLocations(mapInstance, counterGroups);
 
   //// 24 Hour Traffic Player
   useGet24HrTraffic(counterLocations);
