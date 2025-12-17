@@ -12,6 +12,7 @@ import { useMapContext } from "@/src/contexts/MapContext";
 
 // Hooks
 import { useInitializeMap } from "@/components/Map/MapClient/hooks/BaseLayers/useInitializeMap";
+import { useFitMapToContainer } from "@/components/Map/MapClient/hooks/BaseLayers/useFitMapToContainer";
 import { useRenderCounterLocations } from "@/components/Map/MapClient/hooks/BaseLayers/useRenderCounterLocations";
 import { useRenderConsolidatedCounterLocations } from "@/components/Map/MapClient/hooks/BaseLayers/useRenderConsolidatedCounterLocations";
 import { useRenderCyclingNetwork } from "@/components/Map/MapClient/hooks/BaseLayers/useRenderCyclingNetwork";
@@ -78,25 +79,12 @@ export default function MapClient({ isSidebarCollapsed }: MapClientProps) {
   const playIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Hooks
-
-  //// Invalidate Map size when container changes
-  useEffect(() => {
-    if (mapInstance) {
-      // Use setTimeout to wait for the CSS transition (0.3s) to finish 
-      // before Leaflet measures the new container size.
-      const timer = setTimeout(() => {
-        mapInstance.invalidateSize();
-      }, 0); // milliseconds to wait before reseting container size must match sidebar transition css
-
-      return () => clearTimeout(timer);
-    }
-  }, [mapInstance, isSidebarCollapsed]); // Re-run when map loads or sidebar state changes
-
   //// Base Layers
   useInitializeMap(mapRef, mapInstance, setMapInstance);
   useRenderCyclingNetwork(mapInstance, cyclingNetwork);
   // useRenderCounterLocations(mapInstance, counterLocations);
   useRenderConsolidatedCounterLocations(mapInstance, counterGroups);
+  useFitMapToContainer(mapInstance, isSidebarCollapsed);
 
   //// 24 Hour Traffic Player
   useGet24HrTraffic(counterLocations);
