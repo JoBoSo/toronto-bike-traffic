@@ -11,6 +11,10 @@ class BicycleCountersClient(CityOfTorontoClient):
     PACKAGE_ID = "ff7e7369-cbba-4545-9e26-e5a5ef6a123c"
     DB_PATH=os.getenv('DB_PATH')
 
+    def parse_model(self, model_cls, data: Dict[str, Any]):
+        """General helper to instantiate classes with nested dicts."""
+        return model_cls(**data)
+
     async def get_counter_locations_raw(self) -> List[CounterLocation]:
         resource_name = "cycling_permanent_counts_locations_geojson"
         data = await self.get_resource_data(self.PACKAGE_ID, resource_name)
@@ -20,34 +24,10 @@ class BicycleCountersClient(CityOfTorontoClient):
         resource_name = "cycling_permanent_counts_locations_geojson"
         data = await self.get_resource_data(self.PACKAGE_ID, resource_name)
 
-        def parse_counter_location(data: Dict[str, Any]) -> CounterLocation:
-            return CounterLocation(
-                type=data["type"],
-                id=data["id"],
-                geometry=Geometry(
-                    type=data["geometry"]["type"],
-                    coordinates=data["geometry"]["coordinates"],
-                ),
-                properties=Properties(
-                    bin_size=data["properties"]["bin_size"],
-                    centreline_id=data["properties"]["centreline_id"],
-                    date_decommissioned=data["properties"]["date_decommissioned"],
-                    direction=data["properties"]["direction"],
-                    first_active=data["properties"]["first_active"],
-                    last_active=data["properties"]["last_active"],
-                    latest_calibration_study=data["properties"]["latest_calibration_study"],
-                    linear_name_full=data["properties"]["linear_name_full"],
-                    location_dir_id=data["properties"]["location_dir_id"],
-                    location_name=data["properties"]["location_name"],
-                    side_street=data["properties"]["side_street"],
-                    technology=data["properties"]["technology"],
-                )
-            )
-        
         if not data or "features" not in data:
             return []
         modelled_data = [
-            parse_counter_location(feature)
+            self.parse_model(CounterLocation, feature)
             for feature in data["features"]
         ]
         return modelled_data

@@ -125,7 +125,7 @@ class BicycleCountersLoader(BicycleCountersClient, ParquetLoader, JsonLoader, Da
     async def counts_15m_by_location_name_to_parquet(self) -> None: 
         names_df = gpd.read_file("./data/counter_groups.geojson")
         names_df['coordinates'] = names_df['geometry'].apply(
-            lambda geo: str(list(list(geo.coords)[0]))
+            lambda geo: str (list(list(geo.coords)[0]))
         )
         names_df = names_df[['name', 'location_dir_ids', 'coordinates']]
         names_df = names_df.explode('location_dir_ids')
@@ -152,8 +152,7 @@ class BicycleCountersLoader(BicycleCountersClient, ParquetLoader, JsonLoader, Da
         aggregated_df['location_dir_ids'] = aggregated_df['location_dir_ids'].astype(str)
         final_df = aggregated_df[['name', 'coordinates', 'datetime_bin', 'total_bin_volume', 'location_dir_ids']]
         
-        print(final_df)
-        print(final_df.head(5))
+        print(final_df.head(2))
 
         self.df_to_parquet(final_df, "./data/counts_15m_by_location_name.parquet", overwrite=True)
 
@@ -162,6 +161,41 @@ class BicycleCountersLoader(BicycleCountersClient, ParquetLoader, JsonLoader, Da
         raw_df = pd.DataFrame([r.__dict__ for r in results])
         df = self.model_df(raw_df, DailyCount)
         self.df_to_parquet(df, "./data/counts_daily.parquet", overwrite=True)
+
+    async def counts_daily_by_location_name_to_parquet(self) -> None: 
+        names_df = gpd.read_file("./data/counter_groups.geojson")
+        names_df['coordinates'] = names_df['geometry'].apply(
+            lambda geo: str (list(list(geo.coords)[0]))
+        )
+        names_df = names_df[['name', 'location_dir_ids', 'coordinates']]
+        names_df = names_df.explode('location_dir_ids')
+        names_df.rename(columns={'location_dir_ids': 'location_dir_id'}, inplace=True)
+        names_df['location_dir_id'] = names_df['location_dir_id'].astype('int64')
+
+        counts_response = await self.get_daily_counts()
+        counts_df = pd.DataFrame([r.__dict__ for r in counts_response])
+        counts_df['location_dir_id'] = counts_df['location_dir_id'].astype('int64')
+
+        merged_df = pd.merge(
+            counts_df,
+            names_df,
+            on='location_dir_id',
+            how='left'
+        )
+
+        GROUP_COLS = ['name', 'coordinates', 'dt']
+        aggregated_df = merged_df.groupby(GROUP_COLS).agg(
+            location_dir_ids=('location_dir_id', list),
+            daily_volume=('daily_volume', 'sum')
+        ).reset_index() # Use reset_index() to turn the GroupBy keys back into columns
+        # Convert the list of location_dir_ids to a JSON string for Parquet/storage
+        aggregated_df['location_dir_ids'] = aggregated_df['location_dir_ids'].astype(str)
+        aggregated_df['dt'] = pd.to_datetime(aggregated_df['dt'])
+        final_df = aggregated_df[['name', 'coordinates', 'dt', 'daily_volume', 'location_dir_ids']]
+        
+        print(final_df.head(2))
+
+        self.df_to_parquet(final_df, "./data/counts_daily_by_location_name.parquet", overwrite=True)
 
     async def load_counter_locations_into_sqlite(self):
         os.makedirs(os.path.dirname(self.DB_PATH), exist_ok=True)

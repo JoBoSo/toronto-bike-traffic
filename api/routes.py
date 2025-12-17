@@ -17,6 +17,7 @@ COUNTER_GROUPS_FILE = DATA_DIR / "counter_groups.geojson"
 COUNTS_15M_FILE = DATA_DIR / "counts_15m.parquet"
 COUNTS_15M_BY_LOCATION_NAME_FILE = DATA_DIR / "counts_15m_by_location_name.parquet"
 COUNTS_DAILY_FILE = DATA_DIR / "counts_daily.parquet"
+COUNTS_DAILY_BY_LOCATION_NAME_FILE = DATA_DIR / "counts_daily_by_location_name.parquet"
 DB_PATH = os.path.join(os.path.dirname(__file__), os.getenv('DB_PATH'))
 
 
@@ -230,6 +231,38 @@ def get_daily_counts_in_date_range():
     result_df['dt'] = result_df['dt'].dt.strftime('%a, %d %b %Y %H:%M:%S GMT')
     grouped_data = result_df.groupby('dt').apply(
         lambda x: x[['daily_volume', 'location_dir_id']].to_dict(orient='records')
+    ).to_dict()
+
+    return jsonify(grouped_data), 200
+
+@api_bp.route('/daily-counts-by-location-name-in-date-range')
+def get_daily_counts_by_location_name_in_date_range():
+    start_date = request.args.get('start')  # Format: YYYY-MM-DD
+    end_date = request.args.get('end')      # Format: YYYY-MM-DD
+
+    if not start_date or not end_date:
+        return jsonify({"error": "Missing start or end date"}), 400
+    
+    try:
+        start_dt = pd.to_datetime(start_date)
+        end_dt = pd.to_datetime(end_date)
+    except Exception:
+        return jsonify({"error": "Invalid date format. Use YYYY-MM-DD."}), 400
+    
+    df = pd.read_parquet(COUNTS_DAILY_BY_LOCATION_NAME_FILE)
+    df = df.set_index('dt')
+    df = df.sort_index()
+    
+    filtered_df = df.loc[start_dt:end_dt]
+    filtered_df = filtered_df.reset_index(names=['dt'])
+
+    if filtered_df.empty:
+        return jsonify([]), 200
+    
+    result_df = filtered_df[['name', 'coordinates', "dt", "location_dir_ids", "daily_volume"]].copy()
+    result_df['dt'] = result_df['dt'].dt.strftime('%a, %d %b %Y %H:%M:%S GMT')
+    grouped_data = result_df.groupby('dt').apply(
+        lambda x: x[['name', 'daily_volume', 'location_dir_ids', 'coordinates']].to_dict(orient='records')
     ).to_dict()
 
     return jsonify(grouped_data), 200
