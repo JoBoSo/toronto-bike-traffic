@@ -119,52 +119,40 @@ def load_data_from_cache(
 @api_bp.route('/counter-locations', methods=['GET'])
 def get_counter_locations():
     
-    # Set the file path configuration key before calling the loader
     current_app.config['COUNTER_LOCATIONS_FILE'] = COUNTER_LOCATIONS_FILE
 
-    # Load the data using the robust generalized cache function
     try:
         full_geojson = load_data_from_cache(
             file_path_config_key='COUNTER_LOCATIONS_FILE',
             cache_attribute_name='location_geojson_cache'
         )
     except Exception as e:
-        # Catches exceptions raised by load_data_from_cache (FileNotFound, JSONDecodeError, etc.)
         return jsonify({"error": str(e)}), 500
 
-    # Get the optional filter parameter
     location_dir_id = request.args.get('location_dir_id')
 
-    # Filtering Logic
     if location_dir_id:
         try:
-            # Convert the request argument to a string ID for comparison
             target_id_str = str(int(location_dir_id))
         except ValueError:
             return jsonify({"error": "Invalid location_dir_id format. Must be an integer-like string."}), 400
 
-        # Perform the filter using native Python list comprehension
         filtered_features = [
             feature
             for feature in full_geojson.get('features', [])
-            # Filtering based on the GeoJSON 'id' key
             if str(feature.get('id')) == target_id_str
         ]
 
-        # Wrap filtered results in a GeoJSON FeatureCollection
         result_geojson = {
             "type": "FeatureCollection",
             "features": filtered_features
         }
     else:
-        # If no filter, return the entire cached GeoJSON object
         result_geojson = full_geojson
     
-    # Ensure 'features' key exists and is a list (handles the empty case)
     if not result_geojson.get('features'):
         result_geojson['features'] = []
         
-    # Return the final GeoJSON result
     return jsonify(result_geojson), 200
 
 @api_bp.route('/counter-groups', methods=['GET'])
@@ -174,33 +162,20 @@ def get_counter_groups():
     using application-level caching to prevent file I/O on subsequent requests.
     Returns the data as a JSON response.
     """
-    
-    # 1. Set the file path configuration key
     current_app.config['COUNTER_GROUPS_FILE'] = COUNTER_GROUPS_FILE
     
-    # 2. Load the data using the generalized cache function
     try:
-        # Use a new, unique cache attribute name for this dataset
         counter_groups_data = load_data_from_cache(
             file_path_config_key='COUNTER_GROUPS_FILE',
             cache_attribute_name='counter_groups_cache' 
         )
-        #  
-        # The caching function handles the file reading and memory storage.
-        
     except FileNotFoundError:
-        # If the file is missing, the aggregation job hasn't run yet.
         return jsonify({
             "error": f"Aggregated data file not found at {COUNTER_GROUPS_FILE}. Please run the counter aggregation job first."
         }), 404
-    
     except Exception as e:
-        # Catches JSONDecodeError, RuntimeError, and other errors from the loader
         return jsonify({"error": f"Failed to load counter groups data: {e}"}), 500
 
-    # 3. Return the cached data
-    # Since the data is already aggregated and cleaned (list of dictionaries), 
-    # we just jsonify it directly.
     return jsonify(counter_groups_data), 200
 
 @api_bp.route('/daily-counts-in-date-range')

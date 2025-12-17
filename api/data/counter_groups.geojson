@@ -17,7 +17,12 @@
                     1,
                     2
                 ],
-                "last_active": "2019-06-13T00:00:00.000"
+                "first_active": "1994-06-26T00:00:00.000",
+                "last_active": "2019-06-13T00:00:00.000",
+                "directions": [
+                    "Eastbound",
+                    "Westbound"
+                ]
             }
         },
         {
@@ -36,7 +41,12 @@
                     12,
                     13
                 ],
-                "last_active": "2025-11-04T00:00:00.000"
+                "first_active": "2024-07-31T00:00:00.000",
+                "last_active": "2025-11-04T00:00:00.000",
+                "directions": [
+                    "Eastbound",
+                    "Westbound"
+                ]
             }
         },
         {
@@ -57,7 +67,14 @@
                     10,
                     11
                 ],
-                "last_active": "2025-11-04T00:00:00.000"
+                "first_active": "2018-02-09T00:00:00.000",
+                "last_active": "2025-11-04T00:00:00.000",
+                "directions": [
+                    "Eastbound",
+                    "Westbound",
+                    "Eastbound",
+                    "Westbound"
+                ]
             }
         },
         {
@@ -77,7 +94,13 @@
                     6,
                     7
                 ],
-                "last_active": "2023-07-22T00:00:00.000"
+                "first_active": "2018-02-09T00:00:00.000",
+                "last_active": "2023-07-22T00:00:00.000",
+                "directions": [
+                    "Eastbound",
+                    "Westbound",
+                    "Westbound"
+                ]
             }
         },
         {
@@ -96,7 +119,12 @@
                     3,
                     4
                 ],
-                "last_active": "2025-11-04T00:00:00.000"
+                "first_active": "2023-06-16T00:00:00.000",
+                "last_active": "2025-11-04T00:00:00.000",
+                "directions": [
+                    "Eastbound",
+                    "Westbound"
+                ]
             }
         },
         {
@@ -115,7 +143,12 @@
                     36,
                     37
                 ],
-                "last_active": "2025-11-04T00:00:00.000"
+                "first_active": "2022-06-07T00:00:00.000",
+                "last_active": "2025-11-04T00:00:00.000",
+                "directions": [
+                    "Northbound",
+                    "Southbound"
+                ]
             }
         },
         {
@@ -134,7 +167,12 @@
                     14,
                     15
                 ],
-                "last_active": "2025-11-04T00:00:00.000"
+                "first_active": "2022-08-06T00:00:00.000",
+                "last_active": "2025-11-04T00:00:00.000",
+                "directions": [
+                    "Northbound",
+                    "Southbound"
+                ]
             }
         },
         {
@@ -153,7 +191,12 @@
                     603,
                     604
                 ],
-                "last_active": "2025-07-09T00:00:00.000"
+                "first_active": "2025-07-09T00:00:00.000",
+                "last_active": "2025-07-09T00:00:00.000",
+                "directions": [
+                    "Northbound",
+                    "Southbound"
+                ]
             }
         },
         {
@@ -172,7 +215,12 @@
                     38,
                     39
                 ],
-                "last_active": "2025-08-10T00:00:00.000"
+                "first_active": "2022-05-31T00:00:00.000",
+                "last_active": "2025-08-10T00:00:00.000",
+                "directions": [
+                    "Northbound",
+                    "Southbound"
+                ]
             }
         },
         {
@@ -191,7 +239,12 @@
                     16,
                     17
                 ],
-                "last_active": "2025-09-03T00:00:00.000"
+                "first_active": "2023-03-27T00:00:00.000",
+                "last_active": "2025-09-03T00:00:00.000",
+                "directions": [
+                    "Eastbound",
+                    "Westbound"
+                ]
             }
         },
         {
@@ -212,7 +265,14 @@
                     20,
                     21
                 ],
-                "last_active": "2025-11-04T00:00:00.000"
+                "first_active": "2014-04-11T00:00:00.000",
+                "last_active": "2025-11-04T00:00:00.000",
+                "directions": [
+                    "Northbound",
+                    "Southbound",
+                    "Northbound",
+                    "Southbound"
+                ]
             }
         },
         {
@@ -233,7 +293,14 @@
                     24,
                     25
                 ],
-                "last_active": "2025-11-04T00:00:00.000"
+                "first_active": "2014-04-11T00:00:00.000",
+                "last_active": "2025-11-04T00:00:00.000",
+                "directions": [
+                    "Northbound",
+                    "Southbound",
+                    "Northbound",
+                    "Southbound"
+                ]
             }
         },
         {
@@ -252,7 +319,12 @@
                     26,
                     27
                 ],
-                "last_active": "2025-11-04T00:00:00.000"
+                "first_active": "2022-10-27T00:00:00.000",
+                "last_active": "2025-11-04T00:00:00.000",
+                "directions": [
+                    "Northbound",
+                    "Southbound"
+                ]
             }
         },
         {
@@ -271,7 +343,12 @@
                     28,
                     29
                 ],
-                "last_active": "2025-11-04T00:00:00.000"
+                "first_active": "2022-11-14T00:00:00.000",
+                "last_active": "2025-11-04T00:00:00.000",
+                "directions": [
+                    "Northbound",
+                    "Southbound"
+                ]
             }
         },
         {
@@ -290,7 +367,12 @@
                     30,
                     31
                 ],
-                "last_active": "2025-07-24T00:00:00.000"
+                "first_active": "2022-11-14T00:00:00.000",
+                "last_active": "2025-07-24T00:00:00.000",
+                "directions": [
+                    "Northbound",
+                    "Southbound"
+                ]
             }
         },
         {
@@ -309,7 +391,12 @@
                     32,
                     33
                 ],
-                "last_active": "2025-11-04T00:00:00.000"
+                "first_active": "2022-11-14T00:00:00.000",
+                "last_active": "2025-11-04T00:00:00.000",
+                "directions": [
+                    "Northbound",
+                    "Southbound"
+                ]
             }
         },
         {
@@ -328,7 +415,12 @@
                     34,
                     35
                 ],
-                "last_active": "2025-11-04T00:00:00.000"
+                "first_active": "2022-11-14T00:00:00.000",
+                "last_active": "2025-11-04T00:00:00.000",
+                "directions": [
+                    "Northbound",
+                    "Southbound"
+                ]
             }
         }
     ]

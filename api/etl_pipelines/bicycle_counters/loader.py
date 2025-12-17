@@ -18,39 +18,6 @@ class BicycleCountersLoader(BicycleCountersClient, ParquetLoader, JsonLoader, Da
         file_path = "./data/counter_locations.geojson"
         self.save_to_json(results, file_path, overwrite=True)
 
-    def create_geojson_collection(self, data: List[Dict[str, Any]]) -> Dict[str, Any]:
-        """
-        Converts a list of counter location dictionaries (like the final_df output) 
-        into a GeoJSON FeatureCollection.
-        """
-        features = []
-        
-        for item in data:
-            geometry = {
-                "type": "Point",
-                "coordinates": item.get("max_date_coordinates", [0, 0])
-            }
-            properties = {
-                "name": item.get("location_name"),
-                "location_dir_ids": item.get("location_dir_ids"),
-                "last_active": item.get("last_active")
-            }
-            feature = {
-                "type": "Feature",
-                # Use the first ID in the list as the primary GeoJSON ID
-                "id": item.get("location_dir_ids", [None])[0], 
-                "geometry": geometry,
-                "properties": properties
-            }
-            features.append(feature)
-
-        geojson_collection = {
-            "type": "FeatureCollection",
-            "features": features
-        }
-        
-        return geojson_collection
-
     async def counter_groups_to_geojson(self) -> None:
         results = await self.get_counter_locations()
         data_dicts = [r.model_dump() for r in results]
@@ -60,13 +27,16 @@ class BicycleCountersLoader(BicycleCountersClient, ParquetLoader, JsonLoader, Da
             columns={
                 'properties.location_name': 'location_name',
                 'properties.location_dir_id': 'location_dir_id',
+                'properties.first_active': 'first_active',
                 'properties.last_active': 'last_active',
+                'properties.direction': 'direction',
                 'geometry.coordinates': 'coordinates',
             }
         )
-        df = df[['location_name', 'location_dir_id', 'last_active', 'coordinates']]
+        df = df[['location_name', 'location_dir_id', 'first_active', 'last_active', 'direction', 'coordinates']]
         
         df['location_name'] = df['location_name'].str.replace(' (retired)', '', regex=False)
+        df['first_active'] = pd.to_datetime(df['first_active'], errors='coerce') 
         df['last_active'] = pd.to_datetime(df['last_active'], errors='coerce') 
         df['coordinates'] = df['coordinates'].apply(tuple)
         
@@ -74,7 +44,9 @@ class BicycleCountersLoader(BicycleCountersClient, ParquetLoader, JsonLoader, Da
         
         id_date_agg = df.groupby(GROUP_KEY).agg(
             location_dir_ids=('location_dir_id', list),
-            max_active_date=('last_active', 'max')
+            min_active_date=('first_active', 'min'),
+            max_active_date=('last_active', 'max'),
+            directions=('direction', list),
         ).reset_index()
 
         latest_index = df.groupby(GROUP_KEY)['last_active'].idxmax()
@@ -91,20 +63,61 @@ class BicycleCountersLoader(BicycleCountersClient, ParquetLoader, JsonLoader, Da
             how='left'
         )
         
-        final_df = final_df.rename(columns={'max_active_date': 'last_active'})
+        final_df = final_df.rename(columns={
+            'max_active_date': 'last_active', 
+            'min_active_date': 'first_active'
+        })
         
         final_df = final_df[[
             GROUP_KEY, 
-            'max_date_coordinates', 
+            'max_date_coordinates',
+            'first_active', 
             'last_active', 
-            'location_dir_ids'
+            'location_dir_ids',
+            'directions',
         ]]
 
+        final_df['first_active'] = final_df['first_active'].dt.strftime('%Y-%m-%dT%H:%M:%S.000')
         final_df['last_active'] = final_df['last_active'].dt.strftime('%Y-%m-%dT%H:%M:%S.000')
         
         list_of_records = final_df.to_dict(orient='records')
 
-        final_geojson_data = self.create_geojson_collection(list_of_records)
+        def create_geojson_collection(data: List[Dict[str, Any]]) -> Dict[str, Any]:
+            """
+            Converts a list of counter location dictionaries (like the final_df output) 
+            into a GeoJSON FeatureCollection.
+            """
+            features = []
+            
+            for item in data:
+                geometry = {
+                    "type": "Point",
+                    "coordinates": item.get("max_date_coordinates", [0, 0])
+                }
+                properties = {
+                    "name": item.get("location_name"),
+                    "location_dir_ids": item.get("location_dir_ids"),
+                    "first_active": item.get("first_active"),
+                    "last_active": item.get("last_active"),
+                    "directions": item.get("directions"),
+                }
+                feature = {
+                    "type": "Feature",
+                    # Use the first ID in the list as the primary GeoJSON ID
+                    "id": item.get("location_dir_ids", [None])[0], 
+                    "geometry": geometry,
+                    "properties": properties
+                }
+                features.append(feature)
+
+            geojson_collection = {
+                "type": "FeatureCollection",
+                "features": features
+            }
+            
+            return geojson_collection
+
+        final_geojson_data = create_geojson_collection(list_of_records)
         
         self.save_to_json(
             data=final_geojson_data, 
