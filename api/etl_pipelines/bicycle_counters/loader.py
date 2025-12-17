@@ -51,12 +51,9 @@ class BicycleCountersLoader(BicycleCountersClient, ParquetLoader, JsonLoader, Da
         
         return geojson_collection
 
-
-    # --- Main Async Function ---
-
     async def counter_groups_to_geojson(self) -> None:
         results = await self.get_counter_locations()
-        data_dicts = [asdict(r) for r in results]
+        data_dicts = [r.model_dump() for r in results]
         df = pd.json_normalize(data_dicts)
         
         df = df.rename(
@@ -152,14 +149,13 @@ class BicycleCountersLoader(BicycleCountersClient, ParquetLoader, JsonLoader, Da
         aggregated_df['location_dir_ids'] = aggregated_df['location_dir_ids'].astype(str)
         final_df = aggregated_df[['name', 'coordinates', 'datetime_bin', 'total_bin_volume', 'location_dir_ids']]
         
-        print(final_df.head(2))
-
         self.df_to_parquet(final_df, "./data/counts_15m_by_location_name.parquet", overwrite=True)
 
     async def counts_daily_to_parquet(self) -> None:        
         results = await self.get_daily_counts()
-        raw_df = pd.DataFrame([r.__dict__ for r in results])
-        df = self.model_df(raw_df, DailyCount)
+        data_dicts = [r.model_dump() for r in results]
+        df = pd.DataFrame(data_dicts)
+        df['dt'] = pd.to_datetime(df['dt'])
         self.df_to_parquet(df, "./data/counts_daily.parquet", overwrite=True)
 
     async def counts_daily_by_location_name_to_parquet(self) -> None: 
@@ -173,7 +169,7 @@ class BicycleCountersLoader(BicycleCountersClient, ParquetLoader, JsonLoader, Da
         names_df['location_dir_id'] = names_df['location_dir_id'].astype('int64')
 
         counts_response = await self.get_daily_counts()
-        counts_df = pd.DataFrame([r.__dict__ for r in counts_response])
+        counts_df = pd.DataFrame([r.model_dump() for r in counts_response])
         counts_df['location_dir_id'] = counts_df['location_dir_id'].astype('int64')
 
         merged_df = pd.merge(
@@ -193,8 +189,6 @@ class BicycleCountersLoader(BicycleCountersClient, ParquetLoader, JsonLoader, Da
         aggregated_df['dt'] = pd.to_datetime(aggregated_df['dt'])
         final_df = aggregated_df[['name', 'coordinates', 'dt', 'daily_volume', 'location_dir_ids']]
         
-        print(final_df.head(2))
-
         self.df_to_parquet(final_df, "./data/counts_daily_by_location_name.parquet", overwrite=True)
 
     async def load_counter_locations_into_sqlite(self):
