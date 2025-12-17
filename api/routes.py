@@ -15,6 +15,7 @@ DATA_DIR = Path(os.getenv("DATA_DIR", str(BASE_DIR / "data"))).resolve()
 COUNTER_LOCATIONS_FILE = DATA_DIR / "counter_locations.geojson"
 COUNTER_GROUPS_FILE = DATA_DIR / "counter_groups.geojson"
 COUNTS_15M_FILE = DATA_DIR / "counts_15m.parquet"
+COUNTS_15M_BY_LOCATION_NAME_FILE = DATA_DIR / "counts_15m_by_location_name.parquet"
 COUNTS_DAILY_FILE = DATA_DIR / "counts_daily.parquet"
 DB_PATH = os.path.join(os.path.dirname(__file__), os.getenv('DB_PATH'))
 
@@ -267,6 +268,44 @@ def get_fifteen_min_counts_in_date_range():
 
     grouped_data = agg_df.groupby('time_bin').apply(
         lambda x: x[['location_dir_id', 'avg_bin_volume']].to_dict(orient='records')
+    ).to_dict()
+
+    return jsonify(grouped_data), 200
+
+@api_bp.route('/fifteen-min-counts-by-location-name-in-date-range')
+def get_fifteen_min_counts_by_location_name_in_date_range():
+    start_date = request.args.get('start')  # Format: YYYY-MM-DD
+    end_date = request.args.get('end')      # Format: YYYY-MM-DD
+
+    if not start_date or not end_date:
+        return jsonify({"error": "Missing start or end date"}), 400
+    
+    try:
+        start_dt = pd.to_datetime(start_date)
+        end_dt = pd.to_datetime(end_date)
+    except Exception:
+        return jsonify({"error": "Invalid date format. Use YYYY-MM-DD."}), 400
+    
+    df = pd.read_parquet(COUNTS_15M_BY_LOCATION_NAME_FILE)
+    df = df.set_index('datetime_bin')
+    df = df.sort_index()
+    
+    filtered_df = df.loc[start_dt:end_dt]
+    filtered_df = filtered_df.reset_index(names=['datetime_bin'])
+
+    if filtered_df.empty:
+        return jsonify([]), 200
+    
+    filtered_df["time_bin"] = filtered_df["datetime_bin"].dt.strftime("%H:%M:%S")
+    
+    agg_df = (
+        filtered_df
+        .groupby(["name", "time_bin", "location_dir_ids", "coordinates"], as_index=False)
+        .agg(avg_bin_volume=("total_bin_volume", "mean"))
+    )
+
+    grouped_data = agg_df.groupby('time_bin').apply(
+        lambda x: x[['name', 'avg_bin_volume', "location_dir_ids", "coordinates"]].to_dict(orient='records')
     ).to_dict()
 
     return jsonify(grouped_data), 200

@@ -13,6 +13,7 @@ async def main():
         await bcl.counter_locations_to_geojson()
         await bcl.counts_daily_to_parquet()
         await bcl.counts_15m_to_parquet()
+        await bcl.counts_15m_by_location_name_to_parquet()
         print("Finished perparing data files used in app")
 
     async def data_files_not_use_in_app():
