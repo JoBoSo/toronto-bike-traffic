@@ -46,7 +46,7 @@ class BicycleCountersLoader(BicycleCountersClient, ParquetLoader, JsonLoader, Da
             location_dir_ids=('location_dir_id', list),
             min_active_date=('first_active', 'min'),
             max_active_date=('last_active', 'max'),
-            directions=('direction', list),
+            directions=('direction', set),
         ).reset_index()
 
         latest_index = df.groupby(GROUP_KEY)['last_active'].idxmax()
@@ -79,6 +79,7 @@ class BicycleCountersLoader(BicycleCountersClient, ParquetLoader, JsonLoader, Da
 
         final_df['first_active'] = final_df['first_active'].dt.strftime('%Y-%m-%dT%H:%M:%S.000')
         final_df['last_active'] = final_df['last_active'].dt.strftime('%Y-%m-%dT%H:%M:%S.000')
+        final_df['directions'] = final_df['directions'].apply(lambda dirs: ", ".join(dirs))
         
         list_of_records = final_df.to_dict(orient='records')
 

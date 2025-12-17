@@ -19,10 +19,7 @@
                 ],
                 "first_active": "1994-06-26T00:00:00.000",
                 "last_active": "2019-06-13T00:00:00.000",
-                "directions": [
-                    "Eastbound",
-                    "Westbound"
-                ]
+                "directions": "Eastbound, Westbound"
             }
         },
         {
@@ -43,10 +40,7 @@
                 ],
                 "first_active": "2024-07-31T00:00:00.000",
                 "last_active": "2025-11-04T00:00:00.000",
-                "directions": [
-                    "Eastbound",
-                    "Westbound"
-                ]
+                "directions": "Eastbound, Westbound"
             }
         },
         {
@@ -69,12 +63,7 @@
                 ],
                 "first_active": "2018-02-09T00:00:00.000",
                 "last_active": "2025-11-04T00:00:00.000",
-                "directions": [
-                    "Eastbound",
-                    "Westbound",
-                    "Eastbound",
-                    "Westbound"
-                ]
+                "directions": "Eastbound, Westbound"
             }
         },
         {
@@ -96,11 +85,7 @@
                 ],
                 "first_active": "2018-02-09T00:00:00.000",
                 "last_active": "2023-07-22T00:00:00.000",
-                "directions": [
-                    "Eastbound",
-                    "Westbound",
-                    "Westbound"
-                ]
+                "directions": "Eastbound, Westbound"
             }
         },
         {
@@ -121,10 +106,7 @@
                 ],
                 "first_active": "2023-06-16T00:00:00.000",
                 "last_active": "2025-11-04T00:00:00.000",
-                "directions": [
-                    "Eastbound",
-                    "Westbound"
-                ]
+                "directions": "Eastbound, Westbound"
             }
         },
         {
@@ -145,10 +127,7 @@
                 ],
                 "first_active": "2022-06-07T00:00:00.000",
                 "last_active": "2025-11-04T00:00:00.000",
-                "directions": [
-                    "Northbound",
-                    "Southbound"
-                ]
+                "directions": "Southbound, Northbound"
             }
         },
         {
@@ -169,10 +148,7 @@
                 ],
                 "first_active": "2022-08-06T00:00:00.000",
                 "last_active": "2025-11-04T00:00:00.000",
-                "directions": [
-                    "Northbound",
-                    "Southbound"
-                ]
+                "directions": "Southbound, Northbound"
             }
         },
         {
@@ -193,10 +169,7 @@
                 ],
                 "first_active": "2025-07-09T00:00:00.000",
                 "last_active": "2025-07-09T00:00:00.000",
-                "directions": [
-                    "Northbound",
-                    "Southbound"
-                ]
+                "directions": "Southbound, Northbound"
             }
         },
         {
@@ -217,10 +190,7 @@
                 ],
                 "first_active": "2022-05-31T00:00:00.000",
                 "last_active": "2025-08-10T00:00:00.000",
-                "directions": [
-                    "Northbound",
-                    "Southbound"
-                ]
+                "directions": "Southbound, Northbound"
             }
         },
         {
@@ -241,10 +211,7 @@
                 ],
                 "first_active": "2023-03-27T00:00:00.000",
                 "last_active": "2025-09-03T00:00:00.000",
-                "directions": [
-                    "Eastbound",
-                    "Westbound"
-                ]
+                "directions": "Eastbound, Westbound"
             }
         },
         {
@@ -267,12 +234,7 @@
                 ],
                 "first_active": "2014-04-11T00:00:00.000",
                 "last_active": "2025-11-04T00:00:00.000",
-                "directions": [
-                    "Northbound",
-                    "Southbound",
-                    "Northbound",
-                    "Southbound"
-                ]
+                "directions": "Southbound, Northbound"
             }
         },
         {
@@ -295,12 +257,7 @@
                 ],
                 "first_active": "2014-04-11T00:00:00.000",
                 "last_active": "2025-11-04T00:00:00.000",
-                "directions": [
-                    "Northbound",
-                    "Southbound",
-                    "Northbound",
-                    "Southbound"
-                ]
+                "directions": "Southbound, Northbound"
             }
         },
         {
@@ -321,10 +278,7 @@
                 ],
                 "first_active": "2022-10-27T00:00:00.000",
                 "last_active": "2025-11-04T00:00:00.000",
-                "directions": [
-                    "Northbound",
-                    "Southbound"
-                ]
+                "directions": "Southbound, Northbound"
             }
         },
         {
@@ -345,10 +299,7 @@
                 ],
                 "first_active": "2022-11-14T00:00:00.000",
                 "last_active": "2025-11-04T00:00:00.000",
-                "directions": [
-                    "Northbound",
-                    "Southbound"
-                ]
+                "directions": "Southbound, Northbound"
             }
         },
         {
@@ -369,10 +320,7 @@
                 ],
                 "first_active": "2022-11-14T00:00:00.000",
                 "last_active": "2025-07-24T00:00:00.000",
-                "directions": [
-                    "Northbound",
-                    "Southbound"
-                ]
+                "directions": "Southbound, Northbound"
             }
         },
         {
@@ -393,10 +341,7 @@
                 ],
                 "first_active": "2022-11-14T00:00:00.000",
                 "last_active": "2025-11-04T00:00:00.000",
-                "directions": [
-                    "Northbound",
-                    "Southbound"
-                ]
+                "directions": "Southbound, Northbound"
             }
         },
         {
@@ -417,10 +362,7 @@
                 ],
                 "first_active": "2022-11-14T00:00:00.000",
                 "last_active": "2025-11-04T00:00:00.000",
-                "directions": [
-                    "Northbound",
-                    "Southbound"
-                ]
+                "directions": "Southbound, Northbound"
             }
         }
     ]
