@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
-import L from "leaflet";
-// Import the necessary types from your Canvas interface file
-import { DailyCountsResponse, DailyLocationVolume } from "@/src/interfaces/flaskApiResponseTypes";
+import DailyCountsByLocNameInDateRangeResponse, { DailyLocationCount } from "@/src/interfaces/flaskApiResponseTypes/DailyCountsByLocNameInDateRangeResponse";
 
 /**
  * Custom hook to calculate and store the daily volume data 
@@ -11,14 +9,12 @@ import { DailyCountsResponse, DailyLocationVolume } from "@/src/interfaces/flask
  * @returns The data for the current day, or null if not yet loaded.
  */
 export function useSetCurrDayData(
-  dateRangeData: DailyCountsResponse | null,
+  dateRangeData: DailyCountsByLocNameInDateRangeResponse | null,
   currentDateIndex: number,
-): DailyLocationVolume[] | null {
-  // 1. Correctly type the state to hold an array of DailyLocationVolume or null
-  const [currDateData, setCurrDateData] = useState<DailyLocationVolume[] | null>(null);
+): DailyLocationCount[] | null {
+  const [currDateData, setCurrDateData] = useState<DailyLocationCount[] | null>(null);
 
   useEffect(() => {
-    // 2. Check for required data availability
     if (!dateRangeData || currentDateIndex === undefined || currentDateIndex < 0) {
       // Clear data if inputs are invalid/missing
       setCurrDateData(null);
@@ -50,11 +46,7 @@ export function useSetCurrDayData(
     // Update the state with the found data
     setCurrDateData(currentDayVolumes);
 
-    // 3. IMPORTANT: The useEffect callback should NOT return a value 
-    // unless it is a cleanup function.
-    // We removed the incorrect "return currDateData" line here.
-  }, [dateRangeData, currentDateIndex]); // mapInstance is removed as a dependency since it's not used in the effect's logic
+  }, [dateRangeData, currentDateIndex]);
 
-  // 5. Custom hook must return the state
   return currDateData;
 }

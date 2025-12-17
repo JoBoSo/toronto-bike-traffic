@@ -2,11 +2,11 @@ import { useEffect } from 'react';
 import L from 'leaflet';
 import { MarkerScaler, ScalingMethod } from '@/components/Map/utils/MarkerScaler';
 import {CounterLocationFeature } from '@/src/interfaces/counterLocationTypes'
-import { DailyLocationVolume } from "@/src/interfaces/flaskApiResponseTypes";
+import { DailyLocationCount } from "@/src/interfaces/flaskApiResponseTypes/DailyCountsByLocNameInDateRangeResponse";
 
 export function useMarkDailyTraffic(
   mapInstance: L.Map | null, 
-  currDateData: DailyLocationVolume[] | null, 
+  currDateData: DailyLocationCount[] | null, 
   counterLocations: CounterLocationFeature[], 
   dataLayerRef: React.MutableRefObject<L.LayerGroup | null>,
   isPlaying: boolean,

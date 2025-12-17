@@ -1,4 +1,4 @@
-import { FifteenMinCountsResponse, LocationAverage } from '@/src/interfaces/flaskApiResponseTypes';
+import FifteenMinCountsResponse, { LocationAverage } from '@/src/interfaces/flaskApiResponseTypes/FifteenMinCountsResponse';
 import { CounterLocationFeature } from '@/src/interfaces/counterLocationTypes';
 
 /**
