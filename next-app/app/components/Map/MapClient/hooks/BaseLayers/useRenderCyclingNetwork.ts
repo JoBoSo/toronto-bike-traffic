@@ -5,8 +5,6 @@ export function useRenderCyclingNetwork(
   mapInstance: LeafletMap | null,
   geoJsonData: any
 ) {
-  // useAnimatedDashFlow(mapInstance, "cyclingNetworkPane", 15, 1.0);
-
   useEffect(() => {
     if (!mapInstance || !geoJsonData) return;
     console.log("Rendering cycling network");
@@ -24,7 +22,6 @@ export function useRenderCyclingNetwork(
           color: getColor(infra),
           weight: 3,
           opacity: 0.8,
-          // dashArray: '10, 5', 
         }
       },
       onEachFeature: (feature, layer) => {
@@ -34,11 +31,13 @@ export function useRenderCyclingNetwork(
         const street_name = feature.properties?.STREET_NAME;
         const from_street = feature.properties?.FROM_STREET;
         const to_street = feature.properties?.TO_STREET;
+        const installed = feature.properties?.INSTALLED;
         layer.bindPopup(`
           <strong>${infra}</strong><br/>
-          <b style="margin: 2px 0;">${street_name}</b>
+          <p style="margin: 2px 0;">${street_name}</p>
           <p style="margin: 2px 0;"><i>From</i> ${from_street}</p>
           <p style="margin: 2px 0;"><i>To</i> ${to_street}</p>
+          <p style="margin: 2px 0;">Installed in ${installed}</p>
         `);
       },
     }).addTo(mapInstance);
