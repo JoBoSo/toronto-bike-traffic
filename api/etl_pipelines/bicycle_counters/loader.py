@@ -77,6 +77,9 @@ class BicycleCountersLoader(BicycleCountersClient, ParquetLoader, JsonLoader, Da
             'directions',
         ]]
 
+        final_df['location_dir_ids'] = final_df['location_dir_ids'].apply(
+            lambda id_list: ", ".join(map(str, id_list))
+        )
         final_df['first_active'] = final_df['first_active'].dt.strftime('%Y-%m-%dT%H:%M:%S.000')
         final_df['last_active'] = final_df['last_active'].dt.strftime('%Y-%m-%dT%H:%M:%S.000')
         final_df['directions'] = final_df['directions'].apply(lambda dirs: ", ".join(dirs))
