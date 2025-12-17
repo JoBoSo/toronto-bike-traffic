@@ -42,7 +42,7 @@ interface MapClientProps {
 
 export default function MapClient({ isSidebarCollapsed }: MapClientProps) {
   // Contexts
-  const { counterLocations, cyclingNetwork, isLoading } = usePageContentContext();
+  const { counterLocations, counterGroups, cyclingNetwork, isLoading } = usePageContentContext();
   const {
     dateRange,
     dateRangeData,

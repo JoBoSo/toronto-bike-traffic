@@ -15,6 +15,7 @@ import styles from './PageContentWrapper.module.scss';
 
 interface PageContentWrapperProps {
   counterLocations: CounterLocationFeature[];
+  counterGroups: any;
   cyclingNetwork: CyclingNetworkFeature[];
 }
 
@@ -24,12 +25,12 @@ interface PageContentWrapperProps {
  * (Header, Sidebar, Map).
  */
 export default function PageContentWrapper(
-  { counterLocations, cyclingNetwork }: PageContentWrapperProps
+  { counterLocations, counterGroups, cyclingNetwork }: PageContentWrapperProps
 ) {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   return (
-    <PageContentProvider locations={counterLocations} network={cyclingNetwork}>
+    <PageContentProvider locations={counterLocations} counterGroups={counterGroups} network={cyclingNetwork}>
       <div className={styles.mainContainer}> 
         <Sidebar 
           isCollapsed={isSidebarCollapsed} 

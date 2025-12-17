@@ -7,6 +7,7 @@ import { CyclingNetworkFeature } from '@/src/interfaces/cyclingNetworkTypes';
 // 3. Define the shape of the Context value, which holds an array of these features
 interface PageContentContextType {
     counterLocations: CounterLocationFeature[];
+    counterGroups: any[];
     cyclingNetwork: CyclingNetworkFeature[];
     isLoading: boolean;
 }
@@ -16,6 +17,7 @@ const PageContentContext = createContext<PageContentContextType | undefined>(und
 
 interface PageContentProviderProps {
     locations: CounterLocationFeature[];
+    counterGroups: any[];
     network: CyclingNetworkFeature[];
     children: ReactNode;
 }
@@ -24,9 +26,10 @@ interface PageContentProviderProps {
  * Client Component Provider: Renders the context provider and holds the 
  * data fetched from the server.
  */
-export function PageContentProvider({ locations, network, children }: PageContentProviderProps) {
+export function PageContentProvider({ locations, counterGroups, network, children }: PageContentProviderProps) {
     const contextValue: PageContentContextType = {
         counterLocations: locations,
+        counterGroups: counterGroups,
         cyclingNetwork: network,
         isLoading: false, // Data is already loaded since it came from the server
     };
