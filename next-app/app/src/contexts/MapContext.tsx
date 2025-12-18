@@ -6,6 +6,8 @@ type MapContextType = {
   setDateRange: (range: [Date | null, Date | null]) => void;
   dateRangeData: any;
   setDateRangeData: React.Dispatch<React.SetStateAction<any>>;
+  dateRangeByLocNameData: any;
+  setDateRangeByLocNameData: React.Dispatch<React.SetStateAction<any>>;
   loadingDailyTrafficData: boolean;
   setLoadingDailyTrafficData: React.Dispatch<React.SetStateAction<boolean>>;
   isPlaying: boolean;
@@ -41,6 +43,7 @@ export function MapProvider({ children }: { children: ReactNode }) {
 
   // Playback state for traffic across date range
   const [dateRangeData, setDateRangeData] = useState<any>(null);
+  const [dateRangeByLocNameData, setDateRangeByLocNameData] = useState<any>(null);
   const [loadingDailyTrafficData, setLoadingDailyTrafficData] = useState<any>(true);
   const [isPlaying, setIsPlaying] = useState(false);
   const [dateArray, setDateArray] = useState<Date[]>([]);
@@ -61,6 +64,8 @@ export function MapProvider({ children }: { children: ReactNode }) {
       setDateRange,
       dateRangeData,
       setDateRangeData,
+      dateRangeByLocNameData,
+      setDateRangeByLocNameData,
       setLoadingDailyTrafficData,
       loadingDailyTrafficData,
       isPlaying,

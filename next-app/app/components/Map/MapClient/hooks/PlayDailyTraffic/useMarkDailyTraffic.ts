@@ -3,15 +3,19 @@ import L from 'leaflet';
 import { MarkerScaler, ScalingMethod } from '@/components/Map/utils/MarkerScaler';
 import {CounterLocationFeature } from '@/src/interfaces/counterLocationTypes'
 import { DailyLocationCount } from "@/src/interfaces/flaskApiResponseTypes/DailyCountsByLocNameInDateRangeResponse";
+import { useMapContext } from "@/src/contexts/MapContext";
 
 export function useMarkDailyTraffic(
   mapInstance: L.Map | null, 
   currDateData: DailyLocationCount[] | null, 
   counterLocations: CounterLocationFeature[], 
   dataLayerRef: React.MutableRefObject<L.LayerGroup | null>,
-  isPlaying: boolean,
-  currentDateIndex: number,
 ) {
+  const {
+    isPlaying,
+    currentDateIndex,
+  } = useMapContext();
+
   useEffect(() => {
     if (!mapInstance || !currDateData || currDateData.length === 0 || (isPlaying === false && currentDateIndex === 0)) {
       console.log("Waiting for map instance or daily traffic data...");
@@ -23,7 +27,7 @@ export function useMarkDailyTraffic(
       return;
     }
 
-    console.log("Rendering date range data");
+    console.log("Rendering circle markers for daily traffic");
 
     // Remove previous data layer if exists
     if (dataLayerRef.current) {
@@ -46,25 +50,20 @@ export function useMarkDailyTraffic(
 
     // Render date range data circles
     currDateData.forEach((element: any) => {
-      const lonLat = (counterLocations).find(
-        (item: any) => Number(item.properties.location_dir_id) === Number(element.location_dir_id)
-      )?.geometry.coordinates;
+      console.log(element);
+      const [lon, lat] = JSON.parse(element.coordinates);
+      const latLon: [number, number] | L.LatLngExpression = [lat, lon];
+      const value = element.daily_volume;
+      const radius = 100 + 0.2 * scaler.getRadius(value);
+      const color = scaler.getColorRYG(value);
       
-      if (lonLat) {
-        const [lon, lat] = lonLat;
-        const latLon: [number, number] | L.LatLngExpression = [lat, lon];
-        const value = element.daily_volume;
-        const radius = scaler.getRadius(value)/60; // div by 60 if using none scaling
-        const color = scaler.getColorRYG(value);
-        
-        const circle = L.circleMarker(latLon, {
-          pane: "volumeMarkerPane",
-          radius: radius,
-          color: color,
-          fillColor: color,
-          fillOpacity: 0.5
-        }).addTo(newLayer);
-      }
+      const circle = L.circle(latLon, {
+        pane: "volumeMarkerPane",
+        radius: radius,
+        color: color,
+        fillColor: color,
+        fillOpacity: 0.5
+      }).addTo(newLayer);
     });
     newLayer.addTo(mapInstance);
     newLayer.eachLayer((layer: any) => layer.bringToBack());

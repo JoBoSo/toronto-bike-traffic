@@ -22,6 +22,7 @@ import { useGet24HrTraffic } from "@/components/Map/MapClient/hooks/Play24HrTraf
 import { useMark24HrTraffic } from "@/components/Map/MapClient/hooks/Play24HrTraffic/useMark24HrTraffic"; 
 import { useSetCurr24HrTrafficData } from "@/components/Map/MapClient/hooks/Play24HrTraffic/useSetCurr24HrTrafficData"; 
 import { useGetDailyTrafficData } from "@/components/Map/MapClient/hooks/PlayDailyTraffic/useGetDailyTrafficData";
+import { useGetDailyTrafficByLocNameData } from "@/components/Map/MapClient/hooks/PlayDailyTraffic/useGetDailyTrafficByLocNameData";
 import { useInitDateArray } from "@/components/Map/MapClient/hooks/PlayDailyTraffic/useInitDateArray";
 import { useMarkDailyTraffic } from "@/components/Map/MapClient/hooks/PlayDailyTraffic/useMarkDailyTraffic";
 import useSetBaseMap from "@/components/Map/MapLayersControl/hooks/useSetBaseMap";
@@ -97,13 +98,12 @@ export default function MapClient({ isSidebarCollapsed }: MapClientProps) {
   useTimeColorOverlay(mapInstance);
 
   //// Daily Traffic Player
-  useControlDailyTrafficPlayer(
-    isPlaying, currentDateIndex, dateArray, setCurrentDateIndex, setIsPlaying, playIntervalRef
-  );
-  useGetDailyTrafficData(mapInstance);
-  const currDayData = useSetCurrDayData(dateRangeData, currentDateIndex);
-  useMarkDailyTraffic(mapInstance, currDayData, counterLocations, dataLayerRef, isPlaying, currentDateIndex);
-  useInitDateArray(dateRange, setDateArray, setCurrentDateIndex);
+  useControlDailyTrafficPlayer(playIntervalRef);
+  // useGetDailyTrafficData(mapInstance);
+  useGetDailyTrafficByLocNameData(mapInstance);
+  const currDayData = useSetCurrDayData();
+  useMarkDailyTraffic(mapInstance, currDayData, counterLocations, dataLayerRef);
+  useInitDateArray();
 
   //// Base Map Toggle
   useSetBaseMap(mapInstance, digitalLayerRef, satelliteLayerRef);

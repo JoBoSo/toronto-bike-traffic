@@ -8,6 +8,7 @@ import styles from "@/components/Sidebar/Sidebar.module.scss";
 import DateRangePicker from "@/components/Sidebar/DateRangePicker/DateRangePicker";
 import PlaybackControl from "@/components/Sidebar/PlaybackControl/PlaybackControl";
 import { fetch24HourCycleData } from "../Map/utils/fetch24HourCycleData";
+import { fetchDailyCountsByLocNameInDateRange } from "../Map/utils/fetchDailyCountsByLocNameInDateRange";
 import { fetch24HrTrafficByLocNameData } from "../Map/utils/fetch24HrTrafficByLocNameData";
 import { convertTo12HourTime } from "@/src/utils/convertTo12HourTime"
 import { PanelRightClose, PanelRightOpen } from 'lucide-react';
@@ -25,6 +26,7 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
     dateArray,
     setDateRange, 
     setDateRangeData, 
+    setDateRangeByLocNameData,
     loadingDailyTrafficData,
     setLoadingDailyTrafficData,
     isPlaying,
@@ -121,7 +123,11 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
               setDateRange(update);
               setIsPlaying(false);
               setTimeIsPlaying(false);
-              if (update[0] && update[1]) fetchDailyCountsInDateRange(update[0], update[1], setDateRangeData, setLoadingDailyTrafficData);
+              if (update[0] && update[1]) {
+                fetchDailyCountsByLocNameInDateRange(
+                  update[0], update[1], setDateRangeByLocNameData, setLoadingDailyTrafficData
+                );
+              }
             }}
           />
         </div>
@@ -160,7 +166,11 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
             onRefresh={() => {
               setCurrentDateIndex(0);
               setIsPlaying(false);
-              if (dateRange[0] && dateRange[1]) fetchDailyCountsInDateRange(dateRange[0], dateRange[1], setDateRangeData, setLoadingDailyTrafficData);
+              if (dateRange[0] && dateRange[1]) {
+                fetchDailyCountsByLocNameInDateRange(
+                  dateRange[0], dateRange[1], setDateRangeByLocNameData, setLoadingDailyTrafficData
+                );
+              }
             }}
             infoLines={[
               `Day ${currentDateIndex + 1} of ${dateArray.length}`,

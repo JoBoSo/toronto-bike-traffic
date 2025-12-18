@@ -8,7 +8,7 @@ export async function fetch24HrTrafficByLocNameData(
 ) {
   try {
     {if (!dateRange[0]  || !dateRange[1]) return}
-    console.log("fetching 24 hour data by loc name")
+    console.log("fetching 24 hour traffic data by loc name")
     setLoadingHr24TrafficData(true);
     
     const start = dateRange[0].toISOString().split('T')[0];

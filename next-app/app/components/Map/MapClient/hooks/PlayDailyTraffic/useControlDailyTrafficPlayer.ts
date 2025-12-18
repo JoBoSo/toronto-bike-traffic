@@ -1,14 +1,17 @@
 import { useEffect } from "react";
+import { useMapContext } from "@/src/contexts/MapContext";
 
 export function useControlDailyTrafficPlayer(
-  isPlaying: boolean,
-  currentDateIndex: number,
-  dateArray: Date[],
-  setCurrentDateIndex: React.Dispatch<React.SetStateAction<number>>,
-  setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>,
   playIntervalRef: React.MutableRefObject<NodeJS.Timeout | null>
 ) { 
-  // Playback logic
+  const {
+    isPlaying,
+    currentDateIndex,
+    dateArray,
+    setCurrentDateIndex,
+    setIsPlaying,
+  } = useMapContext();
+
   useEffect(() => {
     if (isPlaying && dateArray.length > 0) {
       console.log("Starting date playback");
@@ -28,7 +31,7 @@ export function useControlDailyTrafficPlayer(
         clearInterval(playIntervalRef.current);
       }
     }
-    
+
     return () => {
       if (playIntervalRef.current) {
         clearInterval(playIntervalRef.current);
