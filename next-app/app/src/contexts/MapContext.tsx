@@ -12,6 +12,8 @@ type MapContextType = {
   setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
   hr24TrafficData: any;
   setHr24TrafficData: React.Dispatch<React.SetStateAction<any>>;
+  hr24TrafficByLocNameData: any;
+  setHr24TrafficByLocNameData: React.Dispatch<React.SetStateAction<any>>;
   loadingHr24TrafficData: boolean;
   setLoadingHr24TrafficData: React.Dispatch<React.SetStateAction<boolean>>;
   timeIsPlaying: boolean;
@@ -46,6 +48,7 @@ export function MapProvider({ children }: { children: ReactNode }) {
   
   // Playback state for traffic across 24 hours
   const [hr24TrafficData, setHr24TrafficData] = useState<any>(null);
+  const [hr24TrafficByLocNameData, setHr24TrafficByLocNameData] = useState<any>(null);
   const [loadingHr24TrafficData, setLoadingHr24TrafficData] = useState<any>(true);
   const [timeIsPlaying, setTimeIsPlaying] = useState(false);
   const [timeArray, setTimeArray] = useState<string[]>([]);
@@ -64,6 +67,8 @@ export function MapProvider({ children }: { children: ReactNode }) {
       setIsPlaying,
       hr24TrafficData,
       setHr24TrafficData,
+      hr24TrafficByLocNameData,
+      setHr24TrafficByLocNameData,
       loadingHr24TrafficData,
       setLoadingHr24TrafficData,
       timeIsPlaying,

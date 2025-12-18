@@ -29,6 +29,7 @@ import useToggleBaseMap from "@/components/Map/MapLayersControl/hooks/useToggleB
 import { useControlDailyTrafficPlayer } from "@/components/Map/MapClient/hooks/PlayDailyTraffic/useControlDailyTrafficPlayer";
 import { useSetCurrDayData } from "@/components/Map/MapClient/hooks/PlayDailyTraffic/useSetCurrDayData";
 import { useTimeColorOverlay } from "@/components/Map/MapClient/hooks/Play24HrTraffic/useTimeColorOverlay";
+import { useGet24HrTrafficByLocName } from '@/components/Map/MapClient/hooks/Play24HrTraffic/useGet24HrTrafficByLocName';
 
 // Components
 import MapLayersControl from "@/components/Map/MapLayersControl/MapLayersControl";
@@ -87,20 +88,13 @@ export default function MapClient({ isSidebarCollapsed }: MapClientProps) {
   useFitMapToContainer(mapInstance, isSidebarCollapsed);
 
   //// 24 Hour Traffic Player
-  useGet24HrTraffic(counterLocations);
-  useInitTimeArray(timeArray, setTimeArray);
-  const currHr24CycleData = useSetCurr24HrTrafficData(
-    timeArray, currentTimeIndex, hr24TrafficData, setCurrentTime
-  );
-  useControl24HrTrafficPlayer(
-    timeIsPlaying, setTimeIsPlaying,
-    timeArray, setTimeArray,
-    currentTimeIndex, setCurrentTimeIndex,
-    hr24TrafficData,
-    playIntervalRef
-  )
-  useMark24HrTraffic(mapInstance, currHr24CycleData, dataLayerRef, currentTime, timeIsPlaying, currentTimeIndex);
-  useTimeColorOverlay(mapInstance, currentTime, timeIsPlaying, isPlaying);
+  // useGet24HrTraffic(counterLocations);
+  useGet24HrTrafficByLocName();
+  useInitTimeArray();
+  const currHr24CycleData = useSetCurr24HrTrafficData();
+  useControl24HrTrafficPlayer(playIntervalRef)
+  useMark24HrTraffic(mapInstance, currHr24CycleData, dataLayerRef);
+  useTimeColorOverlay(mapInstance);
 
   //// Daily Traffic Player
   useControlDailyTrafficPlayer(

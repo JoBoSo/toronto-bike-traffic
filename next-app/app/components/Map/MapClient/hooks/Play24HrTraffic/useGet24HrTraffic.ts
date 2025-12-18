@@ -20,7 +20,7 @@ export function useGet24HrTraffic(
     if (!dateRange[0] || !dateRange[1]) return;
 
     const fetchData = async () => {
-      console.log("fetching 24 hour cycle data for", dateRange);
+      // console.log("fetching 24 hour cycle data for", dateRange);
       const fetchedData: any = await fetch24HourCycleData(dateRange, counterLocationData, setHr24TrafficData, setLoadingHr24TrafficData);
       setData(fetchedData);
     };

@@ -1,12 +1,18 @@
+"use client";
+
 import { useEffect, useState, useMemo, useRef } from "react";
 import L, { Map as LeafletMap, LatLngBounds } from "leaflet";
+import { useMapContext } from "@/src/contexts/MapContext";
 
 export function useTimeColorOverlay(
   mapInstance: LeafletMap | null,
-  currentTime: string,
-  timeIsPlaying: boolean,
-  isPlaying: boolean,
 ) {
+  const {
+    currentTime,
+    timeIsPlaying,
+    isPlaying,
+  } = useMapContext();
+
   const overlayRef = useRef<L.Rectangle | null>(null);
 
   // Calculated overlay color, memoized based on time state

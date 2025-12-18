@@ -3,18 +3,21 @@
 import { useEffect } from "react";
 import L from "leaflet";
 import { MarkerScaler, ScalingMethod } from '@/components/Map/utils/MarkerScaler';
+import { useMapContext } from "@/src/contexts/MapContext";
 
 export function useMark24HrTraffic(
   mapInstance: L.Map | null, 
   currtwentyFourHrCycleData: any, 
   dataLayerRef: React.MutableRefObject<L.LayerGroup | null>,
-  currentTime: string,
-  timeIsPlaying: boolean, 
-  currentTimeIndex: number,
 ) {
+  const {
+    currentTime,
+    timeIsPlaying,
+    currentTimeIndex,
+  } = useMapContext();
+
   useEffect(() => {
     if (!mapInstance || !currtwentyFourHrCycleData || (timeIsPlaying === false && currentTimeIndex === 0)) {
-      // console.log("Waiting for map instance or daily traffic data...");
       // Optionally, clear the layer if data becomes unavailable
       if (mapInstance && dataLayerRef.current) {
         mapInstance.removeLayer(dataLayerRef.current);
@@ -24,7 +27,7 @@ export function useMark24HrTraffic(
     }
 
     if (mapInstance && currtwentyFourHrCycleData) {
-      console.log("Rendering circle marker 24 hour cycle data");
+      console.log(`Rendering circle markers for 24 hour traffic @${currentTime}`);
 
       // Remove previous data layer if exists
       if (dataLayerRef.current) {
@@ -49,18 +52,21 @@ export function useMark24HrTraffic(
 
       // Render date range data circles
       currData.forEach((element: any) => {
-        const latLon: [number, number] | L.LatLngExpression = element.coordinates;;
+        console.log(element.coordinates);
+        const lonLat: [number, number] = JSON.parse(element.coordinates);
+        const latLon: [number, number] = [lonLat[1], lonLat[0]];
         const value = element.avg_bin_volume;
-        const radius = scaler.getRadius(value);
+        const radius = 100 + 10 * scaler.getRadius(value);
         const color = scaler.getColorRYG(value);
+        // console.log(element.name, value);
 
-        const circle = L.circleMarker(latLon, {
+        const circle = L.circle(latLon, {
           pane: "24HrMarkerPane",
           radius: radius,
           color: color,
           fillColor: color,
-          fillOpacity: 0.5
-        }).addTo(newLayer);
+          fillOpacity: 0.5,
+        }).bindPopup(`<p>Avg # of cyclists: ${value.toFixed(2)}</p>`).addTo(newLayer);
       });
 
       newLayer.addTo(mapInstance);

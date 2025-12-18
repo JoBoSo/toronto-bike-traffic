@@ -1,20 +1,20 @@
-import { useEffect, useState } from "react";
-import generate15MinIntervals from "@/components/Map/utils/generate15MinIntervals"
+import { useEffect } from "react";
+import { useMapContext } from "@/src/contexts/MapContext";
 
 export function useControl24HrTrafficPlayer(
-  timeIsPlaying: boolean,
-  setTimeIsPlaying: React.Dispatch<React.SetStateAction<boolean>>,
-  timeArray: string[],
-  setTimeArray: React.Dispatch<React.SetStateAction<string[]>>,
-  currentTimeIndex: number,
-  setCurrentTimeIndex: React.Dispatch<React.SetStateAction<number>>,
-  hr24TrafficData: any,
   playIntervalRef: React.MutableRefObject<NodeJS.Timeout | null>,
 ) { 
-  // Playback logic
+  const {
+    timeIsPlaying,
+    setTimeIsPlaying,
+    timeArray,
+    setCurrentTimeIndex,
+    hr24TrafficByLocNameData,
+  } = useMapContext();
+
   useEffect(() => {
 
-    if (timeIsPlaying && timeArray.length > 0 && hr24TrafficData) {
+    if (timeIsPlaying && timeArray.length > 0 && hr24TrafficByLocNameData) {
 
       playIntervalRef.current = setInterval(() => {
         setCurrentTimeIndex((prev) => {
@@ -33,5 +33,5 @@ export function useControl24HrTrafficPlayer(
     return () => {
       if (playIntervalRef.current) clearInterval(playIntervalRef.current);
     };
-  }, [timeIsPlaying, hr24TrafficData, timeArray, setTimeIsPlaying, setCurrentTimeIndex]);
+  }, [timeIsPlaying, hr24TrafficByLocNameData, timeArray, setTimeIsPlaying, setCurrentTimeIndex]);
 }

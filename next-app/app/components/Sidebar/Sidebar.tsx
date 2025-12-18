@@ -8,6 +8,7 @@ import styles from "@/components/Sidebar/Sidebar.module.scss";
 import DateRangePicker from "@/components/Sidebar/DateRangePicker/DateRangePicker";
 import PlaybackControl from "@/components/Sidebar/PlaybackControl/PlaybackControl";
 import { fetch24HourCycleData } from "../Map/utils/fetch24HourCycleData";
+import { fetch24HrTrafficByLocNameData } from "../Map/utils/fetch24HrTrafficByLocNameData";
 import { convertTo12HourTime } from "@/src/utils/convertTo12HourTime"
 import { PanelRightClose, PanelRightOpen } from 'lucide-react';
 
@@ -29,6 +30,8 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
     isPlaying,
     setIsPlaying,
     setHr24TrafficData,
+    hr24TrafficByLocNameData,
+    setHr24TrafficByLocNameData,
     loadingHr24TrafficData,
     setLoadingHr24TrafficData,
     timeIsPlaying,
@@ -134,7 +137,11 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
             onRefresh={() => {
               setTimeIsPlaying(false);
               setCurrentTimeIndex(0);
-              if (dateRange[0] && dateRange[1]) fetch24HourCycleData(dateRange, counterLocations, setHr24TrafficData, setLoadingHr24TrafficData);
+              if (dateRange[0] && dateRange[1]) {
+                fetch24HrTrafficByLocNameData(
+                  dateRange, setHr24TrafficByLocNameData, setLoadingHr24TrafficData
+                );
+              }
             }}
             infoLines={[
               `${convertTo12HourTime(timeArray[currentTimeIndex]??currentTime)}`,
