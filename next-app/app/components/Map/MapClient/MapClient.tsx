@@ -30,6 +30,13 @@ import useToggleBaseMap from "@/components/Map/MapLayersControl/hooks/useToggleB
 import { useControlDailyTrafficPlayer } from "@/components/Map/MapClient/hooks/PlayDailyTraffic/useControlDailyTrafficPlayer";
 import { useSetCurrDayData } from "@/components/Map/MapClient/hooks/PlayDailyTraffic/useSetCurrDayData";
 import { useTimeColorOverlay } from "@/components/Map/MapClient/hooks/Play24HrTraffic/useTimeColorOverlay";
+import { useCacheCounterRoutes } from "@/components/Map/MapClient/hooks/CounterPolylines/useCacheCounterRoutes";
+import { useRenderCounterPolylines } from "@/components/Map/MapClient/hooks/CounterPolylines/useRenderCounterPolylines";
+import { useRenderAnimatedCounterPolylines } from "@/components/Map/MapClient/hooks/CounterPolylines/useRenderAnimatedCounterPolylines";
+import { CounterPolyline } from "@/components/Map/MapClient/hooks/CounterPolylines/helpers/renderPolylines";
+import { CounterRoute } from "@/components/Map/MapClient/hooks/CounterPolylines/helpers/getCounterRoutes";
+import { useCreatePolylineConfig } from "@/components/Map/MapClient/hooks/CounterPolylines/useCreatePolylineConfig";
+import { PolylineAnimationConfig } from "@/components/Map/MapClient/hooks/CounterPolylines/useAnimatedPolylineFlow";
 import { useGet24HrTrafficByLocName } from '@/components/Map/MapClient/hooks/Play24HrTraffic/useGet24HrTrafficByLocName';
 
 // Components
@@ -48,23 +55,11 @@ export default function MapClient({ isSidebarCollapsed }: MapClientProps) {
   // Contexts
   const { counterLocations, counterGroups, cyclingNetwork, isLoading } = usePageContentContext();
   const {
-    dateRange,
-    dateRangeData,
     isPlaying,
-    setIsPlaying,
-    hr24TrafficData,
     timeIsPlaying, 
-    setTimeIsPlaying,
-    timeArray,
-    setTimeArray,
     dateArray,
-    setDateArray,
     currentDateIndex,
-    setCurrentDateIndex,
-    currentTimeIndex, 
-    setCurrentTimeIndex,
     currentTime,
-    setCurrentTime,
   } = useMapContext();
 
   // Map refs & instance
@@ -96,6 +91,12 @@ export default function MapClient({ isSidebarCollapsed }: MapClientProps) {
   useControl24HrTrafficPlayer(playIntervalRef)
   useMark24HrTraffic(mapInstance, currHr24CycleData, dataLayerRef);
   useTimeColorOverlay(mapInstance);
+  
+  //// animated polylines
+  // const routes: CounterRoute[] | undefined = useCacheCounterRoutes(counterLocations);
+  // const polylines: CounterPolyline[] | undefined = useRenderCounterPolylines(mapInstance, routes, "counterPolylinePane", "629");
+  // const polylineConfigs: PolylineAnimationConfig[] | undefined = useCreatePolylineConfig(polylines, currHr24CycleData);
+  // useRenderAnimatedCounterPolylines(mapInstance, polylines, polylineConfigs);
 
   //// Daily Traffic Player
   useControlDailyTrafficPlayer(playIntervalRef);
