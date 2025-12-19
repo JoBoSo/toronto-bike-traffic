@@ -21,7 +21,7 @@ toronto-bike-traffic \
    2. `.venv\Scripts\activate`
    3. `python -m app_local`
 2. Start Next.js dev server:
-   1. `cd app`
+   1. `cd next-app`
    2. `npm run dev`
    - Note: the dev server runs effects twice to check for side effects. The local prod server can be run with:
      - `npm run build` -> `npm run start`
