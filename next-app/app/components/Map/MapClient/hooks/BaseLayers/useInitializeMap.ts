@@ -16,6 +16,7 @@ export function useInitializeMap(
         zoomSnap: 0,
         wheelPxPerZoomLevel: 5,
         attributionControl: false,
+        zoomControl: false,
       });
 
       L.control.scale({

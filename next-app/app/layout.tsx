@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import styles from "@/layout.module.scss"
 import { MapProvider } from "@/src/contexts/MapContext";
+import Header from "@/components/Header/Header";
 import "@/globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
@@ -16,6 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <div className={styles.appContainer}>
+          <Header />
           <div className={styles.mainContent}>
             <MapProvider>
               <div className={styles.contentArea}>

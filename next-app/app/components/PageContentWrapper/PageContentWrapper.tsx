@@ -4,13 +4,8 @@ import React, { useState } from 'react';
 import { PageContentProvider } from '@/src/contexts/PageContentContext';
 import { CounterLocationFeature } from '@/src/interfaces/counterLocationTypes';
 import { CyclingNetworkFeature } from '@/src/interfaces/cyclingNetworkTypes';
-
-// Import the consumer components
 import Sidebar from '@/components/Sidebar/Sidebar'; 
 import MapWrapper from '@/components/Map/MapWrapper/MapWrapper';
-// Import Header
-import Header from '@/components/Header/Header'; 
-// Styles
 import styles from './PageContentWrapper.module.scss'; 
 
 interface PageContentWrapperProps {
@@ -37,7 +32,6 @@ export default function PageContentWrapper(
           setIsCollapsed={setIsSidebarCollapsed} 
         />
         <div className={styles.contentColumn}>
-          <Header /> 
           <div className={styles.mapArea}>
             <MapWrapper 
               isSidebarCollapsed={isSidebarCollapsed}
