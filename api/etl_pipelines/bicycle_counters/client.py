@@ -1,7 +1,6 @@
 from etl_pipelines.toronto_open_data.client import CityOfTorontoClient
 from etl_pipelines.bicycle_counters.models import *
-from typing import List, Dict, Any
-from datetime import date, datetime
+from typing import List
 from dotenv import load_dotenv
 import os
 

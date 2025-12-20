@@ -1,7 +1,5 @@
-from dataclasses import dataclass, field
 from typing import List, Optional
-from datetime import date, datetime
-import pandas as pd
+from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field
 
 class Geometry(BaseModel):

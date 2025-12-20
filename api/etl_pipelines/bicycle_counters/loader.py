@@ -6,8 +6,7 @@ import os
 import sqlite3
 import json
 import pandas as pd
-from dataclasses import asdict
-from typing import List, Dict, Any, Union
+from typing import List, Dict, Any
 import geopandas as gpd
 
 class BicycleCountersLoader(BicycleCountersClient, ParquetLoader, JsonLoader):
