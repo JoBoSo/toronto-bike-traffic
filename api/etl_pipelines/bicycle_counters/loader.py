@@ -8,6 +8,15 @@ import json
 import pandas as pd
 from typing import List, Dict, Any
 import geopandas as gpd
+from dotenv import load_dotenv
+from pathlib import Path
+
+dotenv_path = Path(__file__).parent / ".env"
+load_dotenv(dotenv_path=dotenv_path)
+
+BASE_DIR = Path(__file__).resolve().parent
+DATA_DIR = Path(os.getenv("DATA_DIR", str(BASE_DIR / "data"))).resolve()
+COUNTS_DAILY_FILE = DATA_DIR / "counts_daily.parquet"
 
 class BicycleCountersLoader(BicycleCountersClient, ParquetLoader, JsonLoader):
 
@@ -76,7 +85,7 @@ class BicycleCountersLoader(BicycleCountersClient, ParquetLoader, JsonLoader):
         ]]
 
         final_df['location_dir_ids'] = final_df['location_dir_ids'].apply(
-            lambda id_list: ", ".join(map(str, id_list))
+            lambda id_list: list(set(map(int, id_list)))
         )
         final_df['first_active'] = final_df['first_active'].dt.strftime('%Y-%m-%dT%H:%M:%S.000')
         final_df['last_active'] = final_df['last_active'].dt.strftime('%Y-%m-%dT%H:%M:%S.000')
@@ -205,6 +214,25 @@ class BicycleCountersLoader(BicycleCountersClient, ParquetLoader, JsonLoader):
         final_df = aggregated_df[['name', 'coordinates', 'dt', 'daily_volume', 'location_dir_ids']]
         
         self.df_to_parquet(final_df, "./data/counts_daily_by_location_name.parquet", overwrite=True)
+
+    async def counts_daily_chart_to_parquet(self) -> None:       
+        df = pd.read_parquet(COUNTS_DAILY_FILE)
+        df['location_name'] = df['location_name'].str.replace(' (retired)', '', regex=False)
+        df['dt'] = pd.to_datetime(df['dt'])
+        
+        df_pivot = (
+            df.groupby(['dt', 'location_name'])['daily_volume']
+            .sum()
+            .unstack(level='location_name')
+        )
+        
+        all_dates = pd.date_range(start=df_pivot.index.min(), end=df_pivot.index.max(), freq='D')
+        df_pivot = df_pivot.reindex(all_dates)
+        df_pivot = df_pivot.sort_index(axis=1)
+        df_pivot.index = df_pivot.index.strftime('%Y-%m-%d')
+        df_pivot.index.name = 'date'
+        
+        self.df_to_parquet(df_pivot, "./data/counts_daily_chart.parquet", overwrite=True)
 
     async def load_counter_locations_into_sqlite(self):
         os.makedirs(os.path.dirname(self.DB_PATH), exist_ok=True)

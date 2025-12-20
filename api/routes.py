@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request, current_app
 import json
 import pandas as pd
+import numpy as np
 from .db import get_db
 import sqlite3
 import os
@@ -18,6 +19,7 @@ COUNTS_15M_FILE = DATA_DIR / "counts_15m.parquet"
 COUNTS_15M_BY_LOCATION_NAME_FILE = DATA_DIR / "counts_15m_by_location_name.parquet"
 COUNTS_DAILY_FILE = DATA_DIR / "counts_daily.parquet"
 COUNTS_DAILY_BY_LOCATION_NAME_FILE = DATA_DIR / "counts_daily_by_location_name.parquet"
+COUNTS_DAILY_CHART_FILE = DATA_DIR / "counts_daily_chart.parquet"
 DB_PATH = os.path.join(os.path.dirname(__file__), os.getenv('DB_PATH'))
 
 
@@ -48,22 +50,22 @@ def get_table(table_name):
     except sqlite3.OperationalError as e:
         return jsonify({"error": f"Database error: {e}."}), 500
 
-@api_bp.route('/bicycle_counters')
+@api_bp.route('/bicycle-counters')
 def get_bicycle_counters():
     """Endpoint to return data from the primary bicycle counters table."""
     return get_table('bicycle_counters')
 
-@api_bp.route('/daily_counts')
+@api_bp.route('/daily-counts')
 def get_daily_counts():
     """Endpoint to return data from the daily count records."""
     return get_table('daily_bicycle_counts')
 
-@api_bp.route('/monthly_counts')
+@api_bp.route('/monthly-counts')
 def get_monthly_counts():
     """Endpoint to return data from the monthly count records."""
     return get_table('monthly_bicycle_counts')
 
-@api_bp.route('/annual_counts')
+@api_bp.route('/annual-counts')
 def get_yearly_counts():
     """Endpoint to return data from the yearly count records."""
     return get_table('annual_bicycle_counts')
@@ -241,6 +243,31 @@ def get_daily_counts_by_location_name_in_date_range():
     ).to_dict()
 
     return jsonify(grouped_data), 200
+
+@api_bp.route('/daily-counts-chart')
+def get_daily_counts_chart():
+    def get_chart_data_cached():
+        cache_key = "_daily_chart_json_cache"
+        # 1. Check if the "Ready-to-Serve" JSON is already in memory
+        if not hasattr(current_app, cache_key):
+            file_path = COUNTS_DAILY_CHART_FILE
+            print(f"🚀 Cache Miss: Processing Parquet from {file_path}...")
+            # 2. Load and Transform
+            df = pd.read_parquet(file_path)
+            # reset_index() moves 'date' from the index into a column.
+            # to_dict(orient='records') converts NaNs to JSON 'null' automatically.
+            clean_data = df.replace({np.nan: None}).reset_index().to_dict(orient='records')
+            processed_data = {
+                "availableLocations": df.columns.tolist(),
+                "data": clean_data
+            }
+            # Store the processed object in Flask's memory
+            setattr(current_app, cache_key, processed_data)
+            
+        return getattr(current_app, cache_key)
+
+    data = get_chart_data_cached()
+    return jsonify(data)
 
 @api_bp.route('/fifteen-min-counts-in-date-range')
 def get_fifteen_min_counts_in_date_range():
