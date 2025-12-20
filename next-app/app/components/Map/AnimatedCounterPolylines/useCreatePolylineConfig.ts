@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { PolylineAnimationConfig } from "@/components/Map/MapClient/hooks/CounterPolylines/useAnimatedPolylineFlow";
+import { PolylineAnimationConfig } from "@/components/Map/AnimatedCounterPolylines/useAnimatedPolylineFlow";
 import { CounterPolyline } from "@/components/Map/AnimatedCounterPolylines/helpers/renderPolylines";
 
 export interface CounterVolData {
