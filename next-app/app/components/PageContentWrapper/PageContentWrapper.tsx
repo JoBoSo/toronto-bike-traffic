@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { PageContentProvider } from '@/src/contexts/PageContentContext';
 import { CounterLocationFeature } from '@/src/interfaces/counterLocationTypes';
 import { CyclingNetworkFeature } from '@/src/interfaces/cyclingNetworkTypes';
-import Sidebar from '@/components/Sidebar/Sidebar'; 
+import Sidebar from '@/components/Map/Sidebar/Sidebar'; 
 import MapWrapper from '@/components/Map/MapWrapper/MapWrapper';
 import styles from './PageContentWrapper.module.scss'; 
 

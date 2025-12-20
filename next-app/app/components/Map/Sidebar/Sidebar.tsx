@@ -4,12 +4,12 @@ import { SetStateAction, useState, Dispatch } from "react";
 import { useMapContext } from "@/src/contexts/MapContext";
 import { usePageContentContext } from "@/src/contexts/PageContentContext";
 import { fetchDailyCountsInDateRange } from "@/components/Map/utils/fetchDailyCountsInDateRange";
-import styles from "@/components/Sidebar/Sidebar.module.scss";
-import DateRangePicker from "@/components/Sidebar/DateRangePicker/DateRangePicker";
-import PlaybackControl from "@/components/Sidebar/PlaybackControl/PlaybackControl";
-import { fetch24HourCycleData } from "../Map/utils/fetch24HourCycleData";
-import { fetchDailyCountsByLocNameInDateRange } from "../Map/utils/fetchDailyCountsByLocNameInDateRange";
-import { fetch24HrTrafficByLocNameData } from "../Map/utils/fetch24HrTrafficByLocNameData";
+import styles from "@/components/Map/Sidebar/Sidebar.module.scss";
+import DateRangePicker from "@/components/Map/Sidebar/DateRangePicker/DateRangePicker";
+import PlaybackControl from "@/components/Map/Sidebar/PlaybackControl/PlaybackControl";
+import { fetch24HourCycleData } from "../utils/fetch24HourCycleData";
+import { fetchDailyCountsByLocNameInDateRange } from "../utils/fetchDailyCountsByLocNameInDateRange";
+import { fetch24HrTrafficByLocNameData } from "../utils/fetch24HrTrafficByLocNameData";
 import { convertTo12HourTime } from "@/src/utils/convertTo12HourTime"
 import { PanelRightClose, PanelRightOpen } from 'lucide-react';
 
