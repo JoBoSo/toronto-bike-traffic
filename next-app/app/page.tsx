@@ -1,10 +1,8 @@
 import React from 'react';
 import { FlaskApi } from "@/src/apis/flaskApi";
 import { CyclingNetworkPkgClient } from '@/src/apis/torontoOpenDataApi/clients/CyclingNetworkPkgClient';
-import { 
-    PermanentBicycleCountersPkgClient
-} from '@/src/apis/torontoOpenDataApi/clients/PermanentBicycleCountersPkgClient';
 import PageContentWrapper from "@/components/PageContentWrapper/PageContentWrapper";
+import { MapProvider } from "@/src/contexts/MapContext";
 
 export default async function HomePage() {
   let counterLocations: any = null; 
@@ -40,10 +38,12 @@ export default async function HomePage() {
   
   // --- Client-Side Map Rendering ---
   return (
+    <MapProvider>
       <PageContentWrapper 
         counterLocations={counterLocations} 
         counterGroups={counterGroups} 
         cyclingNetwork={cyclingNetwork} 
       />
+    </MapProvider>
   );
 }
