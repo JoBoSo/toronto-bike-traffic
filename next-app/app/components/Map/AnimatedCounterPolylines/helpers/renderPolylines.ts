@@ -1,7 +1,7 @@
 // helpers/renderPolylinesToMap.ts
 
 import L, { Map as LeafletMap, Polyline } from "leaflet";
-import { CounterRoute } from "@/components/Map/MapClient/hooks/CounterPolylines/helpers/getCounterRoutes";
+import { CounterRoute } from "@/components/Map/AnimatedCounterPolylines/helpers/getCounterRoutes";
 
 const POLYLINE_PANE_NAME = "counterPolylinePane";
 

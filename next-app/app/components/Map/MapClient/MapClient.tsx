@@ -2,7 +2,7 @@
 
 import styles from "@/components/Map/MapClient/MapClient.module.scss";
 import { useEffect, useRef, useState } from "react";
-import L, { Map as LeafletMap, LayerGroup, TileLayer } from "leaflet";
+import { MapContainer, TileLayer, Pane, ScaleControl } from 'react-leaflet';
 import "react-datepicker/dist/react-datepicker.css";
 import "leaflet/dist/leaflet.css";
 
@@ -11,38 +11,34 @@ import { usePageContentContext } from "@/src/contexts/PageContentContext";
 import { useMapContext } from "@/src/contexts/MapContext";
 
 // Hooks
-import { useInitializeMap } from "@/components/Map/MapClient/hooks/BaseLayers/useInitializeMap";
-import { useFitMapToContainer } from "@/components/Map/MapClient/hooks/BaseLayers/useFitMapToContainer";
-import { useRenderCounterLocations } from "@/components/Map/MapClient/hooks/BaseLayers/useRenderCounterLocations";
-import { useRenderConsolidatedCounterLocations } from "@/components/Map/MapClient/hooks/BaseLayers/useRenderConsolidatedCounterLocations";
-import { useRenderCyclingNetwork } from "@/components/Map/MapClient/hooks/BaseLayers/useRenderCyclingNetwork";
-import { useControl24HrTrafficPlayer } from "@/components/Map/MapClient/hooks/Play24HrTraffic/useControl24HrTrafficPlayer";
-import { useInitTimeArray } from "@/components/Map/MapClient/hooks/Play24HrTraffic/useInitTimeArray"
-import { useGet24HrTraffic } from "@/components/Map/MapClient/hooks/Play24HrTraffic/useGet24HrTraffic"
-import { useMark24HrTraffic } from "@/components/Map/MapClient/hooks/Play24HrTraffic/useMark24HrTraffic"; 
-import { useSetCurr24HrTrafficData } from "@/components/Map/MapClient/hooks/Play24HrTraffic/useSetCurr24HrTrafficData"; 
-import { useGetDailyTrafficData } from "@/components/Map/MapClient/hooks/PlayDailyTraffic/useGetDailyTrafficData";
-import { useGetDailyTrafficByLocNameData } from "@/components/Map/MapClient/hooks/PlayDailyTraffic/useGetDailyTrafficByLocNameData";
-import { useInitDateArray } from "@/components/Map/MapClient/hooks/PlayDailyTraffic/useInitDateArray";
-import { useMarkDailyTraffic } from "@/components/Map/MapClient/hooks/PlayDailyTraffic/useMarkDailyTraffic";
-import useSetBaseMap from "@/components/Map/MapLayersControl/hooks/useSetBaseMap";
-import useToggleBaseMap from "@/components/Map/MapLayersControl/hooks/useToggleBaseMap";
-import { useControlDailyTrafficPlayer } from "@/components/Map/MapClient/hooks/PlayDailyTraffic/useControlDailyTrafficPlayer";
-import { useSetCurrDayData } from "@/components/Map/MapClient/hooks/PlayDailyTraffic/useSetCurrDayData";
-import { useTimeColorOverlay } from "@/components/Map/MapClient/hooks/Play24HrTraffic/useTimeColorOverlay";
-import { useCacheCounterRoutes } from "@/components/Map/MapClient/hooks/CounterPolylines/useCacheCounterRoutes";
-import { useRenderCounterPolylines } from "@/components/Map/MapClient/hooks/CounterPolylines/useRenderCounterPolylines";
-import { useRenderAnimatedCounterPolylines } from "@/components/Map/MapClient/hooks/CounterPolylines/useRenderAnimatedCounterPolylines";
-import { CounterPolyline } from "@/components/Map/MapClient/hooks/CounterPolylines/helpers/renderPolylines";
-import { CounterRoute } from "@/components/Map/MapClient/hooks/CounterPolylines/helpers/getCounterRoutes";
-import { useCreatePolylineConfig } from "@/components/Map/MapClient/hooks/CounterPolylines/useCreatePolylineConfig";
-import { PolylineAnimationConfig } from "@/components/Map/MapClient/hooks/CounterPolylines/useAnimatedPolylineFlow";
-import { useGet24HrTrafficByLocName } from '@/components/Map/MapClient/hooks/Play24HrTraffic/useGet24HrTrafficByLocName';
+import { useControl24HrTrafficPlayer } from "@/components/Map/TwentyFourHrTrafficPlayback/useControl24HrTrafficPlayer";
+import { useInitTimeArray } from "@/components/Map/TwentyFourHrTrafficPlayback/useInitTimeArray"
+import { useGet24HrTraffic } from "@/components/Map/TwentyFourHrTrafficPlayback/useGet24HrTraffic"
+import { useSetCurr24HrTrafficData } from "@/components/Map/TwentyFourHrTrafficPlayback/useSetCurr24HrTrafficData"; 
+import { useGetDailyTrafficData } from "@/components/Map/DailyTrafficPlayback/useGetDailyTrafficData";
+import { useGetDailyTrafficByLocNameData } from "@/components/Map/DailyTrafficPlayback/useGetDailyTrafficByLocNameData";
+import { useInitDateArray } from "@/components/Map/DailyTrafficPlayback/useInitDateArray";
+import { useControlDailyTrafficPlayer } from "@/components/Map/DailyTrafficPlayback/useControlDailyTrafficPlayer";
+import { useSetCurrDayData } from "@/components/Map/DailyTrafficPlayback/useSetCurrDayData";
+import { useCacheCounterRoutes } from "@/components/Map/AnimatedCounterPolylines/useCacheCounterRoutes";
+import { useRenderCounterPolylines } from "@/components/Map/AnimatedCounterPolylines/useRenderCounterPolylines";
+import { useRenderAnimatedCounterPolylines } from "@/components/Map/AnimatedCounterPolylines/useRenderAnimatedCounterPolylines";
+import { CounterPolyline } from "@/components/Map/AnimatedCounterPolylines/helpers/renderPolylines";
+import { CounterRoute } from "@/components/Map/AnimatedCounterPolylines/helpers/getCounterRoutes";
+import { useCreatePolylineConfig } from "@/components/Map/AnimatedCounterPolylines/useCreatePolylineConfig";
+import { PolylineAnimationConfig } from "@/components/Map/AnimatedCounterPolylines/useAnimatedPolylineFlow";
+import { useGet24HrTrafficByLocName } from '@/components/Map/TwentyFourHrTrafficPlayback/useGet24HrTrafficByLocName';
 
 // Components
 import MapLayersControl from "@/components/Map/MapLayersControl/MapLayersControl";
 import PlaybackInfoOverlay from "@/components/Map/PlaybackInfoOverlay/PlaybackInfoOverlay";
 import formatShortDate from "@/src/utils/formatShortDate"
+import CyclingNetworkLayer from "@/components/Map/CyclingNetworkLayer/CyclingNetworkLayer";
+import CounterLocationsLayer from "@/components/Map/CounterLocationsLayer/CounterLocationsLayer";
+import MapResizer from "@/components/Map/MapResizer/MapResizer";
+import TimeColorOverlay from "@/components/Map/TwentyFourHrTrafficPlayback/TimeColorOverlay/TimeColorOverlay";
+import TrafficPlaybackLayer from "@/components/Map/TwentyFourHrTrafficPlayback/TrafficPlaybackLayer/TrafficPlaybackLayer";
+import DailyTrafficPlaybackLayer from "@/components/Map/DailyTrafficPlayback/DailyTrafficPlaybackLayer/DailyTrafficPlaybackLayer";
 
 // utils
 import { convertTo12HourTime } from "@/src/utils/convertTo12HourTime"
@@ -62,26 +58,16 @@ export default function MapClient({ isSidebarCollapsed }: MapClientProps) {
     currentTime,
   } = useMapContext();
 
-  // Map refs & instance
-  const mapRef = useRef<HTMLDivElement | null>(null);
-  const [mapInstance, setMapInstance] = useState<LeafletMap | null>(null);
-  const dataLayerRef = useRef<LayerGroup | null>(null);
-
-  // Base map layers
-  const digitalLayerRef = useRef<TileLayer | null>(null);
-  const satelliteLayerRef = useRef<TileLayer | null>(null);
   const [isSatellite, setIsSatellite] = useState(false);
-
-  // Date range & playback
   const playIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Hooks
   //// Base Layers
-  useInitializeMap(mapRef, mapInstance, setMapInstance);
-  useRenderCyclingNetwork(mapInstance, cyclingNetwork);
+  // useInitializeMap(mapRef, mapInstance, setMapInstance);
+  // useRenderCyclingNetwork(mapInstance, cyclingNetwork);
   // useRenderCounterLocations(mapInstance, counterLocations);
-  useRenderConsolidatedCounterLocations(mapInstance, counterGroups);
-  useFitMapToContainer(mapInstance, isSidebarCollapsed);
+  // useRenderConsolidatedCounterLocations(mapInstance, counterGroups);
+  // useFitMapToContainer(mapInstance, isSidebarCollapsed);
 
   //// 24 Hour Traffic Player
   // useGet24HrTraffic(counterLocations);
@@ -89,8 +75,6 @@ export default function MapClient({ isSidebarCollapsed }: MapClientProps) {
   useInitTimeArray();
   const currHr24CycleData = useSetCurr24HrTrafficData();
   useControl24HrTrafficPlayer(playIntervalRef)
-  useMark24HrTraffic(mapInstance, currHr24CycleData, dataLayerRef);
-  useTimeColorOverlay(mapInstance);
   
   //// animated polylines
   // const routes: CounterRoute[] | undefined = useCacheCounterRoutes(counterLocations);
@@ -101,22 +85,65 @@ export default function MapClient({ isSidebarCollapsed }: MapClientProps) {
   //// Daily Traffic Player
   useControlDailyTrafficPlayer(playIntervalRef);
   // useGetDailyTrafficData(mapInstance);
-  useGetDailyTrafficByLocNameData(mapInstance);
+  useGetDailyTrafficByLocNameData();
   const currDayData = useSetCurrDayData();
-  useMarkDailyTraffic(mapInstance, currDayData, counterLocations, dataLayerRef);
   useInitDateArray();
 
-  //// Base Map Toggle
-  useSetBaseMap(mapInstance, digitalLayerRef, satelliteLayerRef);
-  useToggleBaseMap(mapInstance, digitalLayerRef, satelliteLayerRef, isSatellite);
-
   return (
-      <div className={styles["map-client-container"]}>
-        <MapLayersControl isSatellite={isSatellite} setIsSatellite={setIsSatellite} />
-        {timeIsPlaying && <PlaybackInfoOverlay info={convertTo12HourTime(currentTime)} />}
-        {isPlaying && dateArray[currentDateIndex] && <PlaybackInfoOverlay info={formatShortDate(dateArray[currentDateIndex])} />}
-        {/* Map Container */}
-        <div id="map" ref={mapRef} style={{ width: "100%", height: "100%" }} />
-      </div>
+    <div className={styles.mapClientContainer}>
+      <MapContainer 
+        className={styles.actualLeafletMap}
+        center={[43.664, -79.38]} 
+        zoom={12.3} 
+        zoomSnap={0}
+        zoomControl={false}
+        wheelPxPerZoomLevel={5}
+        attributionControl={false}
+      >
+        {/* Base Layer Logic */}
+        {isSatellite ? (
+          <TileLayer
+            key="satellite"
+            url="https://server.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+            maxZoom={19}
+          />
+        ) : (
+          <TileLayer
+            key="voyager"
+            url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png"
+            maxZoom={19}
+            subdomains="abcd"
+          />
+        )}
+
+        {/* Labels Pane - Always on Top of base tiles */}
+        <Pane name="labelsPane" style={{ zIndex: 615 }}>
+          <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png" />
+        </Pane>
+
+        <ScaleControl position="bottomleft" metric={true} imperial={false} />
+
+        {/* Custom Data Layers */}
+        <CyclingNetworkLayer geoJsonData={cyclingNetwork} />
+        <CounterLocationsLayer data={counterGroups} />
+        <MapResizer isSidebarCollapsed={isSidebarCollapsed} />
+
+        {/* Animation Layers */}
+        <TimeColorOverlay />
+        <TrafficPlaybackLayer trafficData={currHr24CycleData} />
+        <DailyTrafficPlaybackLayer currDateData={currDayData} />
+      </MapContainer>
+
+      {/* UI Overlays */}
+      <MapLayersControl isSatellite={isSatellite} setIsSatellite={setIsSatellite} />
+      
+      {timeIsPlaying && (
+        <PlaybackInfoOverlay info={convertTo12HourTime(currentTime)} />
+      )}
+      
+      {isPlaying && dateArray[currentDateIndex] && (
+        <PlaybackInfoOverlay info={formatShortDate(dateArray[currentDateIndex])} />
+      )}
+    </div>
   );
 }

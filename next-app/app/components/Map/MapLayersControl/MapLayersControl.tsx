@@ -1,28 +1,35 @@
-import { useEffect, useRef, useState } from "react";
-import { Layers } from "lucide-react";
-import styles from '@/components/Map/MapLayersControl/MapLayersControl.module.scss'; 
+"use client";
 
+import React, { useEffect, useRef, useState } from "react";
+import { Layers } from "lucide-react";
+import styles from './MapLayersControl.module.scss'; 
+
+interface MapLayersControlProps {
+  isSatellite: boolean;
+  setIsSatellite: (v: boolean) => void;
+}
+
+/**
+ * UI Component for toggling map layers.
+ * Positioned absolutely over the MapContainer.
+ */
 export default function MapLayersControl({
   isSatellite,
   setIsSatellite
-}: {
-  isSatellite: boolean;
-  setIsSatellite: (v: boolean) => void;
-}) {
+}: MapLayersControlProps) {
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement | null>(null);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
 
-  // Close when clicking outside
+  // Close when clicking outside logic
   useEffect(() => {
     if (!open) return;
-    const handleClickOutside = (event: MouseEvent) => {
+
+    const handleClickOutside = (event: PointerEvent) => {
       const target = event.target as Node;
       if (
-        panelRef.current &&
-        !panelRef.current.contains(target) &&
-        buttonRef.current &&
-        !buttonRef.current.contains(target)
+        panelRef.current && !panelRef.current.contains(target) &&
+        buttonRef.current && !buttonRef.current.contains(target)
       ) {
         setOpen(false);
       }
@@ -33,11 +40,12 @@ export default function MapLayersControl({
   }, [open]);
 
   return (
-    <>
+    <div className={styles.container}>
       <button
         ref={buttonRef}
         className={`${styles['map-layers-button']} ${open ? styles.active : ''}`}
-        onClick={() => setOpen(!open)} // toggle panel
+        onClick={() => setOpen((prev) => !prev)}
+        aria-label="Toggle Layer Panel"
       >
         <Layers size={22} />
       </button>
@@ -46,9 +54,10 @@ export default function MapLayersControl({
         ref={panelRef}
         className={`${styles['map-layers-panel']} ${open ? styles.open : ''}`}
       >
-        <div className={styles['map-layers-header']}>Base Map</div>
+        <div className={styles['map-layers-header']}>Map Settings</div>
+        
         <div className={styles['layer-toggle-row']}>
-          <span>Satellite</span>
+          <span className={styles.label}>Satellite View</span>
           <label className={styles.switch}>
             <input
               type="checkbox"
@@ -59,6 +68,6 @@ export default function MapLayersControl({
           </label>
         </div>
       </div>
-    </>
+    </div>
   );
 }

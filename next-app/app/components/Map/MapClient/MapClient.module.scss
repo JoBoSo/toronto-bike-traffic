@@ -1,5 +1,11 @@
-.map-client-container {
+.mapClientContainer {
     width: 100%; 
     height: 100%; 
     position: relative;
+}
+
+/* MapClient.module.scss */
+.actualLeafletMap {
+  height: 100%;
+  width: 100%;
 }

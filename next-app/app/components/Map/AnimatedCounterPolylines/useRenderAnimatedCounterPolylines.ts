@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Map as LeafletMap } from "leaflet";
 import { useAnimatedPolylineFlow, PolylineAnimationConfig } from "@/components/Map/MapClient/hooks/CounterPolylines/useAnimatedPolylineFlow";
-import { CounterPolyline } from "@/components/Map/MapClient/hooks/CounterPolylines/helpers/renderPolylines";
+import { CounterPolyline } from "@/components/Map/AnimatedCounterPolylines/helpers/renderPolylines";
 
 export function useRenderAnimatedCounterPolylines(
   mapInstance: LeafletMap | null,
