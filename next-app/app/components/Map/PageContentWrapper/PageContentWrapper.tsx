@@ -6,7 +6,7 @@ import { CounterLocationFeature } from '@/src/interfaces/counterLocationTypes';
 import { CyclingNetworkFeature } from '@/src/interfaces/cyclingNetworkTypes';
 import Sidebar from '@/components/Map/Sidebar/Sidebar'; 
 import MapWrapper from '@/components/Map/MapWrapper/MapWrapper';
-import styles from './PageContentWrapper.module.scss'; 
+import styles from '@/components/Map/PageContentWrapper/PageContentWrapper.module.scss'; 
 
 interface PageContentWrapperProps {
   counterLocations: CounterLocationFeature[];

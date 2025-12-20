@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlaskApi } from "@/src/apis/flaskApi";
 import { CyclingNetworkPkgClient } from '@/src/apis/torontoOpenDataApi/clients/CyclingNetworkPkgClient';
-import PageContentWrapper from "@/components/PageContentWrapper/PageContentWrapper";
+import PageContentWrapper from "@/components/Map/PageContentWrapper/PageContentWrapper";
 import { MapProvider } from "@/src/contexts/MapContext";
 
 export default async function HomePage() {
