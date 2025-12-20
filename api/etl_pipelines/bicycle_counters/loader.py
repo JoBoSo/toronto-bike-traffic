@@ -1,7 +1,6 @@
 from etl_pipelines.bicycle_counters.client import BicycleCountersClient
 from modules.parquet_loader import ParquetLoader
 from modules.json_loader import JsonLoader
-from modules.data_modeller import DataModeller
 from etl_pipelines.bicycle_counters.models import (DailyCount, CounterLocation)
 import os
 import sqlite3
@@ -11,7 +10,7 @@ from dataclasses import asdict
 from typing import List, Dict, Any, Union
 import geopandas as gpd
 
-class BicycleCountersLoader(BicycleCountersClient, ParquetLoader, JsonLoader, DataModeller):
+class BicycleCountersLoader(BicycleCountersClient, ParquetLoader, JsonLoader):
 
     async def counter_locations_to_geojson(self) -> None:        
         results = await self.get_counter_locations_raw()
