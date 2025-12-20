@@ -10,6 +10,7 @@ class ParquetLoader():
         if os.path.exists(parquet_path) and not overwrite:
             print(f"Parquet file already exists at {parquet_path}. Skipping save.")
             return
+        
         print(f"Saving DataFrame to {parquet_path}...")
-        df.to_parquet(parquet_path, index=False)
+        df.to_parquet(parquet_path, index=True)
         print(f"Saved to {parquet_path}")
