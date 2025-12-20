@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { Circle, Pane, Tooltip, Popup } from "react-leaflet";
+import { CircleMarker, Pane, Tooltip, Popup } from "react-leaflet";
 import { MarkerScaler, ScalingMethod } from '@/components/Map/utils/MarkerScaler';
 import { DailyLocationCount } from "@/src/interfaces/flaskApiResponseTypes/DailyCountsByLocNameInDateRangeResponse";
 import { useMapContext } from "@/src/contexts/MapContext";
@@ -38,11 +38,12 @@ export default function DailyTrafficPlaybackLayer({ currDateData }: DailyTraffic
       // Note: Using 'latLon' which was pre-parsed in useSetCurrDayData
       const latLon = element.latLon; 
       
-      const radius = 100 + 0.2 * scaler.getRadius(value);
+      // const radius = 100 + 0.2 * scaler.getRadius(value); // for Circle
+      const radius = 4 + 0.006 * scaler.getRadius(value); // for CircleMarker
       const color = scaler.getColorRYG(value);
 
       return (
-        <Circle
+        <CircleMarker
           key={`${element.location_id || index}`}
           center={latLon}
           radius={radius}
@@ -60,7 +61,7 @@ export default function DailyTrafficPlaybackLayer({ currDateData }: DailyTraffic
               Daily # of cyclists: {value.toFixed(0)}
             </p>
           </Popup>}
-        </Circle>
+        </CircleMarker>
       );
     });
   }, [currDateData, scaler, shouldRender]);
