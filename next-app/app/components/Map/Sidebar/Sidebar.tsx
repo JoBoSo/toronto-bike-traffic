@@ -135,7 +135,7 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
         {/* Play avg traffic in 15 min increments across 24 hours */}
         <div className={styles.section}>
           <b className={styles.sectionHeader}>24 Hour Traffic</b>
-          <p className={styles.sectionDescription}>See bike traffic in 15 minute intervals over an entire day, averaged across the period.</p>
+          <p className={styles.sectionDescription}>See the magnitude of bike traffic in 15 minute intervals over an entire day, averaged across the period.</p>
           <PlaybackControl
             dataIsLoaded={loadingHr24TrafficData}
             isPlaying={timeIsPlaying}
@@ -158,7 +158,7 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
         {/* Date Range Play/Pause */}
         <div className={styles.section}>
           <b className={styles.sectionHeader}>Daily Traffic</b>
-          <p className={styles.sectionDescription}>See total daily traffic for each day in the period.</p>
+          <p className={styles.sectionDescription}>See the magnitude of total daily traffic for each day in the period.</p>
           <PlaybackControl
             dataIsLoaded={loadingDailyTrafficData}
             isPlaying={isPlaying}
