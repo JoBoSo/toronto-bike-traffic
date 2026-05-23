@@ -1,4 +1,7 @@
 import aiohttp
+import ssl
+import certifi
+
 
 class CityOfTorontoClient:
     BASE_URL = "https://ckan0.cf.opendata.inter.prod-toronto.ca/api/3/action"
@@ -34,7 +37,8 @@ class CityOfTorontoClient:
         endpoint = "/package_show"
         params = {"id": package_id}
         
-        async with aiohttp.ClientSession() as session:
+        connector = self._ssl_connector()
+        async with aiohttp.ClientSession(connector=connector) as session:
             return await self.get(session, endpoint, params)
         
     async def get_resource_metadata(self, package_id: str, resource_name: str):
@@ -76,7 +80,8 @@ class CityOfTorontoClient:
         """
         resource_url = await self.get_resource_url(package_id, resource_name)
         if resource_url:
-            async with aiohttp.ClientSession() as session:
+            connector = self._ssl_connector()
+            async with aiohttp.ClientSession(connector=connector) as session:
                 try:
                     async with session.get(resource_url) as response:
                         response.raise_for_status()
@@ -85,4 +90,13 @@ class CityOfTorontoClient:
                     print(f"Error fetching resource data: {e}")
                     return None
         return None
+
+    def _ssl_connector(self):
+        """Create an aiohttp TCPConnector with a proper SSL context.
+
+        Uses certifi's CA bundle (certifi is required/imported in this module).
+        """
+        cafile = certifi.where()
+        ctx = ssl.create_default_context(cafile=cafile)
+        return aiohttp.TCPConnector(ssl=ctx)
 

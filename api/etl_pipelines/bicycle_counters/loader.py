@@ -15,7 +15,9 @@ dotenv_path = Path(__file__).parent / ".env"
 load_dotenv(dotenv_path=dotenv_path)
 
 BASE_DIR = Path(__file__).resolve().parent
-DATA_DIR = Path(os.getenv("DATA_DIR", str(BASE_DIR / "data"))).resolve()
+# Default DATA_DIR should be the top-level `api/data` directory (two levels up)
+DEFAULT_DATA_DIR = Path(__file__).resolve().parents[2] / "data"
+DATA_DIR = Path(os.getenv("DATA_DIR", str(DEFAULT_DATA_DIR))).resolve()
 COUNTS_DAILY_FILE = DATA_DIR / "counts_daily.parquet"
 
 class BicycleCountersLoader(BicycleCountersClient, ParquetLoader, JsonLoader):
